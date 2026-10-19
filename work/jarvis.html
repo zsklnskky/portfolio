@@ -1,0 +1,1187 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JARVIS</title>
+<meta name="theme-color" content="#050914">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%23050914' stroke='%2336E2FF' stroke-width='4'/%3E%3Ccircle cx='32' cy='32' r='11' fill='%2336E2FF'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;700;900&display=swap" rel="stylesheet">
+<style>:root {
+  --bg: #050914;
+  --glass: rgba(16, 30, 68, .46);
+  --glass-hi: rgba(26, 46, 100, .55);
+  --line: rgba(120, 190, 255, .16);
+  --core: #36e2ff;
+  --ion: #3b6bff;
+  --plasma: #8a5cff;
+  --amber: #ffb547;
+  --mint: #5cf2b4;
+  --text: #e6f0ff;
+  --dim: #8392b8;
+  --r-lg: 26px;
+  --r-md: 16px;
+  --r-sm: 11px;
+  --display: "Unbounded", "SF Pro Display", system-ui, sans-serif;
+  --body: "Manrope", "SF Pro Text", system-ui, sans-serif;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: radial-gradient(120% 90% at 30% 20%, #0a1636 0%, var(--bg) 60%) fixed, var(--bg);
+  color: var(--text);
+  font: 15px/1.5 var(--body);
+  display: grid;
+  grid-template: "rail top" auto "rail main" 1fr / 96px 1fr;
+  overflow: hidden;
+}
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--core); outline-offset: 3px; }
+
+/* плазма на фоне */
+.plasma { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+.plasma i { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .5; animation: drift 38s ease-in-out infinite alternate; }
+.plasma i:nth-child(1) { width: 52vw; height: 52vw; left: -12vw; top: -18vw; background: #1737a8; }
+.plasma i:nth-child(2) { width: 38vw; height: 38vw; right: -8vw; top: 30vh; background: #4a1fb0; animation-duration: 46s; }
+.plasma i:nth-child(3) { width: 30vw; height: 30vw; left: 30vw; bottom: -16vw; background: #0f7c9c; opacity: .35; animation-duration: 52s; }
+@keyframes drift { to { transform: translate(6vw, 5vh) scale(1.12); } }
+
+/* меню */
+.rail {
+  grid-area: rail;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 22px 10px;
+  border-right: 1px solid var(--line);
+  background: rgba(5, 10, 26, .55);
+  backdrop-filter: blur(18px);
+}
+.mark {
+  width: 48px; height: 48px; margin-bottom: 22px;
+  display: grid; place-items: center;
+  font: 900 22px var(--display);
+  border-radius: 15px;
+  color: var(--bg);
+  background: conic-gradient(from 200deg, var(--core), var(--ion), var(--plasma), var(--core));
+  box-shadow: 0 0 28px rgba(54, 226, 255, .45);
+}
+.nav {
+  width: 76px; padding: 11px 4px 9px;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  border: 0; border-radius: var(--r-md); background: none;
+  color: var(--dim); font-size: 11.5px; font-weight: 600;
+  transition: background .2s, color .2s;
+}
+.nav svg { width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+.nav:hover { color: var(--text); background: rgba(255, 255, 255, .04); }
+.nav.on { color: var(--core); background: rgba(54, 226, 255, .1); box-shadow: inset 0 0 0 1px rgba(54, 226, 255, .28); }
+
+/* верх */
+.top {
+  grid-area: top;
+  display: flex; align-items: center; gap: 32px;
+  padding: 18px 34px 8px;
+}
+.word {
+  margin: 0;
+  font: 900 30px/1 var(--display);
+  letter-spacing: .14em;
+  color: #fff;
+  text-shadow: 0 0 24px rgba(54, 226, 255, .45);
+}
+.clock { display: flex; align-items: baseline; gap: 12px; }
+.clock b { font: 700 22px var(--display); font-variant-numeric: tabular-nums; }
+.clock span { color: var(--dim); }
+.leds { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+.led {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 6px 12px; border-radius: 99px;
+  font-size: 12.5px; font-weight: 600; color: var(--dim);
+  background: var(--glass); border: 1px solid var(--line);
+}
+.led::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #34405e; }
+.led.on { color: var(--text); }
+.led.on::before { background: var(--mint); box-shadow: 0 0 10px var(--mint); }
+.led.bad::before { background: var(--amber); box-shadow: 0 0 10px var(--amber); }
+
+main { grid-area: main; overflow: auto; padding: 8px 34px 34px; }
+.view { display: none; }
+.view.on { display: block; animation: in .35s ease; }
+@keyframes in { from { opacity: 0; transform: translateY(6px); } }
+.vh { font: 700 34px/1.1 var(--display); margin: 18px 0 22px; }
+
+/* ядро */
+#core.on { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(320px, 1fr); gap: 28px; min-height: 100%; }
+.reactor { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 560px; }
+#orb { width: min(62vh, 100%); aspect-ratio: 1; cursor: pointer; }
+#cam {
+  position: absolute; top: 10px; right: 10px; width: 168px; aspect-ratio: 4/3; object-fit: cover;
+  border-radius: var(--r-md); border: 1px solid rgba(54, 226, 255, .4);
+  box-shadow: 0 0 30px rgba(54, 226, 255, .2); display: none; transform: scaleX(-1);
+}
+#cam.on { display: block; }
+.state {
+  margin: -6px 0 6px;
+  font: 900 clamp(30px, 4.4vw, 58px)/1 var(--display);
+  letter-spacing: -.01em; text-align: center;
+  transition: color .3s;
+}
+.state[data-s="listen"] { color: var(--plasma); }
+.state[data-s="think"] { color: var(--ion); }
+.state[data-s="speak"] { color: var(--core); text-shadow: 0 0 34px rgba(54, 226, 255, .55); }
+.said { max-width: 62ch; min-height: 3em; margin: 6px auto 22px; color: var(--dim); text-align: center; font-size: 16.5px; }
+.said.reply { color: var(--text); }
+
+.cmd {
+  width: min(720px, 100%);
+  display: flex; gap: 8px; padding: 7px;
+  border-radius: 99px; background: var(--glass-hi); border: 1px solid var(--line);
+  backdrop-filter: blur(16px);
+}
+.cmd input { flex: 1; min-width: 0; padding: 0 18px; background: none; border: 0; outline: 0; font-size: 16px; }
+.round {
+  width: 46px; height: 46px; flex: none; display: grid; place-items: center;
+  border-radius: 50%; border: 1px solid var(--line); background: rgba(255, 255, 255, .04); color: var(--dim);
+}
+.round svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+.round[aria-pressed="true"] { color: var(--bg); background: var(--core); border-color: var(--core); box-shadow: 0 0 22px rgba(54, 226, 255, .55); }
+
+.send {
+  padding: 0 24px; min-height: 46px; border: 0; border-radius: 99px;
+  font-weight: 700; color: #04101f;
+  background: linear-gradient(135deg, var(--core), #7fb0ff);
+}
+.send:hover { filter: brightness(1.1); }
+.ghost { padding: 7px 14px; border-radius: 99px; border: 1px solid var(--line); background: none; color: var(--dim); font-size: 13px; font-weight: 600; }
+.ghost:hover { color: var(--text); border-color: rgba(54, 226, 255, .4); }
+.chip { padding: 8px 15px; border-radius: 99px; border: 1px solid var(--line); background: rgba(255, 255, 255, .03); font-size: 13.5px; font-weight: 600; color: var(--text); }
+.chip.on { background: rgba(54, 226, 255, .14); border-color: rgba(54, 226, 255, .45); color: var(--core); }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+/* панели */
+.side { display: flex; flex-direction: column; gap: 16px; padding-top: 10px; }
+.panel {
+  padding: 20px 22px;
+  border-radius: var(--r-lg);
+  background: var(--glass);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(20px);
+  margin-bottom: 16px;
+}
+.side .panel { margin: 0; }
+.ph { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.ph h2 { margin: 0; font: 700 16px var(--display); }
+.brief-text { margin: 0 0 14px; font-size: 15.5px; line-height: 1.6; max-height: 11.5em; overflow: auto; }
+
+.nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.nums div, .kpi { display: flex; flex-direction: column; }
+.nums b, .kpi b { font: 900 38px/1.05 var(--display); color: var(--core); font-variant-numeric: tabular-nums; }
+.nums span, .kpi span { color: var(--dim); font-size: 13px; }
+.warn b { color: var(--amber); }
+.good b { color: var(--mint); }
+
+.tlist { list-style: none; margin: 0; padding: 0; }
+.tlist li, .task {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 4px; border-top: 1px solid var(--line);
+}
+.tlist li:first-child { border-top: 0; }
+.tlist .empty { color: var(--dim); }
+.box {
+  width: 22px; height: 22px; flex: none; border-radius: 7px;
+  border: 1.5px solid rgba(54, 226, 255, .5); background: none;
+  display: grid; place-items: center;
+}
+.box.done { background: var(--mint); border-color: var(--mint); }
+.box.done::after { content: ""; width: 9px; height: 5px; border: 2px solid #04101f; border-top: 0; border-right: 0; transform: rotate(-45deg) translateY(-1px); }
+.tt { flex: 1; min-width: 0; }
+.tt small { display: block; color: var(--dim); font-size: 12.5px; }
+.task.is-done .tt > span { color: var(--dim); text-decoration: line-through; }
+.p1 { width: 8px; height: 8px; border-radius: 50%; background: var(--core); box-shadow: 0 0 10px var(--core); flex: none; }
+.due-over { color: var(--amber) !important; }
+.del { opacity: 0; border: 0; background: none; color: var(--dim); font-size: 20px; line-height: 1; padding: 4px 8px; }
+.task:hover .del, .del:focus-visible { opacity: 1; }
+
+/* задачи */
+.add { display: grid; grid-template-columns: 2fr 1fr auto auto auto; gap: 10px; align-items: center; }
+.add input, .add select, .set input, .set select {
+  min-height: 46px; padding: 0 14px; border-radius: var(--r-sm);
+  border: 1px solid var(--line); background: rgba(3, 8, 22, .55); outline: 0;
+}
+.add input:focus, .set input:focus, .set select:focus, .add select:focus { border-color: rgba(54, 226, 255, .55); }
+.filters { display: flex; gap: 8px; margin: 4px 0 18px; flex-wrap: wrap; }
+.group h3 { margin: 0 0 4px; font: 700 15px var(--display); display: flex; gap: 10px; align-items: baseline; }
+.group h3 span { color: var(--dim); font: 600 13px var(--body); }
+
+/* отчёты */
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.kpis .panel { margin: 0 0 16px; }
+.grid2 { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; }
+.bars { height: 190px; display: flex; align-items: flex-end; gap: 6px; }
+.bar { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; justify-content: flex-end; }
+.bar i { width: 100%; min-height: 3px; border-radius: 6px 6px 3px 3px; background: linear-gradient(to top, var(--ion), var(--core)); box-shadow: 0 0 14px rgba(54, 226, 255, .25); }
+.bar b { font-size: 12px; color: var(--text); font-weight: 700; }
+.bar span { font-size: 11px; color: var(--dim); }
+.pj { margin-bottom: 14px; }
+.pj div { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; }
+.pj div span { color: var(--dim); }
+.meter { height: 7px; border-radius: 9px; background: rgba(255, 255, 255, .06); overflow: hidden; }
+.meter i { display: block; height: 100%; background: linear-gradient(90deg, var(--ion), var(--mint)); border-radius: 9px; }
+.rep { padding: 14px 0; border-top: 1px solid var(--line); }
+.rep:first-child { border-top: 0; }
+.rep header { display: flex; gap: 12px; align-items: center; margin-bottom: 6px; }
+.rep header b { font: 700 14px var(--display); }
+.rep header span { color: var(--dim); font-size: 13px; }
+.rep p { margin: 0; max-width: 90ch; }
+.muted { color: var(--dim); }
+
+/* журнал */
+.chat { display: flex; flex-direction: column; gap: 10px; max-height: calc(100vh - 210px); overflow: auto; }
+.msg { max-width: 70ch; padding: 11px 16px; border-radius: 18px; }
+.msg small { display: block; color: var(--dim); font-size: 11.5px; margin-bottom: 2px; }
+.msg.user { align-self: flex-end; background: rgba(59, 107, 255, .22); border-bottom-right-radius: 6px; }
+.msg.jarvis { align-self: flex-start; background: rgba(255, 255, 255, .05); border: 1px solid var(--line); border-bottom-left-radius: 6px; }
+
+/* настройки */
+.set { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 22px; max-width: 880px; }
+.set label { display: flex; flex-direction: column; gap: 7px; font-size: 13.5px; font-weight: 600; color: var(--dim); }
+.set label.check { flex-direction: row; align-items: center; gap: 10px; color: var(--text); }
+.set .wide { grid-column: 1 / -1; }
+.hint { color: var(--dim); font-size: 13.5px; }
+
+.toast {
+  position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 30px);
+  padding: 12px 20px; border-radius: 99px; background: #0f1d44; border: 1px solid rgba(54, 226, 255, .35);
+  opacity: 0; pointer-events: none; transition: .3s; max-width: 90vw;
+}
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+
+@media (max-width: 1100px) {
+  #core.on { grid-template-columns: 1fr; }
+  .kpis { grid-template-columns: repeat(2, 1fr); }
+  .grid2, .add { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  body { grid-template: "top" auto "main" 1fr "rail" auto / 1fr; }
+  .rail { flex-direction: row; justify-content: space-around; padding: 6px; border: 0; border-top: 1px solid var(--line); }
+  .mark { display: none; }
+  .nav { width: auto; flex: 1; }
+  .top { padding: 14px 16px 4px; gap: 14px; flex-wrap: wrap; }
+  .leds { margin-left: 0; }
+  main { padding: 6px 16px 20px; }
+  .set { grid-template-columns: 1fr; }
+  .reactor { min-height: 0; }
+  .cmd .send { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .plasma i, .view.on { animation: none; }
+}
+</style>
+</head>
+<body>
+<div class="plasma" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<nav class="rail" aria-label="Меню">
+  <div class="mark" aria-hidden="true">J</div>
+  <button class="nav on" data-view="core"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="9"/></svg><span>Ядро</span></button>
+  <button class="nav" data-view="tasks"><svg viewBox="0 0 24 24"><path d="M4 6h3M4 12h3M4 18h3M10 6h10M10 12h10M10 18h10"/></svg><span>Задачи</span></button>
+  <button class="nav" data-view="reports"><svg viewBox="0 0 24 24"><path d="M5 20V11M12 20V4M19 20v-7"/></svg><span>Отчёты</span></button>
+  <button class="nav" data-view="log"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg><span>Журнал</span></button>
+  <button class="nav" data-view="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><span>Настройки</span></button>
+</nav>
+
+<header class="top">
+  <h1 class="word">JARVIS</h1>
+  <div class="clock"><b id="clock">--:--</b><span id="date"></span></div>
+  <div class="leds">
+    <span class="led" id="led-brain">Мозг</span>
+    <span class="led" id="led-mic">Уши</span>
+    <span class="led" id="led-cam">Глаза</span>
+    <span class="led" id="led-tg">Telegram</span>
+  </div>
+</header>
+
+<main>
+  <!-- ЯДРО -->
+  <section class="view on" id="core">
+    <div class="reactor">
+      <canvas id="orb" aria-hidden="true"></canvas>
+      <video id="cam" playsinline muted></video>
+      <p class="state" id="state">В режиме ожидания</p>
+      <p class="said" id="said">Скажи «Джарвис» и команду, или напиши ниже.</p>
+      <form class="cmd" id="cmd">
+        <input id="cmd-text" autocomplete="off" placeholder="Команда для Джарвиса" aria-label="Команда">
+        <button type="button" class="round" id="btn-mic" aria-pressed="false" title="Уши: слушать слово Джарвис">
+          <svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+        <button type="button" class="round" id="btn-cam" aria-pressed="false" title="Глаза: камера">
+          <svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+        <button class="send">Отправить</button>
+      </form>
+    </div>
+    <aside class="side">
+      <div class="panel brief">
+        <div class="ph"><h2>Брифинг</h2><button class="ghost" id="brief-play">Озвучить</button></div>
+        <p id="brief-text" class="brief-text">Утренний брифинг появится в назначенное время. Можно запросить сейчас.</p>
+        <div class="row"><button class="chip" data-report="morning">Брифинг сейчас</button><button class="chip" data-report="evening">Отчёт за день</button></div>
+      </div>
+      <div class="panel nums">
+        <div><b id="n-open">0</b><span>открыто</span></div>
+        <div class="warn"><b id="n-over">0</b><span>просрочено</span></div>
+        <div class="good"><b id="n-done">0</b><span>сделано сегодня</span></div>
+      </div>
+      <div class="panel">
+        <div class="ph"><h2>Сегодня</h2><button class="ghost" data-go="tasks">Все задачи</button></div>
+        <ul class="tlist" id="today-list"></ul>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ЗАДАЧИ -->
+  <section class="view" id="tasks">
+    <h2 class="vh">Задачи</h2>
+    <form class="panel add" id="add">
+      <input name="title" required placeholder="Что сделать" aria-label="Задача">
+      <input name="project" list="projects" placeholder="Проект" aria-label="Проект">
+      <datalist id="projects"></datalist>
+      <input name="due" type="date" aria-label="Срок">
+      <select name="priority" aria-label="Приоритет"><option value="1">Срочно</option><option value="2" selected>Обычно</option><option value="3">Потом</option></select>
+      <button class="send">Добавить</button>
+    </form>
+    <div class="filters" role="tablist">
+      <button class="chip on" data-f="active">Активные</button>
+      <button class="chip" data-f="today">Сегодня</button>
+      <button class="chip" data-f="overdue">Просрочено</button>
+      <button class="chip" data-f="done">Сделано</button>
+    </div>
+    <div id="task-groups"></div>
+  </section>
+
+  <!-- ОТЧЁТЫ -->
+  <section class="view" id="reports">
+    <h2 class="vh">Отчёты</h2>
+    <div class="kpis">
+      <div class="panel kpi"><b id="k-week">0</b><span>сделано за 7 дней</span></div>
+      <div class="panel kpi"><b id="k-today">0</b><span>сделано сегодня</span></div>
+      <div class="panel kpi"><b id="k-open">0</b><span>в работе</span></div>
+      <div class="panel kpi warn"><b id="k-over">0</b><span>просрочено</span></div>
+    </div>
+    <div class="grid2">
+      <div class="panel"><div class="ph"><h2>Выполнено по дням</h2></div><div class="bars" id="bars"></div></div>
+      <div class="panel"><div class="ph"><h2>Проекты</h2></div><div id="proj"></div></div>
+    </div>
+    <div class="panel">
+      <div class="ph"><h2>Архив брифингов и отчётов</h2>
+        <div class="row"><button class="chip" data-report="morning">Брифинг сейчас</button><button class="chip" data-report="evening">Отчёт за день</button></div></div>
+      <div id="rep-list"></div>
+    </div>
+  </section>
+
+  <!-- ЖУРНАЛ -->
+  <section class="view" id="log">
+    <h2 class="vh">Журнал</h2>
+    <div class="panel chat" id="chat"></div>
+  </section>
+
+  <!-- НАСТРОЙКИ -->
+  <section class="view" id="settings">
+    <h2 class="vh">Настройки</h2>
+    <form class="panel set" id="set">
+      <label>Как тебя зовут<input name="name" placeholder="Например, Влад"></label>
+      <label>Голос
+        <select name="voice">
+          <option value="ru-RU-DmitryNeural">Дмитрий (русский, мужской)</option>
+          <option value="ru-RU-SvetlanaNeural">Светлана (русский, женский)</option>
+          <option value="en-GB-RyanNeural">Ryan (британский, как в фильме)</option>
+          <option value="en-US-GuyNeural">Guy (американский)</option>
+        </select></label>
+      <label>Скорость речи<select name="rate"><option>-10%</option><option>+0%</option><option>+6%</option><option>+15%</option></select></label>
+      <label>Тон голоса<select name="pitch"><option value="-16Hz">Очень низкий</option><option value="-8Hz">Низкий</option><option value="+0Hz">Обычный</option></select></label>
+      <label class="check"><input type="checkbox" id="fx"> Металл в голосе (эффект шлема)</label>
+      <label>Скорость мозга
+        <select name="model">
+          <option value="haiku">Быстрый (Haiku)</option>
+          <option value="sonnet">Умный (Sonnet)</option>
+          <option value="opus">Максимум (Opus, медленнее)</option>
+        </select></label>
+      <label>Утренний брифинг<input name="morning" type="time"></label>
+      <label>Вечерний отчёт<input name="evening" type="time"></label>
+      <label class="wide">Токен Telegram-бота<input name="tg_token" placeholder="123456:ABC... от @BotFather"></label>
+      <div class="wide row">
+        <button class="send">Сохранить</button>
+        <button type="button" class="ghost" id="tg-link">Привязать Telegram</button>
+        <button type="button" class="ghost" id="reset">Новая сессия памяти</button>
+        <span class="hint" id="set-msg"></span>
+      </div>
+    </form>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>/* Voice input that works everywhere.
+   Native Web Speech (Chrome, Edge, Safari) first; where it is missing or blocked
+   (Brave, Firefox, file:// quirks) it falls back to Whisper running in the browser
+   via transformers.js. The model (~40 MB) loads once, on first use, then is cached. */
+(() => {
+  const Native = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let whisper = !Native || !!navigator.brave;
+  let asrP = null;
+  const loadASR = () => asrP ||= import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.2')
+    .then(m => m.pipeline('automatic-speech-recognition', 'Xenova/whisper-tiny'))
+    .catch(e => { asrP = null; throw e });
+
+  function nativeOnce(lang) {
+    return new Promise((res, rej) => {
+      const r = new Native(); r.lang = lang; r.interimResults = false; r.maxAlternatives = 1;
+      let got = '';
+      r.onresult = e => { got = e.results[0][0].transcript };
+      r.onerror = e => rej(e.error || 'error');
+      r.onend = () => got ? res(got) : rej('no-speech');
+      r.start();
+    });
+  }
+
+  // record 16 kHz mono until ~1.2 s of silence after speech, or maxMs
+  async function record(maxMs = 9000) {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true } });
+    const ac = new AudioContext({ sampleRate: 16000 });
+    const src = ac.createMediaStreamSource(stream), proc = ac.createScriptProcessor(4096, 1, 1);
+    const chunks = []; let total = 0, silent = 0, heard = false;
+    return new Promise(res => {
+      const stop = () => {
+        proc.disconnect(); src.disconnect(); stream.getTracks().forEach(t => t.stop()); ac.close();
+        const out = new Float32Array(total); let o = 0; chunks.forEach(c => { out.set(c, o); o += c.length }); res(out);
+      };
+      proc.onaudioprocess = e => {
+        const d = e.inputBuffer.getChannelData(0); chunks.push(new Float32Array(d)); total += d.length;
+        let s = 0; for (let i = 0; i < d.length; i++) s += d[i] * d[i];
+        const ms = d.length / 16;
+        if (Math.sqrt(s / d.length) > .018) { heard = true; silent = 0 } else silent += ms;
+        if ((heard && silent > 1200) || total / 16 > maxMs || (!heard && total / 16 > 6000)) stop();
+      };
+      src.connect(proc); proc.connect(ac.destination);
+    });
+  }
+
+  async function whisperOnce(lang, onState) {
+    onState?.('loading');
+    const asr = await loadASR();
+    onState?.('listening');
+    const audio = await record();
+    onState?.('thinking');
+    const out = await asr(audio, { language: lang.startsWith('ru') ? 'russian' : 'english', task: 'transcribe' });
+    const t = (out.text || '').trim();
+    if (!t || /^\[.*\]$/.test(t)) throw 'no-speech';
+    return t;
+  }
+
+  /** listen once -> Promise<string>. onState: 'loading' | 'listening' | 'thinking' */
+  async function listen(lang = 'ru-RU', onState) {
+    if (!whisper) {
+      try { onState?.('listening'); return await nativeOnce(lang) }
+      catch (e) {
+        if (e === 'no-speech' || e === 'aborted') throw e;
+        if (e === 'not-allowed') throw e;
+        whisper = true; // network / service-not-allowed: the browser can't reach its speech service
+      }
+    }
+    return whisperOnce(lang, onState);
+  }
+
+  /** SpeechRecognition-compatible class backed by listen(), for apps written against the Web Speech API */
+  class LoopRecognition {
+    constructor() { this.lang = 'ru-RU'; this.continuous = false; this.interimResults = false; this._on = false }
+    start() {
+      if (this._on) return; this._on = true;
+      const loop = () => listen(this.lang).then(t => {
+        if (!this._on) return;
+        const r = [{ transcript: t, confidence: 1 }]; r.isFinal = true;
+        this.onresult?.({ resultIndex: 0, results: [r] });
+        this.continuous ? loop() : this._end();
+      }).catch(e => {
+        if (!this._on) return;
+        if (e === 'no-speech' && this.continuous) return loop();
+        if (e !== 'no-speech') this.onerror?.({ error: typeof e === 'string' ? e : 'audio-capture' });
+        this._end();
+      });
+      loop();
+    }
+    _end() { this._on = false; this.onend?.() }
+    stop() { this._end() }
+    abort() { this._end() }
+  }
+
+  window.PVoice = { listen, LoopRecognition, usesWhisper: () => whisper };
+})();
+</script><script>/* JARVIS demo mode for the portfolio: replaces the Python server with an in-browser one.
+   Tasks, reports and the chat live in memory; the voice speaks through speechSynthesis;
+   listening goes through PVoice so it also works in Brave. */
+(() => {
+  const iso = d => d.toISOString().slice(0, 10);
+  const today = iso(new Date()), day = n => iso(new Date(Date.now() + n * 864e5));
+  const now = () => new Date().toISOString().replace('T', ' ').slice(0, 19);
+  let seq = 10;
+  const tasks = [
+    { id: '1', title: 'Созвон с клиентом по автоматизации', project: 'Клиенты', priority: 1, due: today, done: false },
+    { id: '2', title: 'Собрать отчёт по рекламе', project: 'Реклама', priority: 2, due: today, done: false },
+    { id: '3', title: 'Обновить портфолио', project: 'Личное', priority: 2, due: day(1), done: false },
+    { id: '4', title: 'Проверить заявки из бота', project: 'Клиенты', priority: 1, due: day(-1), done: false },
+    { id: '5', title: 'Тренировка', project: 'Личное', priority: 3, due: today, done: true, done_at: today },
+    { id: '6', title: 'Ответить на письма', project: 'Клиенты', priority: 2, due: today, done: true, done_at: today }
+  ];
+  const log = [{ role: 'jarvis', text: 'Привет! Я Джарвис в демо-режиме. Скажи «Джарвис, добавь задачу купить кофе» или нажми на шар.', t: now() }];
+  const reports = [];
+  const settings = { tg_chat: '', name: 'Захар', city: 'Минск' };
+
+  function stats() {
+    const open = tasks.filter(t => !t.done);
+    const projects = {};
+    tasks.forEach(t => { const p = projects[t.project || 'Без проекта'] ??= { done: 0, open: 0 }; t.done ? p.done++ : p.open++ });
+    return {
+      today, open: open.length, done_today: tasks.filter(t => t.done && t.done_at === today).length,
+      done_week: tasks.filter(t => t.done).length + 9,
+      overdue: open.filter(t => t.due && t.due < today), due_today: open.filter(t => t.due === today), projects,
+      by_day: [...Array(7)].map((_, i) => ({ day: day(i - 6), done: i === 6 ? tasks.filter(t => t.done).length : [3, 5, 2, 6, 4, 1][i] }))
+    };
+  }
+  const state = () => ({ stats: stats(), tasks, reports, log, settings, brain: true, push: false });
+  function report(kind) {
+    const s = stats();
+    const text = kind === 'morning'
+      ? `Доброе утро, ${settings.name}! Сегодня ${s.due_today.length} задачи на день и ${s.overdue.length} просроченная. Начни с самого срочного, а я напомню про остальное.`
+      : `Итоги дня: сделано ${s.done_today}, в работе ${s.open}. Отличный темп, так держать!`;
+    const r = { id: String(++seq), kind, date: today, time: new Date().toTimeString().slice(0, 5), text, stats: { done_today: s.done_today, open: s.open, overdue: s.overdue.length } };
+    reports.unshift(r); return r;
+  }
+  function brain(text, image) {
+    const t = text.toLowerCase(); const actions = [];
+    let m;
+    if ((m = text.match(/(?:добав\w*|запиши|создай)\s+(?:задач\w*\s*)?(.+)/i))) {
+      tasks.push({ id: String(++seq), title: m[1].replace(/^[,:\s]+/, ''), project: 'Личное', priority: 2, due: today, done: false });
+      actions.push('Задача добавлена'); return { reply: `Готово, записал: «${m[1]}». Поставил на сегодня.`, actions };
+    }
+    if (/выполн|сделал|готово/.test(t)) { const x = tasks.find(k => !k.done); if (x) { x.done = true; x.done_at = today; actions.push('Отмечено'); return { reply: `Отлично! Отметил «${x.title}» выполненной.`, actions } } }
+    if (/брифинг|утр/.test(t)) return { reply: report('morning').text, actions: ['Брифинг готов'] };
+    if (/отч[её]т|итог/.test(t)) return { reply: report('evening').text, actions: ['Отчёт готов'] };
+    if (/задач|план|что у меня/.test(t)) { const s = stats(); return { reply: `Открыто ${s.open} задач, на сегодня ${s.due_today.length}. Самая срочная: «${(s.overdue[0] || s.due_today[0] || {}).title || 'нет'}».`, actions } }
+    if (image || /вид|смотр|камер|покаж|что это/.test(t)) return { reply: image ? 'Вижу кадр с камеры! В полной версии его разбирает Claude и рассказывает, что перед ним. В демо я просто радуюсь, что ты рядом.' : 'Включи камеру кнопкой с глазом, и я посмотрю.', actions };
+    if (/погод/.test(t)) return { reply: 'В демо-режиме я не хожу в интернет, но в полной версии подскажу погоду в Минске.', actions };
+    if (/привет|здрав/.test(t)) return { reply: `Привет! Чем помочь? Могу добавить задачу, сделать брифинг или отчёт.`, actions };
+    if (/telegram|телеграм/.test(t)) return { reply: 'В полной версии я отправляю отчёты в Telegram. Здесь это демо, поэтому просто кивну.', actions };
+    return { reply: 'Понял! В демо я умею добавлять задачи, отмечать их, делать брифинг и отчёт. Попробуй: «добавь задачу позвонить маме».', actions };
+  }
+  function speak(text) {
+    if (!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text); u.lang = 'ru-RU'; u.rate = 1.03;
+    const v = speechSynthesis.getVoices().find(v => /ru/i.test(v.lang)); if (v) u.voice = v;
+    u.onstart = () => window.setState?.('speak'); u.onend = () => window.setState?.('idle');
+    speechSynthesis.speak(u);
+  }
+  const routes = {
+    'GET /api/state': () => state(),
+    'POST /api/ask': b => { log.push({ role: 'user', text: b.text, t: now() }); const r = brain(b.text, b.image); log.push({ role: 'jarvis', text: r.reply, t: now() }); return r },
+    'POST /api/tts': b => { speak(b.text); return { audio: null } },
+    'POST /api/report': b => report(b.kind),
+    'POST /api/actions': b => {
+      for (const a of b.actions) {
+        if (a.do === 'add') tasks.push({ id: String(++seq), title: a.title, project: a.project || 'Без проекта', priority: a.priority || 2, due: a.due || '', done: false });
+        const t = tasks.find(x => x.id === a.id); if (!t) continue;
+        if (a.do === 'done') { t.done = true; t.done_at = today } else if (a.do === 'undone') t.done = false;
+        else if (a.do === 'delete') tasks.splice(tasks.indexOf(t), 1);
+      }
+      return { ok: true };
+    },
+    'POST /api/settings': b => (Object.assign(settings, b), { settings }),
+    'POST /api/tg/link': () => ({ chat: '' }),
+    'POST /api/session/reset': () => (log.splice(1), { ok: true })
+  };
+  const real = window.fetch.bind(window);
+  window.fetch = async (url, opt = {}) => {
+    const path = String(url).replace(location.origin, '');
+    const h = routes[(opt.method || 'GET') + ' ' + path];
+    if (!h) return real(url, opt);
+    const body = opt.body ? JSON.parse(opt.body) : {};
+    await new Promise(r => setTimeout(r, 350));
+    return new Response(JSON.stringify(h(body)), { status: 200, headers: { 'Content-Type': 'application/json' } });
+  };
+  if (!(window.SpeechRecognition || window.webkitSpeechRecognition) || navigator.brave) window.SpeechRecognition = window.webkitSpeechRecognition = window.PVoice.LoopRecognition;
+})();
+</script><script>const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const store = {
+  get(k, d) { try { return localStorage.getItem(k) ?? d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+};
+
+let S = null;             // состояние с сервера
+let filter = 'active';
+let settingsFilled = false;
+
+async function api(path, body) {
+  const r = await fetch(path, body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : {});
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || 'код ' + r.status);
+  return j;
+}
+
+let toastTimer;
+function toast(t) {
+  const el = $('#toast');
+  el.textContent = t;
+  el.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('on'), 3500);
+}
+
+/* ---------- меню ---------- */
+function go(v) {
+  $$('.nav').forEach(b => b.classList.toggle('on', b.dataset.view === v));
+  $$('.view').forEach(x => x.classList.toggle('on', x.id === v));
+  store.set('jv-view', v);
+  if (v === 'log') $('#chat').scrollTop = 1e9;
+}
+$$('.nav').forEach(b => (b.onclick = () => go(b.dataset.view)));
+$$('[data-go]').forEach(b => (b.onclick = () => go(b.dataset.go)));
+
+/* ---------- часы ---------- */
+function tick() {
+  const d = new Date();
+  $('#clock').textContent = d.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+  $('#date').textContent = d.toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' });
+}
+tick();
+setInterval(tick, 5000);
+
+/* ---------- отрисовка ---------- */
+const fmtDate = iso => new Date(iso + 'T12:00').toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+const byPrio = (a, b) => a.priority - b.priority || (a.due || '9999').localeCompare(b.due || '9999');
+
+function taskRow(t, withProject = true) {
+  const over = !t.done && t.due && t.due < S.stats.today;
+  const meta = [withProject && t.project, t.due ? fmtDate(t.due) + (over ? ', просрочено' : '') : ''].filter(Boolean).join(', ');
+  return `<li class="task ${t.done ? 'is-done' : ''}" data-id="${t.id}">
+    <button class="box ${t.done ? 'done' : ''}" data-act="${t.done ? 'undone' : 'done'}" aria-label="${t.done ? 'Вернуть в работу' : 'Отметить выполненной'}"></button>
+    ${t.priority == 1 && !t.done ? '<i class="p1" title="Срочно"></i>' : ''}
+    <div class="tt"><span>${esc(t.title)}</span>${meta ? `<small class="${over ? 'due-over' : ''}">${esc(meta)}</small>` : ''}</div>
+    <button class="del" data-act="delete" aria-label="Удалить задачу">×</button></li>`;
+}
+
+function render() {
+  const st = S.stats, tasks = S.tasks;
+  $('#n-open').textContent = st.open;
+  $('#n-over').textContent = st.overdue.length;
+  $('#n-done').textContent = st.done_today;
+  $('#led-brain').className = 'led ' + (S.brain ? 'on' : 'bad');
+  $('#led-tg').className = 'led' + (S.settings.tg_chat ? ' on' : '');
+
+  // сегодня: просрочено, на сегодня, срочное
+  const seen = new Set();
+  const today = [...st.overdue, ...st.due_today, ...tasks.filter(t => !t.done && t.priority == 1)]
+    .filter(t => !seen.has(t.id) && seen.add(t.id)).slice(0, 8);
+  $('#today-list').innerHTML = today.length ? today.map(t => taskRow(t)).join('')
+    : '<li class="empty">На сегодня пусто. Скажи «Джарвис, добавь задачу…»</li>';
+
+  // брифинг
+  const last = S.reports[0];
+  if (last) $('#brief-text').textContent = last.text;
+  maybeAnnounce(last);
+
+  // задачи
+  const f = {
+    active: t => !t.done,
+    today: t => !t.done && t.due && t.due <= st.today,
+    overdue: t => !t.done && t.due && t.due < st.today,
+    done: t => t.done,
+  }[filter];
+  const groups = {};
+  tasks.filter(f).sort(byPrio).forEach(t => (groups[t.project || 'Без проекта'] ??= []).push(t));
+  $('#task-groups').innerHTML = Object.entries(groups).map(([p, list]) =>
+    `<div class="panel group"><h3>${esc(p)} <span>${list.length}</span></h3><ul class="tlist">${list.map(t => taskRow(t, false)).join('')}</ul></div>`
+  ).join('') || '<div class="panel muted">Здесь пусто. Добавь задачу формой выше или голосом.</div>';
+  $('#projects').innerHTML = Object.keys(st.projects).map(p => `<option value="${esc(p)}">`).join('');
+
+  // отчёты
+  $('#k-week').textContent = st.done_week;
+  $('#k-today').textContent = st.done_today;
+  $('#k-open').textContent = st.open;
+  $('#k-over').textContent = st.overdue.length;
+  const max = Math.max(1, ...st.by_day.map(d => d.done));
+  $('#bars').innerHTML = st.by_day.map(d =>
+    `<div class="bar" title="${fmtDate(d.day)}: ${d.done}"><b>${d.done || ''}</b><i style="height:${(d.done / max) * 100}%"></i><span>${d.day.slice(8)}</span></div>`).join('');
+  $('#proj').innerHTML = Object.entries(st.projects).map(([p, v]) => {
+    const pct = Math.round((v.done / (v.done + v.open || 1)) * 100);
+    return `<div class="pj"><div>${esc(p)}<span>${v.done} из ${v.done + v.open}</span></div><div class="meter"><i style="width:${pct}%"></i></div></div>`;
+  }).join('') || '<p class="muted">Проекты появятся вместе с задачами.</p>';
+  $('#rep-list').innerHTML = S.reports.map((r, i) =>
+    `<article class="rep"><header><b>${r.kind === 'morning' ? 'Брифинг' : 'Отчёт'}</b><span>${fmtDate(r.date)}, ${r.time}. Сделано ${r.stats.done_today}, открыто ${r.stats.open}, просрочено ${r.stats.overdue}</span>
+     <button class="ghost" data-say="${i}">Озвучить</button></header><p>${esc(r.text)}</p></article>`).join('')
+    || '<p class="muted">Первый брифинг придёт утром. Или нажми «Брифинг сейчас».</p>';
+
+  // журнал
+  const chat = $('#chat');
+  const atBottom = chat.scrollHeight - chat.scrollTop - chat.clientHeight < 40;
+  chat.innerHTML = S.log.map(m =>
+    `<div class="msg ${m.role === 'user' ? 'user' : 'jarvis'}"><small>${m.role === 'user' ? 'Ты' : 'Джарвис'}, ${m.t.slice(11, 16)}</small>${esc(m.text)}</div>`
+  ).join('') || '<p class="muted">Разговоров пока нет.</p>';
+  if (atBottom) chat.scrollTop = 1e9;
+
+  // настройки (один раз, чтобы не затирать ввод)
+  if (!settingsFilled) {
+    settingsFilled = true;
+    const form = $('#set');
+    for (const [k, v] of Object.entries(S.settings)) if (form.elements[k]) form.elements[k].value = v;
+    $('#fx').checked = fxOn();
+  }
+}
+
+async function refresh() {
+  try {
+    S = await api('/api/state');
+    render();
+  } catch {
+    $('#led-brain').className = 'led bad';
+  }
+}
+
+/* задачи: клики по строкам */
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-act]');
+  if (b) {
+    const id = b.closest('.task').dataset.id;
+    await api('/api/actions', { actions: [{ do: b.dataset.act, id }] });
+    return refresh();
+  }
+  const say = e.target.closest('[data-say]');
+  if (say) {
+    const r = await api('/api/tts', { text: S.reports[+say.dataset.say].text });
+    play(r.audio);
+  }
+});
+
+$$('.filters .chip').forEach(c => (c.onclick = () => {
+  filter = c.dataset.f;
+  $$('.filters .chip').forEach(x => x.classList.toggle('on', x === c));
+  render();
+}));
+
+$('#add').onsubmit = async e => {
+  e.preventDefault();
+  const f = Object.fromEntries(new FormData(e.target));
+  await api('/api/actions', { actions: [{ do: 'add', ...f, priority: +f.priority }] });
+  e.target.reset();
+  e.target.elements.title.focus();
+  refresh();
+};
+
+$$('[data-report]').forEach(b => (b.onclick = async () => {
+  unlockAudio();
+  setState('think');
+  toast(b.dataset.report === 'morning' ? 'Собираю брифинг' : 'Собираю отчёт');
+  try {
+    const r = await api('/api/report', { kind: b.dataset.report });
+    store.set('jv-seen', r.id + r.time);
+    $('#brief-text').textContent = r.text;
+    await refresh();
+    r.audio ? play(r.audio) : setState('idle');
+  } catch (err) {
+    setState('idle');
+    toast('Отчёт не собран: ' + err.message);
+  }
+}));
+$('#brief-play').onclick = async () => {
+  unlockAudio();
+  const r = await api('/api/tts', { text: $('#brief-text').textContent });
+  play(r.audio);
+};
+
+/* новый отчёт по расписанию - озвучить, если звук уже разрешён */
+function maybeAnnounce(rep) {
+  if (!rep || rep.date !== S.stats.today) return;
+  const key = rep.id + rep.time;
+  if (store.get('jv-seen') === key) return;
+  if (!ctx) return; // браузер не даст играть звук без клика - прочитаешь глазами
+  store.set('jv-seen', key);
+  api('/api/tts', { text: rep.text }).then(r => play(r.audio));
+}
+
+/* ---------- настройки ---------- */
+const fxOn = () => store.get('jv-fx', '1') === '1';
+$('#set').onsubmit = async e => {
+  e.preventDefault();
+  store.set('jv-fx', $('#fx').checked ? '1' : '0');
+  if (srcNode) applyFx();
+  const data = Object.fromEntries(new FormData(e.target));
+  const r = await api('/api/settings', data);
+  S.settings = r.settings;
+  $('#set-msg').textContent = 'Сохранено';
+  setTimeout(() => ($('#set-msg').textContent = ''), 2500);
+};
+$('#tg-link').onclick = async () => {
+  try {
+    const r = await api('/api/tg/link', {});
+    toast(r.chat ? 'Telegram привязан. Джарвис написал тебе.' : 'Напиши своему боту /start и нажми ещё раз');
+    refresh();
+  } catch (err) { toast('Telegram: ' + err.message + '. Сначала сохрани токен.'); }
+};
+$('#reset').onclick = async () => {
+  await api('/api/session/reset', {});
+  toast('Память разговора очищена. Задачи на месте.');
+};
+
+/* ---------- звук ---------- */
+let ctx, analyser, srcNode, micAnalyser, micStream;
+const player = new Audio();
+const buf = new Uint8Array(1024);
+
+function unlockAudio() {
+  if (!ctx) {
+    ctx = new AudioContext();
+    analyser = ctx.createAnalyser();
+    analyser.fftSize = 1024;
+    analyser.connect(ctx.destination);
+  }
+  ctx.resume();
+}
+
+// «металл шлема»: плотный низ, присутствие и короткая гребёнка задержки
+function applyFx() {
+  srcNode.disconnect();
+  if (!fxOn()) return srcNode.connect(analyser);
+  const low = new BiquadFilterNode(ctx, { type: 'lowshelf', frequency: 220, gain: 5 });
+  const pres = new BiquadFilterNode(ctx, { type: 'peaking', frequency: 2800, Q: 1, gain: 4 });
+  const dly = new DelayNode(ctx, { delayTime: 0.011 });
+  const fb = new GainNode(ctx, { gain: 0.3 });
+  const wet = new GainNode(ctx, { gain: 0.33 });
+  srcNode.connect(low).connect(pres).connect(analyser);
+  pres.connect(dly).connect(fb).connect(dly);
+  dly.connect(wet).connect(analyser);
+}
+
+async function play(file) {
+  if (!file) return setState('idle');
+  unlockAudio();
+  if (!srcNode) { srcNode = ctx.createMediaElementSource(player); applyFx(); }
+  pauseEars();
+  setState('speak');
+  player.src = '/audio/' + file;
+  try {
+    await player.play();
+  } catch {
+    setState('idle');
+    resumeEars();
+    toast('Кликни по шару, чтобы разрешить звук');
+  }
+}
+player.onended = player.onpause = () => {
+  if (state === 'speak') setState('idle');
+  resumeEars();
+};
+
+function chime() {
+  if (!ctx) return;
+  const o = new OscillatorNode(ctx, { frequency: 880 });
+  const g = new GainNode(ctx, { gain: 0.0001 });
+  o.connect(g).connect(ctx.destination);
+  const t = ctx.currentTime;
+  g.gain.exponentialRampToValueAtTime(0.12, t + 0.02);
+  o.frequency.exponentialRampToValueAtTime(1320, t + 0.12);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
+  o.start(t);
+  o.stop(t + 0.25);
+}
+
+function rms(an) {
+  an.getByteTimeDomainData(buf);
+  let s = 0;
+  for (let i = 0; i < an.fftSize; i++) { const v = (buf[i] - 128) / 128; s += v * v; }
+  return Math.sqrt(s / an.fftSize);
+}
+
+/* ---------- состояние ---------- */
+let state = 'idle';
+const STATE_TEXT = { idle: 'Готов', listen: 'Слушаю', think: 'Думаю', speak: 'Говорю' };
+function setState(s) {
+  state = s;
+  const el = $('#state');
+  el.dataset.s = s;
+  el.textContent = STATE_TEXT[s];
+}
+function showSaid(t, reply) {
+  const el = $('#said');
+  el.textContent = t;
+  el.classList.toggle('reply', reply);
+}
+
+/* ---------- уши: распознавание и слово «Джарвис» ---------- */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const WAKE = /(джарвис|джарвиз|жарвис|джервис|дарвис|jarvis)[\s,.!?]*/i;
+let rec = null, earsOn = false, paused = false, armed = false, armTimer, busy = false;
+
+function earsStart() {
+  if (!SR) { toast('Голосовой ввод работает в Google Chrome. Открой Джарвиса в Chrome.'); return false; }
+  if (rec) return true;
+  rec = new SR();
+  rec.lang = 'ru-RU';
+  rec.continuous = true;
+  rec.interimResults = true;
+  rec.onresult = e => {
+    let interim = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const r = e.results[i];
+      if (r.isFinal) heard(r[0].transcript.trim());
+      else interim += r[0].transcript;
+    }
+    if (interim && (armed || WAKE.test(interim))) showSaid(interim, false);
+  };
+  rec.onerror = e => {
+    if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+      earsOn = false;
+      syncButtons();
+      toast('Разреши микрофон для этой страницы в Chrome');
+    }
+  };
+  rec.onend = () => {
+    rec = null;
+    if (earsOn && !paused) setTimeout(() => earsOn && !paused && earsStart(), 250);
+  };
+  try { rec.start(); } catch {}
+  return true;
+}
+
+function heard(t) {
+  if (busy || !t) return;
+  if (armed) { disarm(); return send(t.replace(WAKE, '').trim() || t); }
+  const m = t.match(WAKE);
+  if (!m) return;
+  const rest = t.slice(m.index + m[0].length).trim();
+  rest.length > 1 ? send(rest) : arm();
+}
+function arm() {
+  armed = true;
+  setState('listen');
+  showSaid('Слушаю, говори', false);
+  chime();
+  clearTimeout(armTimer);
+  armTimer = setTimeout(() => { disarm(); if (state === 'listen') setState('idle'); }, 8000);
+}
+function disarm() { armed = false; clearTimeout(armTimer); }
+function pauseEars() { paused = true; if (rec) try { rec.abort(); } catch {} }
+function resumeEars() { paused = false; if (earsOn) earsStart(); }
+
+async function earsToggle(force) {
+  unlockAudio();
+  earsOn = force ?? !earsOn;
+  if (earsOn) {
+    if (!earsStart()) { earsOn = false; return syncButtons(); }
+    try {
+      micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      micAnalyser = ctx.createAnalyser();
+      micAnalyser.fftSize = 1024;
+      ctx.createMediaStreamSource(micStream).connect(micAnalyser);
+    } catch {}
+  } else {
+    disarm();
+    if (rec) try { rec.abort(); } catch {}
+    micStream?.getTracks().forEach(t => t.stop());
+    micStream = micAnalyser = null;
+    if (state === 'listen') setState('idle');
+  }
+  store.set('jv-ears', earsOn ? '1' : '0');
+  syncButtons();
+}
+
+/* ---------- глаза: камера ---------- */
+let camStream = null;
+async function camToggle() {
+  if (camStream) {
+    camStream.getTracks().forEach(t => t.stop());
+    camStream = null;
+  } else {
+    try {
+      camStream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } });
+      $('#cam').srcObject = camStream;
+      await $('#cam').play();
+    } catch { toast('Нет доступа к камере. Разреши её в Chrome.'); }
+  }
+  syncButtons();
+}
+function snap() {
+  const v = $('#cam'), c = document.createElement('canvas');
+  c.width = v.videoWidth || 640;
+  c.height = v.videoHeight || 480;
+  c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
+  return c.toDataURL('image/jpeg', 0.8);
+}
+const LOOK = /вид|смотр|камер|пальц|покаж|что это|передо мной|держу|в руках|выгляж|надето|на мне/i;
+
+function syncButtons() {
+  $('#btn-mic').setAttribute('aria-pressed', earsOn);
+  $('#btn-cam').setAttribute('aria-pressed', !!camStream);
+  $('#cam').classList.toggle('on', !!camStream);
+  $('#led-mic').className = 'led' + (earsOn ? ' on' : '');
+  $('#led-cam').className = 'led' + (camStream ? ' on' : '');
+}
+
+/* ---------- команда ---------- */
+async function send(text) {
+  text = text.trim();
+  if (!text || busy) return;
+  busy = true;
+  disarm();
+  setState('think');
+  showSaid('«' + text + '»', false);
+  const image = camStream && LOOK.test(text) ? snap() : null;
+  try {
+    // текст показываем сразу, голос догружаем вторым запросом - так ответ виден на 4-5 секунд раньше
+    const r = await api('/api/ask', { text, image, voice: false });
+    showSaid(r.reply, true);
+    if (r.actions?.length) toast(r.actions.join('   '));
+    refresh();
+    const v = await api('/api/tts', { text: r.reply });
+    busy = false;
+    v.audio ? play(v.audio) : setState('idle');
+  } catch (err) {
+    busy = false;
+    setState('idle');
+    showSaid('Сервер не ответил: ' + err.message, true);
+  }
+}
+
+$('#cmd').onsubmit = e => {
+  e.preventDefault();
+  unlockAudio();
+  const i = $('#cmd-text');
+  send(i.value);
+  i.value = '';
+};
+$('#btn-mic').onclick = () => earsToggle();
+$('#btn-cam').onclick = camToggle;
+$('#orb').onclick = () => {
+  unlockAudio();
+  if (state === 'speak') return player.pause();
+  if (!earsOn) earsToggle(true);
+  arm();
+};
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && state === 'speak') player.pause();
+});
+
+/* ---------- ядро: сфера частиц ---------- */
+const cv = $('#orb'), g = cv.getContext('2d');
+const N = 1700, PTS = [];
+for (let i = 0; i < N; i++) {
+  const y = 1 - (2 * (i + 0.5)) / N, r = Math.sqrt(1 - y * y), th = i * 2.399963;
+  PTS.push([Math.cos(th) * r, y, Math.sin(th) * r]);
+}
+const COL = { idle: [54, 226, 255], listen: [150, 110, 255], think: [70, 120, 255], speak: [90, 240, 255] };
+const slow = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0.3 : 1;
+let lvl = 0, col = [...COL.idle], spin = 0, last = performance.now();
+
+function frame(now) {
+  const dt = Math.min(0.05, (now - last) / 1000);
+  last = now;
+  const t = now / 1000;
+  const dpr = Math.min(2, devicePixelRatio || 1);
+  const size = Math.round(cv.clientWidth * dpr);
+  if (cv.width !== size) { cv.width = cv.height = size; }
+  const W = size, cx = W / 2, cy = W / 2, R = W * 0.29;
+
+  let target = 0.04;
+  if (state === 'speak' && analyser) target = Math.min(1, rms(analyser) * 4.5);
+  else if (state === 'think') target = 0.18 + Math.sin(t * 5) * 0.06;
+  else if (micAnalyser && (state === 'listen' || earsOn)) target = Math.min(0.7, rms(micAnalyser) * 3.2);
+  lvl += (target - lvl) * 0.22;
+  col = col.map((c, i) => c + (COL[state][i] - c) * 0.06);
+  const [cr, cg, cb] = col.map(Math.round);
+  spin += dt * slow * (state === 'think' ? 1.4 : 0.28 + lvl * 0.6);
+
+  g.clearRect(0, 0, W, W);
+
+  // свечение
+  const glow = g.createRadialGradient(cx, cy, R * 0.05, cx, cy, R * 1.7);
+  glow.addColorStop(0, `rgba(${cr},${cg},${cb},${0.28 + lvl * 0.4})`);
+  glow.addColorStop(0.45, `rgba(${cr},${cg},${cb},0.06)`);
+  glow.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = glow;
+  g.fillRect(0, 0, W, W);
+
+  // кольца интерфейса
+  g.lineCap = 'round';
+  for (let k = 0; k < 3; k++) {
+    const rr = R * (1.3 + k * 0.13), dir = k % 2 ? -1 : 1, segs = 3 + k * 2;
+    g.lineWidth = (k === 0 ? 2.2 : 1.2) * dpr;
+    g.strokeStyle = `rgba(${cr},${cg},${cb},${0.5 - k * 0.12})`;
+    for (let s = 0; s < segs; s++) {
+      const a0 = spin * dir * (0.6 + k * 0.3) + (s * Math.PI * 2) / segs;
+      g.beginPath();
+      g.arc(cx, cy, rr, a0, a0 + (Math.PI * 2) / segs * 0.62);
+      g.stroke();
+    }
+  }
+  // деления
+  g.lineWidth = 1 * dpr;
+  g.strokeStyle = `rgba(${cr},${cg},${cb},0.28)`;
+  g.beginPath();
+  for (let i = 0; i < 90; i++) {
+    const a = (i / 90) * Math.PI * 2 - spin * 0.2, r0 = R * 1.72, r1 = r0 + (i % 5 ? 5 : 12) * dpr;
+    g.moveTo(cx + Math.cos(a) * r0, cy + Math.sin(a) * r0);
+    g.lineTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
+  }
+  g.stroke();
+
+  // сфера
+  g.globalCompositeOperation = 'lighter';
+  const ca = Math.cos(spin), sa = Math.sin(spin), tilt = 0.42, ct = Math.cos(tilt), st = Math.sin(tilt);
+  const amp = 0.07 + lvl * 0.55;
+  for (const [px, py, pz] of PTS) {
+    const x1 = px * ca + pz * sa, z1 = -px * sa + pz * ca;
+    const y2 = py * ct - z1 * st, z2 = py * st + z1 * ct;
+    const n = Math.sin(x1 * 3.1 + t * 1.7) * Math.sin(y2 * 2.7 - t * 1.3) * Math.sin(z2 * 3.3 + t * 0.9);
+    const d = 1 + n * amp;
+    const persp = 1.25 / (2.1 - z2 * 0.55);
+    const sx = cx + x1 * R * d * persp * 1.6, sy = cy + y2 * R * d * persp * 1.6;
+    const depth = (z2 + 1) / 2;
+    const sz = (0.7 + depth * 1.6 + lvl * 1.2) * dpr;
+    g.fillStyle = `rgba(${cr},${cg},${cb},${0.12 + depth * 0.55})`;
+    g.fillRect(sx - sz / 2, sy - sz / 2, sz, sz);
+  }
+  // сердцевина
+  const core = g.createRadialGradient(cx, cy, 0, cx, cy, R * (0.42 + lvl * 0.25));
+  core.addColorStop(0, `rgba(255,255,255,${0.55 + lvl * 0.4})`);
+  core.addColorStop(0.3, `rgba(${cr},${cg},${cb},0.35)`);
+  core.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = core;
+  g.fillRect(0, 0, W, W);
+  g.globalCompositeOperation = 'source-over';
+
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* ---------- старт ---------- */
+setState('idle');
+go(store.get('jv-view', 'core'));
+refresh();
+setInterval(refresh, 15000);
+// уши включаем по первому клику: Chrome не даёт стартовать микрофон и звук без жеста
+if (store.get('jv-ears') === '1') {
+  showSaid('Кликни по шару, и я начну слушать', false);
+}
+</script>
+<script>/* after app.js: there is no audio file in demo mode, speech already went through speechSynthesis */
+(() => {
+  const orig = window.play;
+  window.play = f => f ? orig(f) : undefined;
+  const bar = document.createElement('div');
+  bar.textContent = 'Демо-режим: задачи и разговор живут в браузере. Нажмите на шар и скажите «добавь задачу…»';
+  bar.style.cssText = 'position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:999;padding:10px 18px;border-radius:99px;background:rgba(10,16,34,.9);border:1px solid rgba(150,175,235,.25);color:#cfd8f5;font:500 13px system-ui;backdrop-filter:blur(10px);max-width:92vw;text-align:center';
+  document.body.append(bar);
+})();
+</script></body>
+</html>

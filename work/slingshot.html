@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <title>Slingshot Siege</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #1b2a4a;
+        overflow: hidden;
+        touch-action: none; /* stop the browser stealing drag gestures */
+      }
+      #game {
+        width: 100vw;
+        height: 100vh;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game"></div>
+
+    <!-- Phaser 3 engine (pin a version for reproducible ad-network builds) -->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+
+    <!-- Safe wrappers over the Rosebud runtime SDK -->
+    <script>/**
+ * sdk-bridge.js — safe wrappers over the Rosebud runtime SDK.
+ *
+ * The parent Rosebud runtime injects window.ProgressLogger, window.RosebudOGP,
+ * window.ImageGenerator and window.ChatManager into the iframe. When the creative
+ * runs standalone (local preview, an ad network without the SDK), those globals
+ * are missing — so every call here degrades to a no-op / fallback instead of
+ * throwing or hanging on a 150s timeout.
+ *
+ * Keep this file dependency-free. It is the single point of contact with the host.
+ */
+(function () {
+  'use strict';
+
+  const hasSDK = (name) => typeof window[name] !== 'undefined' && window[name] !== null;
+
+  /** Race a promise against a timeout so a dead host never freezes the game. */
+  function withTimeout(promise, ms, fallback) {
+    return Promise.race([
+      promise,
+      new Promise((resolve) => setTimeout(() => resolve(fallback), ms)),
+    ]).catch(() => fallback);
+  }
+
+  const SDK = {
+    /** True when running inside the real Rosebud runtime. */
+    get isHosted() {
+      return hasSDK('ProgressLogger') || hasSDK('RosebudOGP');
+    },
+
+    /** Fire-and-forget analytics. Safe everywhere. */
+    logProgress(eventName, eventData = {}) {
+      try {
+        if (hasSDK('ProgressLogger')) {
+          window.ProgressLogger.logProgress(eventName, eventData);
+        } else {
+          console.debug('[progress]', eventName, eventData);
+        }
+      } catch (_) {
+        /* analytics must never break gameplay */
+      }
+    },
+
+    /** Submit final score to the Rosebud Open Game Protocol. Returns a status string. */
+    async submitPoints(points = 0) {
+      if (!hasSDK('RosebudOGP')) return 'offline';
+      try {
+        return await withTimeout(window.RosebudOGP.submitPoints(points), 8000, 'timeout');
+      } catch (e) {
+        return `error:${e.message}`;
+      }
+    },
+
+    /**
+     * Generate a sprite image from a text prompt. Returns an object-URL string,
+     * or null when the host is absent / generation fails. Callers must have a
+     * drawn fallback ready.
+     */
+    async generateImage(prompt, { removeBackground = true, timeoutMs = 20000 } = {}) {
+      if (!hasSDK('ImageGenerator')) return null;
+      try {
+        return await withTimeout(
+          window.ImageGenerator.requestEphemeralImageGeneration({ prompt, removeBackground }),
+          timeoutMs,
+          null,
+        );
+      } catch (_) {
+        return null;
+      }
+    },
+
+    /**
+     * Tiny chat helper around ChatManager. Holds one rolling history so the
+     * boss "remembers" the fight. Falls back to a canned line list offline.
+     */
+    createChat(characterDescription, fallbackLines = []) {
+      const live = hasSDK('ChatManager') ? new window.ChatManager(characterDescription) : null;
+      let fallbackIdx = 0;
+
+      return {
+        get isLive() {
+          return !!live;
+        },
+        async say(playerMessage, { maxTokens = 60, timeoutMs = 6000 } = {}) {
+          if (!live) {
+            const line = fallbackLines[fallbackIdx % fallbackLines.length] || '...';
+            fallbackIdx++;
+            return line;
+          }
+          live.addMessage('user', playerMessage);
+          const reply = await withTimeout(
+            live.getCharacterResponse('chat', maxTokens),
+            timeoutMs,
+            fallbackLines[fallbackIdx++ % fallbackLines.length] || '...',
+          );
+          live.addMessage('assistant', reply);
+          return reply;
+        },
+      };
+    },
+  };
+
+  window.SDK = SDK;
+})();
+</script>
+
+    <!-- The creative -->
+    <script>/**
+ * game.js — "Slingshot Siege" playable creative (Phaser 3, Arcade physics).
+ *
+ * Loop: drag the ball back, release to launch it on a ballistic arc, smash the
+ * crate shield, then damage the boss. 3 shots. The boss taunts the player via the
+ * Rosebud ChatManager (LLM); its sprite is AI-generated on boot. Ends on a CTA.
+ *
+ * All host I/O goes through window.SDK (see sdk-bridge.js) so it runs standalone.
+ */
+
+const GAME_W = 720;
+const GAME_H = 1280;
+
+const TUNING = {
+  gravityY: 880,
+  maxStretch: 240, // px the ball can be pulled from the anchor
+  launchPower: 9.5, // velocity multiplier on release
+  ammo: 4, // a touch generous — playables want a win
+  bossMaxHP: 120,
+  ballDamage: 34, // 4 clean hits = kill, leaves room for misses
+  crateScore: 50,
+  bossHitScore: 200,
+};
+
+// SYNC AGENCY brand palette
+const BRAND = {
+  cyan: 0x00e5ff,
+  magenta: 0xff2d9b,
+  dark: 0x0a0e27,
+  darkMid: 0x131a3a,
+  ctaUrl: 'https://sync.agency', // placeholder — point at the real landing page
+};
+
+/* ------------------------------------------------------------------ helpers */
+
+/** Build simple flat textures once so the creative needs zero external assets. */
+function buildPlaceholderTextures(scene) {
+  const g = scene.make.graphics({ add: false });
+
+  // ball
+  g.fillStyle(0xffd23f).fillCircle(26, 26, 24);
+  g.lineStyle(4, 0xc78b00).strokeCircle(26, 26, 24);
+  g.generateTexture('ball', 52, 52);
+  g.clear();
+
+  // crate
+  g.fillStyle(0x8d5524).fillRect(0, 0, 72, 72);
+  g.lineStyle(5, 0x5e3514).strokeRect(2, 2, 68, 68);
+  g.lineStyle(3, 0x5e3514).lineBetween(0, 36, 72, 36).lineBetween(36, 0, 36, 72);
+  g.generateTexture('crate', 72, 72);
+  g.clear();
+
+  // boss fallback "CHAOS" (used if AI image fails)
+  g.fillStyle(0x2a1840).fillRoundedRect(0, 0, 200, 220, 28);
+  g.lineStyle(5, 0xff2d9b).strokeRoundedRect(3, 3, 194, 214, 28);
+  g.fillStyle(0xff2d9b).fillCircle(64, 90, 22).fillCircle(136, 90, 22); // angry eyes
+  g.fillStyle(0x0a0e27).fillCircle(64, 96, 10).fillCircle(136, 96, 10);
+  g.lineStyle(8, 0x00e5ff).lineBetween(50, 165, 100, 150).lineBetween(100, 150, 150, 165); // jagged mouth
+  g.generateTexture('boss_fallback', 200, 220);
+  g.clear();
+
+  // particle
+  g.fillStyle(0xffffff).fillCircle(6, 6, 6);
+  g.generateTexture('spark', 12, 12);
+
+  g.destroy();
+}
+
+/* -------------------------------------------------------------------- Boot */
+
+class BootScene extends Phaser.Scene {
+  constructor() {
+    super('Boot');
+  }
+
+  create() {
+    this.cameras.main.setBackgroundColor('#0a0e27');
+    buildPlaceholderTextures(this);
+
+    this.add
+      .text(GAME_W / 2, GAME_H / 2 - 70, 'SYNC AGENCY', {
+        fontFamily: 'Arial, sans-serif',
+        fontSize: '52px',
+        color: '#00e5ff',
+        fontStyle: 'bold',
+      })
+      .setOrigin(0.5);
+
+    const label = this.add
+      .text(GAME_W / 2, GAME_H / 2, 'Booting the SYNC engine...', {
+        fontFamily: 'Arial, sans-serif',
+        fontSize: '32px',
+        color: '#ffffff',
+      })
+      .setOrigin(0.5);
+
+    window.SDK?.logProgress('boot_start');
+    this.prepareBoss(label);
+  }
+
+  async prepareBoss(label) {
+    const prompt =
+      'cartoon chaos monster made of tangled cables, broken clocks and sticky notes, ' +
+      'glowing magenta eyes, angry, game boss character, centered, full body, ' +
+      'transparent background';
+
+    const url = await window.SDK?.generateImage(prompt, { removeBackground: true });
+
+    const startPlay = (bossKey) => {
+      window.SDK?.logProgress('boot_done', { aiBoss: bossKey === 'boss_ai' });
+      this.scene.start('Play', { bossKey });
+    };
+
+    if (!url) {
+      startPlay('boss_fallback');
+      return;
+    }
+
+    // Load the AI object-URL as a texture, then enter Play.
+    label.setText('Boss arrives...');
+    this.load.image('boss_ai', url);
+    this.load.once(Phaser.Loader.Events.COMPLETE, () => startPlay('boss_ai'));
+    this.load.once(Phaser.Loader.Events.LOAD_ERROR, () => startPlay('boss_fallback'));
+    this.load.start();
+  }
+}
+
+/* -------------------------------------------------------------------- Play */
+
+class PlayScene extends Phaser.Scene {
+  constructor() {
+    super('Play');
+  }
+
+  init(data) {
+    this.bossKey = data.bossKey || 'boss_fallback';
+    this.ammo = TUNING.ammo;
+    this.score = 0;
+    this.bossHP = TUNING.bossMaxHP;
+    this.isDragging = false;
+    this.ballLive = false; // a ball is in flight
+    this.lastTauntAt = 0;
+    this.ended = false;
+  }
+
+  create() {
+    this.drawBackground();
+
+    this.anchor = new Phaser.Math.Vector2(170, GAME_H - 260);
+    this.physics.world.setBounds(0, 0, GAME_W, GAME_H);
+
+    this.buildBoss();
+    this.buildCrates();
+    this.buildSlingshot();
+    this.buildHUD();
+    this.buildBossChat();
+
+    this.bandGfx = this.add.graphics().setDepth(4);
+    this.trajGfx = this.add.graphics().setDepth(3);
+
+    this.input.on('pointerdown', this.onPointerDown, this);
+    this.input.on('pointermove', this.onPointerMove, this);
+    this.input.on('pointerup', this.onPointerUp, this);
+
+    this.loadNextBall();
+    window.SDK?.logProgress('play_start');
+  }
+
+  /* ---- construction ---- */
+
+  drawBackground() {
+    this.cameras.main.setBackgroundColor('#0a0e27');
+    const g = this.add.graphics().setDepth(0);
+    g.fillStyle(BRAND.dark, 1).fillRect(0, 0, GAME_W, GAME_H * 0.62);
+    g.fillStyle(BRAND.darkMid, 1).fillRect(0, GAME_H * 0.82, GAME_W, GAME_H * 0.18); // ground
+    g.fillStyle(BRAND.cyan, 1).fillRect(0, GAME_H * 0.82, GAME_W, 6); // neon horizon line
+
+    this.add
+      .text(24, GAME_H - 44, 'SYNC AGENCY', {
+        fontFamily: 'Arial, sans-serif',
+        fontSize: '22px',
+        color: '#00e5ff',
+        fontStyle: 'bold',
+      })
+      .setDepth(10)
+      .setAlpha(0.7);
+  }
+
+  buildBoss() {
+    this.boss = this.physics.add
+      .staticImage(GAME_W - 150, GAME_H * 0.5, this.bossKey)
+      .setDepth(2);
+    // normalise AI image to a sane size
+    const targetH = 280;
+    this.boss.setScale(targetH / this.boss.height);
+    this.boss.refreshBody();
+    this.tweens.add({
+      targets: this.boss,
+      y: this.boss.y - 14,
+      duration: 1600,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.inOut',
+    });
+  }
+
+  buildCrates() {
+    this.crates = this.physics.add.staticGroup();
+    const baseX = GAME_W - 320;
+    const baseY = GAME_H * 0.82 - 36;
+    // a 3-tall stacked shield wall
+    for (let col = 0; col < 2; col++) {
+      for (let row = 0; row < 3; row++) {
+        const c = this.crates.create(baseX + col * 74, baseY - row * 74, 'crate');
+        c.setDepth(2);
+      }
+    }
+  }
+
+  buildSlingshot() {
+    // two fork tips the elastic band draws to
+    this.forkLeft = new Phaser.Math.Vector2(this.anchor.x - 26, this.anchor.y);
+    this.forkRight = new Phaser.Math.Vector2(this.anchor.x + 26, this.anchor.y);
+    const post = this.add.graphics().setDepth(1);
+    post.fillStyle(0x5e3514, 1).fillRect(this.anchor.x - 10, this.anchor.y, 20, 200);
+  }
+
+  buildHUD() {
+    const style = { fontFamily: 'Arial, sans-serif', fontSize: '30px', color: '#ffffff' };
+    this.scoreText = this.add.text(24, 24, 'SCORE 0', style).setDepth(10);
+    this.ammoText = this.add.text(24, 64, '', style).setDepth(10);
+
+    // boss HP bar
+    this.add.rectangle(GAME_W / 2, 40, 360, 26, 0x000000, 0.5).setDepth(10);
+    this.hpBar = this.add.rectangle(GAME_W / 2 - 178, 40, 356, 20, BRAND.magenta).setOrigin(0, 0.5).setDepth(11);
+    this.add
+      .text(GAME_W / 2, 40, 'CHAOS', { fontFamily: 'Arial', fontSize: '18px', color: '#fff' })
+      .setOrigin(0.5)
+      .setDepth(12);
+    this.refreshHUD();
+  }
+
+  buildBossChat() {
+    const desc =
+      'You are CHAOS, the messy-project monster fought in a SYNC AGENCY slingshot ad. ' +
+      'You embody missed deadlines, scope creep and chaos. Taunt the player in ONE short ' +
+      'punchy sentence about disorganized projects. Stay in character, no emoji spam.';
+    this.bossChat = window.SDK?.createChat(desc, [
+      'Your roadmap is a mess!',
+      'Deadlines? Never heard of them.',
+      'Scope creep is my best friend!',
+      'You will never ship this!',
+      'No agency can sync ME!',
+    ]);
+    this.bubble = this.add
+      .text(this.boss?.x ?? GAME_W - 150, GAME_H * 0.5 - 200, '', {
+        fontFamily: 'Arial, sans-serif',
+        fontSize: '24px',
+        color: '#ffffff',
+        backgroundColor: '#000000aa',
+        padding: { x: 12, y: 8 },
+        wordWrap: { width: 260 },
+        align: 'center',
+      })
+      .setOrigin(0.5)
+      .setDepth(12)
+      .setAlpha(0);
+  }
+
+  /* ---- ball lifecycle ---- */
+
+  loadNextBall() {
+    if (this.ammo <= 0) {
+      this.checkEnd();
+      return;
+    }
+    this.ball = this.physics.add
+      .image(this.anchor.x, this.anchor.y - 10, 'ball')
+      .setDepth(5)
+      .setCircle(24);
+    this.ball.body.allowGravity = false;
+    this.ball.body.setBounce(0.4).setCollideWorldBounds(true);
+    this.ballLive = false;
+
+    this.physics.add.overlap(this.ball, this.crates, this.hitCrate, undefined, this);
+    this.physics.add.overlap(this.ball, this.boss, this.hitBoss, undefined, this);
+    this.refreshHUD();
+  }
+
+  onPointerDown(pointer) {
+    if (this.ended || this.ballLive || !this.ball) return;
+    if (Phaser.Math.Distance.Between(pointer.x, pointer.y, this.ball.x, this.ball.y) < 90) {
+      this.isDragging = true;
+    }
+  }
+
+  onPointerMove(pointer) {
+    if (!this.isDragging || !this.ball) return;
+    const offset = new Phaser.Math.Vector2(pointer.x - this.anchor.x, pointer.y - this.anchor.y);
+    if (offset.length() > TUNING.maxStretch) offset.setLength(TUNING.maxStretch);
+    this.ball.setPosition(this.anchor.x + offset.x, this.anchor.y + offset.y);
+    this.drawAim();
+  }
+
+  onPointerUp() {
+    if (!this.isDragging || !this.ball) return;
+    this.isDragging = false;
+    this.bandGfx.clear();
+    this.trajGfx.clear();
+
+    const pull = new Phaser.Math.Vector2(this.anchor.x - this.ball.x, this.anchor.y - this.ball.y);
+    if (pull.length() < 24) return; // tiny pull = misfire, keep ball
+
+    this.ball.body.allowGravity = true;
+    this.ball.setVelocity(pull.x * TUNING.launchPower, pull.y * TUNING.launchPower);
+    this.ballLive = true;
+    this.ammo--;
+    this.refreshHUD();
+    window.SDK?.logProgress('shot_fired', { remaining: this.ammo });
+
+    // settle watchdog: recycle the ball once it slows or leaves play
+    this.time.delayedCall(4500, () => this.retireBall());
+  }
+
+  retireBall() {
+    if (!this.ball) return;
+    this.ball.destroy();
+    this.ball = null;
+    this.ballLive = false;
+    if (!this.checkEnd()) this.loadNextBall();
+  }
+
+  /* ---- collisions ---- */
+
+  hitCrate(ball, crate) {
+    this.burst(crate.x, crate.y, 0x8d5524);
+    crate.destroy();
+    this.addScore(TUNING.crateScore);
+    this.cameras.main.shake(120, 0.006);
+    window.SDK?.logProgress('crate_destroyed');
+  }
+
+  hitBoss(ball) {
+    if (!this.ballLive) return;
+    this.ballLive = false; // one damage event per shot
+    this.bossHP = Math.max(0, this.bossHP - TUNING.ballDamage);
+    this.addScore(TUNING.bossHitScore);
+    this.burst(this.boss.x, this.boss.y, BRAND.magenta);
+    this.cameras.main.shake(200, 0.012);
+    this.refreshHUD();
+    window.SDK?.logProgress('boss_hit', { hp: this.bossHP });
+    this.tauntPlayer(`Player hit me for ${TUNING.ballDamage}. My HP is ${this.bossHP}.`);
+  }
+
+  /* ---- feedback ---- */
+
+  async tauntPlayer(context) {
+    const now = this.time.now;
+    if (!this.bossChat || now - this.lastTauntAt < 2500) return;
+    this.lastTauntAt = now;
+    const line = await this.bossChat.say(context);
+    if (this.ended || !this.bubble) return;
+    this.bubble.setText(line).setPosition(this.boss.x, this.boss.y - 200).setAlpha(1);
+    this.tweens.add({ targets: this.bubble, alpha: 0, delay: 2200, duration: 600 });
+  }
+
+  burst(x, y, tint) {
+    const e = this.add.particles(x, y, 'spark', {
+      tint,
+      speed: { min: 80, max: 260 },
+      lifespan: 500,
+      quantity: 14,
+      scale: { start: 1, end: 0 },
+      emitting: false,
+    });
+    e.setDepth(6).explode(14);
+    this.time.delayedCall(600, () => e.destroy());
+  }
+
+  drawAim() {
+    // elastic bands
+    this.bandGfx.clear().lineStyle(6, 0x000000, 1);
+    this.bandGfx.lineBetween(this.forkLeft.x, this.forkLeft.y, this.ball.x, this.ball.y);
+    this.bandGfx.lineBetween(this.forkRight.x, this.forkRight.y, this.ball.x, this.ball.y);
+
+    // predicted trajectory dots
+    this.trajGfx.clear().fillStyle(0xffffff, 0.6);
+    const vx = (this.anchor.x - this.ball.x) * TUNING.launchPower;
+    const vy = (this.anchor.y - this.ball.y) * TUNING.launchPower;
+    for (let i = 1; i <= 18; i++) {
+      const t = i * 0.05;
+      const px = this.ball.x + vx * t;
+      const py = this.ball.y + vy * t + 0.5 * TUNING.gravityY * t * t;
+      if (py > GAME_H) break;
+      this.trajGfx.fillCircle(px, py, 5 - i * 0.15);
+    }
+  }
+
+  /* ---- state ---- */
+
+  addScore(n) {
+    this.score += n;
+    this.scoreText.setText(`SCORE ${this.score}`);
+  }
+
+  refreshHUD() {
+    this.ammoText.setText(`BALLS ${'●'.repeat(Math.max(0, this.ammo))}`);
+    const ratio = this.bossHP / TUNING.bossMaxHP;
+    this.hpBar.width = 356 * ratio;
+  }
+
+  checkEnd() {
+    if (this.ended) return true;
+    if (this.bossHP <= 0) {
+      this.finish(true);
+      return true;
+    }
+    if (this.ammo <= 0 && !this.ball) {
+      this.finish(false);
+      return true;
+    }
+    return false;
+  }
+
+  finish(won) {
+    this.ended = true;
+    window.SDK?.logProgress('play_end', { won, score: this.score });
+    this.time.delayedCall(700, () => this.scene.start('End', { won, score: this.score }));
+  }
+}
+
+/* --------------------------------------------------------------------- End */
+
+class EndScene extends Phaser.Scene {
+  constructor() {
+    super('End');
+  }
+
+  init(data) {
+    this.won = !!data.won;
+    this.score = data.score || 0;
+  }
+
+  async create() {
+    this.cameras.main.setBackgroundColor('#0a0e27');
+
+    this.add
+      .text(GAME_W / 2, 230, 'SYNC AGENCY', {
+        fontFamily: 'Arial, sans-serif',
+        fontSize: '46px',
+        color: '#00e5ff',
+        fontStyle: 'bold',
+      })
+      .setOrigin(0.5);
+
+    const title = this.won ? 'PROJECT SHIPPED!' : 'CHAOS WINS THIS TIME';
+    this.add
+      .text(GAME_W / 2, 360, title, {
+        fontFamily: 'Arial, sans-serif',
+        fontSize: this.won ? '62px' : '48px',
+        color: '#ffffff',
+        fontStyle: 'bold',
+      })
+      .setOrigin(0.5);
+
+    this.add
+      .text(GAME_W / 2, 460, this.won ? 'We synced it. You can too.' : 'Every project needs SYNC.', {
+        fontFamily: 'Arial, sans-serif',
+        fontSize: '30px',
+        color: '#ff2d9b',
+      })
+      .setOrigin(0.5);
+
+    this.add
+      .text(GAME_W / 2, 540, `Score ${this.score}`, {
+        fontFamily: 'Arial, sans-serif',
+        fontSize: '38px',
+        color: '#ffffff',
+      })
+      .setOrigin(0.5)
+      .setAlpha(0.85);
+
+    const status = await window.SDK?.submitPoints(this.score);
+    window.SDK?.logProgress('points_submitted', { status });
+
+    this.buildCTA();
+    this.buildReplay();
+  }
+
+  buildCTA() {
+    // CTA — SYNC AGENCY landing. Set BRAND.ctaUrl to the real page.
+    const CTA_URL = BRAND.ctaUrl;
+    const btn = this.add.container(GAME_W / 2, 780);
+    const bg = this.add.rectangle(0, 0, 460, 124, BRAND.magenta).setStrokeStyle(6, BRAND.cyan);
+    const label = this.add
+      .text(0, 0, 'WORK WITH SYNC', {
+        fontFamily: 'Arial, sans-serif',
+        fontSize: '40px',
+        color: '#ffffff',
+        fontStyle: 'bold',
+      })
+      .setOrigin(0.5);
+    btn.add([bg, label]).setSize(460, 124).setInteractive({ useHandCursor: true });
+
+    this.tweens.add({
+      targets: btn,
+      scale: 1.06,
+      duration: 700,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.inOut',
+    });
+
+    btn.on('pointerdown', () => {
+      window.SDK?.logProgress('cta_click', { url: CTA_URL });
+      window.open(CTA_URL, '_blank');
+    });
+  }
+
+  buildReplay() {
+    const replay = this.add
+      .text(GAME_W / 2, 940, '↻ Play again', {
+        fontFamily: 'Arial, sans-serif',
+        fontSize: '34px',
+        color: '#ffffff',
+      })
+      .setOrigin(0.5)
+      .setInteractive({ useHandCursor: true });
+    replay.on('pointerdown', () => {
+      window.SDK?.logProgress('replay');
+      this.scene.start('Play', { bossKey: this.textures.exists('boss_ai') ? 'boss_ai' : 'boss_fallback' });
+    });
+  }
+}
+
+/* ------------------------------------------------------------------ launch */
+
+// eslint-disable-next-line no-unused-vars
+const game = new Phaser.Game({
+  type: Phaser.AUTO,
+  backgroundColor: '#0a0e27',
+  scale: {
+    parent: 'game', // inject canvas INTO #game, not loose at end of <body>
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    width: GAME_W,
+    height: GAME_H,
+  },
+  physics: {
+    default: 'arcade',
+    arcade: { gravity: { y: TUNING.gravityY }, debug: false },
+  },
+  scene: [BootScene, PlayScene, EndScene],
+});
+</script>
+  </body>
+</html>

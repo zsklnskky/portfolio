@@ -1,0 +1,1292 @@
+<!doctype html>
+<html lang="ru" data-lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Брендбук - Захар Соколинский</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Manrope:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#050913;--deep:#0a1122;--glass:rgba(20,30,58,.42);--line:rgba(150,175,235,.14);
+  --text:#e9eeff;--mute:#8a96b6;--dim:#7d89a8;--ice:#8fcaff;--peri:#a597ff;--mint:#5fe3b1;
+  --r-xl:32px;--r-lg:22px;--r-md:14px;
+  --display:'Unbounded',system-ui,sans-serif;--body:'Manrope',system-ui,sans-serif;--serif:'Cormorant Garamond',Georgia,serif;
+  --expo:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--ink);color-scheme:dark;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{background:var(--ink);color:var(--text);font:400 15px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+[data-lang="ru"] [lang="en"],[data-lang="en"] [lang="ru"]{display:none!important}
+.silver{background:linear-gradient(180deg,#f6f8ff 0%,#cbd5ee 42%,#5a6990 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.it{font-family:var(--serif);font-style:italic;font-weight:500}
+b{font-weight:700}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:14px;padding:14px 24px;background:rgba(5,9,19,.75);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.top .brand{display:flex;align-items:center;gap:10px;font:800 13px var(--display);letter-spacing:.01em}
+.top .brand svg{width:26px;height:26px}
+.top nav{display:flex;gap:16px;margin-left:auto;font-size:13px;color:var(--mute);overflow-x:auto;scrollbar-width:none}
+.top nav a{color:inherit;text-decoration:none;white-space:nowrap}
+.top nav a:hover{color:var(--text)}
+.seg{display:flex;padding:3px;border:1px solid var(--line);border-radius:99px;background:var(--glass);font-size:12px;font-weight:700}
+.seg button{font:inherit;color:var(--mute);background:none;border:0;cursor:pointer;padding:6px 11px;border-radius:99px}
+.seg button[aria-pressed="true"]{background:var(--text);color:var(--ink)}
+
+/* slides */
+.deck{width:1280px;margin:32px auto 80px;display:grid;gap:32px}
+.pg{position:relative;display:flex;flex-direction:column;width:1280px;height:720px;overflow:hidden;padding:60px 72px;border-radius:var(--r-xl);border:1px solid var(--line);background:radial-gradient(90% 70% at 85% 0%,rgba(40,70,160,.22),transparent 60%),var(--ink)}
+.pg .sec{font-size:14px;font-weight:700;color:var(--ice);margin-bottom:14px}
+.pg h2{font:800 54px/1 var(--display);letter-spacing:-.045em;margin-bottom:26px}
+.pg h3{font:600 18px/1.25 var(--display);letter-spacing:-.01em;margin-bottom:8px}
+.pg p{color:#c9d2ec}
+.pg .lead{font-size:19px;font-weight:300;line-height:1.55;max-width:58ch}
+.pg .muted{color:var(--mute);font-size:13.5px}
+.no{position:absolute;right:40px;bottom:28px;font:600 12px var(--display);color:var(--dim)}
+.foot{position:absolute;left:72px;bottom:28px;font-size:12px;color:var(--dim)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.card{position:relative;border:1px solid var(--line);border-radius:var(--r-lg);background:linear-gradient(160deg,rgba(28,40,78,.55),rgba(12,18,36,.55));padding:22px}
+.card p{font-size:14px;color:var(--mute)}
+.mk{display:block}
+.fill{flex:1;min-height:0;margin-bottom:34px}
+.fill>.card,.fill>.bad,.fill>.sw,.fill>div>.grad{height:100%}
+.fill>.card{display:flex;flex-direction:column;padding:30px}
+.fill>.card h3{font-size:24px;margin-bottom:14px}
+.fill>.card>p:last-child{font-size:16px;line-height:1.55;margin-top:auto}
+.fill>.card>div{zoom:1.25}
+
+/* cover */
+.cover{display:flex;flex-direction:column;justify-content:space-between;background:radial-gradient(70% 90% at 75% 40%,rgba(60,90,200,.35),transparent 60%),var(--ink)}
+.cover .big{font:800 92px/.94 var(--display);letter-spacing:-.05em}
+.cover .mkw{position:absolute;right:60px;top:150px;width:340px;height:340px}
+.cover .mkw svg{width:100%;height:100%}
+.cover .meta{display:flex;gap:40px;font-size:14px;color:var(--mute)}
+.cover .meta b{display:block;color:var(--text);font-weight:600}
+
+/* logo */
+.stage{display:grid;place-items:center;border-radius:var(--r-lg);border:1px solid var(--line);height:250px}
+.stage svg{width:150px;height:150px}
+.cons{width:430px;height:430px}
+.cons .grid line{stroke:rgba(150,175,235,.25);stroke-width:.2}
+.cons .dim line{stroke:#5fe3b1;stroke-width:.3}
+.cons .dim text{fill:#5fe3b1;font:600 2.6px var(--body);text-anchor:middle}
+.lock{display:flex;align-items:center;gap:18px}
+.stage .lock svg{width:110px;height:110px}
+.wm{font:800 30px/1 var(--display);letter-spacing:-.01em}
+.wm small{display:block;font:500 13px var(--body);color:var(--mute);letter-spacing:.02em;margin-top:8px}
+.vlock{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+.stage .vlock svg{width:140px;height:140px}
+.bad{position:relative;height:190px;border-radius:var(--r-lg);border:1px solid var(--line);display:grid;place-items:center;overflow:hidden}
+.bad svg{width:90px;height:90px}
+.bad::after{content:"";position:absolute;inset:0;background:linear-gradient(45deg,transparent 49%,rgba(255,110,110,.8) 49.5%,rgba(255,110,110,.8) 50.5%,transparent 51%)}
+.bad{min-height:200px}
+.bad span{position:absolute;left:16px;right:16px;bottom:14px;font-size:13px;color:#ffb3b3}
+.bad.lt span{color:#9a2a2a;font-weight:600}
+.sizes{display:flex;align-items:flex-end;gap:34px}
+.sizes div{text-align:center;font-size:12px;color:var(--mute)}
+.sizes svg{margin:0 auto 10px}
+.stage .sizes svg.s96{width:96px;height:96px}.stage .sizes svg.s48{width:48px;height:48px}.stage .sizes svg.s24{width:24px;height:24px}
+
+/* colour */
+.sw{display:flex;flex-direction:column;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line)}
+.sw i{display:block;flex:1;min-height:140px}
+.sw div{padding:12px 14px;font-size:12.5px;color:var(--mute);background:var(--deep)}
+.sw div b{display:block;color:var(--text);font:600 14px var(--display);margin-bottom:2px}
+.ratio{display:flex;height:70px;border-radius:var(--r-md);overflow:hidden;border:1px solid var(--line)}
+.ratio i{display:flex;align-items:flex-end;padding:8px;font-style:normal;font-size:11px;font-weight:700}
+.grad{height:190px;border-radius:var(--r-lg);border:1px solid var(--line);display:flex;align-items:flex-end;padding:14px;font-size:13px;font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left}
+th{font-size:12px;color:var(--mute);font-weight:600}
+.sw2{display:inline-grid;place-items:center;width:46px;height:30px;border-radius:9px;font:800 14px var(--display);border:1px solid var(--line)}
+.gr{color:var(--mint);font-weight:700}
+
+/* type */
+.spec{display:grid;grid-template-columns:150px 1fr 170px;align-items:baseline;gap:20px;padding:12px 0;border-bottom:1px solid var(--line)}
+.spec small{font-size:12px;color:var(--mute)}
+.spec code{font-size:12px;color:var(--dim);font-family:ui-monospace,Consolas,monospace}
+
+/* components */
+.pill{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:99px;border:1px solid var(--line);background:var(--glass);font:500 15px var(--body);color:var(--text);cursor:pointer;transition:background .3s,border-color .3s}
+.pill:hover{border-color:rgba(160,190,255,.4)}
+.pill.solid{background:var(--text);color:var(--ink);border-color:transparent}
+.chip{display:inline-block;padding:8px 14px;border-radius:99px;border:1px solid var(--line);background:var(--glass);font-size:13px;font-weight:500;color:#cbd3ec}
+.swt{display:inline-flex;align-items:center;gap:8px;font:500 12px var(--body);color:var(--mute);padding:4px 4px 4px 12px;border:1px solid var(--line);border-radius:99px;background:var(--glass);cursor:pointer}
+.swt i{width:34px;height:20px;border-radius:99px;background:var(--dim);position:relative;transition:background .3s}
+.swt i::after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--text);transition:transform .35s var(--expo)}
+.swt[aria-checked="true"] i{background:linear-gradient(90deg,var(--ice),var(--peri))}
+.swt[aria-checked="true"] i::after{transform:translateX(14px)}
+.spot::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:radial-gradient(220px circle at var(--mx,30%) var(--my,0%),rgba(160,200,255,.8),transparent 60%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.pcard{border-radius:var(--r-xl);border:1px solid var(--line);overflow:hidden;background:linear-gradient(170deg,#111c3a,#080d1b);transition:transform .6s var(--expo)}
+.pcard .th{height:150px;background:radial-gradient(120% 90% at 30% 10%,#24387a,#070c19);display:grid;place-items:center}
+.pcard .th svg{width:70px;height:70px}
+.pcard .m{padding:16px 18px 20px}
+.pcard small{font-size:11.5px;font-weight:700;color:var(--ice)}
+.pcard h4{font:600 17px var(--display);margin:6px 0 4px}
+.pcard p{font-size:13px;color:var(--mute)}
+.orb{position:relative;width:74px;height:74px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#d9ecff,#6aa8ff 35%,#5b44d6 70%,#1b1748);box-shadow:0 10px 40px -6px rgba(90,120,255,.7);display:grid;place-items:center;font:800 14px var(--display);color:#fff}
+.orb::before,.orb::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(160,190,255,.45);animation:halo 2.6s ease-out infinite}
+.orb::after{animation-delay:1.3s}
+@keyframes halo{from{transform:scale(.9);opacity:1}to{transform:scale(1.5);opacity:0}}
+.bub{max-width:300px;padding:11px 15px;border-radius:16px 16px 16px 5px;background:rgba(30,46,90,.75);font-size:13.5px}
+.bub.u{margin-left:auto;border-radius:16px 16px 5px 16px;background:linear-gradient(135deg,rgba(80,130,240,.6),rgba(140,110,240,.55))}
+
+/* icons */
+.icons{display:grid;grid-template-columns:repeat(8,1fr);gap:14px}
+.icons div{height:150px;border-radius:var(--r-md);border:1px solid var(--line);background:var(--glass);display:grid;place-items:center;color:var(--text)}
+.icons svg{width:44px;height:44px}
+
+/* images */
+#pp{width:380px;height:500px;display:block}
+.shot{border-radius:var(--r-lg);border:1px solid var(--line);height:250px;overflow:hidden;background:#fff;position:relative}
+.shot .fake{position:absolute;inset:0;background:linear-gradient(#f4f6fb 0 60px,#fff 60px);}
+.shot .fake::before{content:"";position:absolute;left:24px;top:22px;width:120px;height:14px;border-radius:7px;background:#1f2a44}
+.shot .fake::after{content:"";position:absolute;left:24px;right:24px;top:90px;height:140px;border-radius:16px;background:linear-gradient(135deg,#dfe7ff,#ece6ff)}
+
+/* motion */
+.curve{width:100%;height:150px;border-radius:var(--r-lg);border:1px solid var(--line);background:var(--glass)}
+.curve path{fill:none;stroke:url(#cg);stroke-width:3}
+.track{height:54px;border-radius:99px;border:1px solid var(--line);background:var(--glass);position:relative;overflow:hidden}
+.track i{position:absolute;left:6px;top:6px;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--ice),var(--peri))}
+.go .track i{animation:mv 1.6s var(--expo) infinite alternate}
+@keyframes mv{to{left:calc(100% - 46px)}}
+.cur-demo{position:relative;height:150px;border-radius:var(--r-lg);border:1px solid var(--line);overflow:hidden;background:var(--glass);display:grid;place-items:center;font:800 26px var(--display)}
+.cur-demo .cv{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 0%,#1a2b5c,#070c1a 70%);display:grid;place-items:center;transform:translateY(100%)}
+.go .cur-demo .cv{animation:cur 3.2s var(--expo) infinite}
+@keyframes cur{0%{transform:translateY(100%)}25%,55%{transform:translateY(0)}85%,100%{transform:translateY(-100%)}}
+#lp{width:100%;height:150px;border-radius:var(--r-lg);border:1px solid var(--line);background:var(--glass);display:block}
+
+/* voice */
+.dd{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dd .ok,.dd .no2{padding:14px 16px;border-radius:var(--r-md);font-size:14px}
+.dd .ok{background:rgba(95,227,177,.08);border:1px solid rgba(95,227,177,.3)}
+.dd .no2{background:rgba(255,110,110,.06);border:1px solid rgba(255,130,130,.28);color:#d9b3b3}
+.dd small{display:block;font-size:11px;font-weight:700;margin-bottom:4px}
+.dd .ok small{color:var(--mint)}.dd .no2 small{color:#ff9d9d}
+
+/* carriers */
+.tg{width:150px;height:150px;border-radius:50%;overflow:hidden}
+.tg svg{width:100%;height:100%}
+.cover-sm{height:150px;border-radius:var(--r-md);border:1px solid var(--line);position:relative;overflow:hidden;background:radial-gradient(60% 120% at 80% 50%,rgba(70,100,220,.45),transparent 70%),var(--deep);display:flex;align-items:center;gap:18px;padding:0 28px}
+.cover-sm svg{width:62px;height:62px}
+.bc{width:270px;height:150px;border-radius:12px;border:1px solid var(--line);padding:18px;display:flex;flex-direction:column;justify-content:space-between;background:var(--deep)}
+.bc svg{width:34px;height:34px}
+.bc.back{background:linear-gradient(135deg,#0d1730,#16204a);font-size:11.5px;color:#c9d2ec}
+.sig{border-radius:var(--r-md);border:1px solid var(--line);padding:18px;background:#fff;color:#1b2440;font-size:13px;display:flex;gap:16px;align-items:center}
+.sig svg{width:48px;height:48px;border-radius:12px}
+.sig b{font-family:var(--display);font-size:14px}
+.sig a{color:#4b5fd6}
+
+.idx{columns:2;column-gap:40px;font-size:14px}
+.idx li{list-style:none;padding:8px 0;border-bottom:1px solid var(--line);break-inside:avoid}
+.idx code{color:var(--ice);font-family:ui-monospace,Consolas,monospace;font-size:13px}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* phone: slides flow, grids collapse */
+@media (max-width:900px){
+  .deck{width:auto;margin:16px 16px 60px;gap:18px}
+  .pg{width:auto;height:auto;padding:30px 20px 56px;border-radius:var(--r-lg)}
+  .pg h2{font-size:34px}
+  .cover{min-height:560px}.cover .big{font-size:38px}
+  .lock{flex-direction:column;text-align:center}.stage{overflow:hidden}
+  .cover .mkw{position:static;width:180px;height:180px;margin:20px 0}
+  .cover .meta{flex-wrap:wrap;gap:16px}
+  .g2,.g3,.g4,.dd{grid-template-columns:1fr!important}
+  .g4[style*="repeat(8"]{grid-template-columns:repeat(2,1fr)!important}
+  .fill{flex:none}.fill>.card>div{zoom:1}
+  #pp,#lp2{width:100%!important;height:auto!important}
+  .stage{height:auto!important;min-height:200px;padding:20px}
+  .ratio i{font-size:9px;padding:4px}
+  .icons{grid-template-columns:repeat(4,1fr)}
+  .cons{width:100%;height:auto}
+  .spec{grid-template-columns:1fr}
+  .idx{columns:1}
+  .lock .wm{font-size:20px}
+  .sizes{flex-wrap:wrap}
+  .bc{width:100%}
+  table{font-size:12.5px}td,th{padding:7px 5px}
+  .top nav{display:none}
+  .no,.foot{bottom:18px}.foot{left:20px}
+}
+@page{size:1280px 720px;margin:0}
+@media print{
+  .top{display:none}
+  body{zoom:1!important}
+  .deck{width:1280px;margin:0;gap:0}
+  .pg{border:0;border-radius:0;break-after:page;page-break-after:always}
+  .pg:last-child{break-after:auto;page-break-after:auto}
+  /* Chrome PDF draws box edges around background-clip:text, so print uses solid silver */
+  .silver{background:none!important;color:#dfe6fb!important;-webkit-text-fill-color:#dfe6fb}
+  *{animation:none!important}
+}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="brand"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94"><defs><linearGradient id="g1" gradientUnits="userSpaceOnUse" x1="19" y1="19" x2="75" y2="75"><stop offset="0" stop-color="#F2F5FF"/><stop offset=".5" stop-color="#8FCAFF"/><stop offset="1" stop-color="#A597FF"/></linearGradient></defs>
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g1)"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="url(#g1)" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="url(#g1)" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="url(#g1)" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="url(#g1)" opacity="0.25"/>
+</svg> <span lang="ru">ЗАХАР СОКОЛИНСКИЙ</span><span lang="en">ZAKHAR SOKOLINSKY</span></div>
+  <nav>
+    <a href="#essence"><span lang="ru">Суть</span><span lang="en">Essence</span></a><a href="#logo"><span lang="ru">Логотип</span><span lang="en">Logo</span></a><a href="#colour"><span lang="ru">Цвет</span><span lang="en">Colour</span></a><a href="#type"><span lang="ru">Шрифты</span><span lang="en">Type</span></a><a href="#grid"><span lang="ru">Сетка</span><span lang="en">Grid</span></a><a href="#ui"><span lang="ru">Компоненты</span><span lang="en">Components</span></a><a href="#motion"><span lang="ru">Моушн</span><span lang="en">Motion</span></a><a href="#voice"><span lang="ru">Голос</span><span lang="en">Voice</span></a><a href="#carriers"><span lang="ru">Носители</span><span lang="en">Carriers</span></a>
+  </nav>
+  <div class="seg" role="group" aria-label="Язык / Language"><button data-l="ru" aria-pressed="true">RU</button><button data-l="en" aria-pressed="false">EN</button></div>
+</div>
+
+<main class="deck" id="deck">
+
+<!-- 1 cover -->
+<section class="pg cover">
+  <div>
+    <p class="sec"><span lang="ru">Брендбук, версия 1.0, октябрь 2026</span><span lang="en">Brand book, version 1.0, October 2026</span></p>
+    <h1 class="big silver"><span lang="ru">Захар<br>Соколинский</span><span lang="en">Zakhar<br>Sokolinsky</span></h1>
+    <p class="lead" style="margin-top:26px"><span lang="ru">AI-автоматизация <span class="it">и веб</span>. Правила, по которым живёт моё портфолио.</span><span lang="en">AI automation <span class="it">&amp; web</span>. The rules my portfolio lives by.</span></p>
+  </div>
+  <div class="mkw"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94"><defs><linearGradient id="g2" gradientUnits="userSpaceOnUse" x1="19" y1="19" x2="75" y2="75"><stop offset="0" stop-color="#F2F5FF"/><stop offset=".5" stop-color="#8FCAFF"/><stop offset="1" stop-color="#A597FF"/></linearGradient></defs>
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g2)"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="url(#g2)" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="url(#g2)" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="url(#g2)" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="url(#g2)" opacity="0.25"/>
+</svg></div>
+  <div class="meta"><div><b><span lang="ru">Для кого</span><span lang="en">For</span></b><span lang="ru">дизайнеры, разработчики, партнёры</span><span lang="en">designers, developers, partners</span></div><div><b><span lang="ru">Носители</span><span lang="en">Used on</span></b><span lang="ru">сайт, соцсети, документы</span><span lang="en">site, social, documents</span></div><div><b><span lang="ru">Контакт</span><span lang="en">Contact</span></b>t.me/sklnsky</div></div>
+  <span class="no">01</span>
+</section>
+
+<!-- 2 essence -->
+<section class="pg" id="essence">
+  <p class="sec"><span lang="ru">Суть бренда</span><span lang="en">Brand essence</span></p>
+  <h2 class="silver"><span lang="ru">Рутина работает сама</span><span lang="en">Routine runs itself</span></h2>
+  <div class="g2">
+    <div>
+      <h3><span lang="ru">Кто я</span><span lang="en">Who I am</span></h3>
+      <p class="lead" style="font-size:17px"><span lang="ru">Я Захар, маркетолог, который научился строить. Собираю умные автоматизации, Telegram-ботов, интеграции CRM и сайты для бизнеса в Дубае, на Кипре и в Беларуси.</span><span lang="en">I'm Zakhar, a marketer who learned to build. I make smart automations, Telegram bots, CRM integrations and websites for businesses in Dubai, Cyprus and Belarus.</span></p>
+      <h3 style="margin-top:28px"><span lang="ru">Миссия</span><span lang="en">Mission</span></h3>
+      <p class="lead" style="font-size:17px"><span lang="ru">Возвращать людям время. Всё, что повторяется каждый день, должно делаться само, а человек должен заниматься тем, что любит.</span><span lang="en">Give people their time back. Everything that repeats every day should run on its own, so people can do what they love.</span></p>
+    </div>
+    <div class="card spot" style="padding:30px">
+      <h3><span lang="ru">Обещание бренда</span><span lang="en">Brand promise</span></h3>
+      <p style="font-size:22px;font-weight:300;color:var(--text);line-height:1.45;margin:10px 0 22px"><span lang="ru">«Покажите мне, что вы делаете руками, и я придумаю, как это сделается само.»</span><span lang="en">"Show me what you do by hand, and I'll figure out how it can do itself."</span></p>
+      <p><span lang="ru">Это предложение стоит в основе каждого текста, кнопки и анимации. Если элемент не помогает его понять, он лишний.</span><span lang="en">This sentence sits under every text, button and animation. If an element doesn't help people understand it, it doesn't belong.</span></p>
+    </div>
+  </div>
+  <span class="no">02</span>
+</section>
+
+<!-- 3 values -->
+<section class="pg">
+  <p class="sec"><span lang="ru">Ценности и характер</span><span lang="en">Values and character</span></p>
+  <h2 class="silver"><span lang="ru">Что для меня важно</span><span lang="en">What matters to me</span></h2>
+  <div class="g4 fill">
+    <div class="card spot"><h3><span lang="ru">Работает в бою</span><span lang="en">Works in production</span></h3><p><span lang="ru">Не макет и не презентация. Каждая работа в портфолио живая, её можно открыть и потрогать.</span><span lang="en">Not a mock-up, not a deck. Every piece is live, you can open it and try it.</span></p></div>
+    <div class="card spot"><h3><span lang="ru">Честные цифры</span><span lang="en">Honest numbers</span></h3><p><span lang="ru">55 объявлений, 118 узлов, 2 минуты. Только то, что реально посчитано.</span><span lang="en">55 listings, 118 nodes, 2 minutes. Only what was actually measured.</span></p></div>
+    <div class="card spot"><h3><span lang="ru">Тепло к людям</span><span lang="en">Warmth</span></h3><p><span lang="ru">Говорю как с другом: вежливо, просто, с улыбкой. Без канцелярита и снобизма.</span><span lang="en">I talk like a friend: polite, simple, with a smile. No jargon, no snobbery.</span></p></div>
+    <div class="card spot"><h3><span lang="ru">Минимум лишнего</span><span lang="en">Nothing extra</span></h3><p><span lang="ru">Меньше кода, меньше сервисов, меньше слов. Простое решение всегда лучше хитрого.</span><span lang="en">Less code, fewer services, fewer words. A simple fix beats a clever one.</span></p></div>
+  </div>
+  <div class="g3" style="margin-top:34px">
+    <div><h3><span lang="ru">Характер</span><span lang="en">Character</span></h3><p><span lang="ru">Спокойный профессионал с чувством юмора. Как Джарвис: всё знает, никуда не спешит, всегда рад помочь.</span><span lang="en">A calm professional with a sense of humour. Like Jarvis: knows everything, never in a rush, always glad to help.</span></p></div>
+    <div><h3><span lang="ru">Мы такие</span><span lang="en">We are</span></h3><p><span lang="ru">дружелюбные, точные, технологичные, живые</span><span lang="en">friendly, precise, technical, alive</span></p></div>
+    <div><h3><span lang="ru">Мы не такие</span><span lang="en">We are not</span></h3><p><span lang="ru">холодные, пафосные, шаблонные, кричащие</span><span lang="en">cold, pompous, templated, shouty</span></p></div>
+  </div>
+  <span class="no">03</span>
+</section>
+
+<!-- 4 logo idea -->
+<section class="pg" id="logo">
+  <p class="sec"><span lang="ru">Логотип</span><span lang="en">Logo</span></p>
+  <h2 class="silver"><span lang="ru">Буква, которая оживает</span><span lang="en">A letter that comes alive</span></h2>
+  <div class="g2" style="align-items:center">
+    <div>
+      <p class="lead"><span lang="ru">Знак - буква Z, собранная из плиток на сетке 7×7. Угловая плитка отрывается и улетает частицами: так же, как мой портрет на главной странице собирается из точек и рассыпается под курсором.</span><span lang="en">The mark is a Z built from tiles on a 7×7 grid. The corner tile breaks away and drifts off as particles, just like my portrait on the home page assembles from dots and scatters under the cursor.</span></p>
+      <p class="lead" style="margin-top:18px"><span lang="ru">Смысл простой: ручная рутина разбирается на кусочки и улетает, а остаётся чистая работающая система.</span><span lang="en">The idea is simple: manual routine breaks into pieces and flies away, leaving a clean, working system.</span></p>
+    </div>
+    <div class="stage" style="height:420px;background:radial-gradient(60% 60% at 50% 45%,rgba(70,110,220,.28),transparent 70%)"><canvas id="lp2" width="420" height="380" style="width:420px;height:380px" aria-label="Знак из частиц"></canvas></div>
+  </div>
+  <span class="foot"><span lang="ru">Наведите курсор на знак, плитки разлетятся</span><span lang="en">Hover the mark and the tiles scatter</span></span><span class="no">04</span>
+</section>
+
+<!-- 5 construction -->
+<section class="pg">
+  <p class="sec"><span lang="ru">Логотип / построение</span><span lang="en">Logo / construction</span></p>
+  <div class="g2" style="grid-template-columns:470px 1fr;align-items:center">
+    <svg viewBox="0 0 94 94" class="cons" aria-label="Построение знака"><g class="grid"><line x1="19" y1="19" x2="19" y2="75"/><line x1="19" y1="19" x2="75" y2="19"/><line x1="27" y1="19" x2="27" y2="75"/><line x1="19" y1="27" x2="75" y2="27"/><line x1="35" y1="19" x2="35" y2="75"/><line x1="19" y1="35" x2="75" y2="35"/><line x1="43" y1="19" x2="43" y2="75"/><line x1="19" y1="43" x2="75" y2="43"/><line x1="51" y1="19" x2="51" y2="75"/><line x1="19" y1="51" x2="75" y2="51"/><line x1="59" y1="19" x2="59" y2="75"/><line x1="19" y1="59" x2="75" y2="59"/><line x1="67" y1="19" x2="67" y2="75"/><line x1="19" y1="67" x2="75" y2="67"/><line x1="75" y1="19" x2="75" y2="75"/><line x1="19" y1="75" x2="75" y2="75"/></g><rect x="3" y="3" width="88" height="88" fill="none" stroke="#a597ff" stroke-dasharray="1.5 1.5" stroke-width=".4"/><rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#8fcaff" fill-opacity="0.85"/><rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.7" fill="#8fcaff" fill-opacity="0.7224999999999999"/><rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.7" fill="#8fcaff" fill-opacity="0.4675"/><rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.7" fill="#8fcaff" fill-opacity="0.2975"/><rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.7" fill="#8fcaff" fill-opacity="0.2125"/><g class="dim"><line x1="19" y1="80" x2="75" y2="80"/><text x="47" y="85">7 × 8u = 56u</text><line x1="12" y1="19" x2="12" y2="27"/><text x="6" y="24">8u</text><text x="20" y="16.4">6.6u</text><text x="78" y="22">r 1.7u</text></g></svg>
+    <div>
+      <h2 class="silver"><span lang="ru">Сетка и модуль</span><span lang="en">Grid and module</span></h2>
+      <table>
+        <tr><th><span lang="ru">Параметр</span><span lang="en">Parameter</span></th><th><span lang="ru">Значение</span><span lang="en">Value</span></th></tr>
+        <tr><td><span lang="ru">Модуль u</span><span lang="en">Module u</span></td><td><span lang="ru">1/94 стороны поля</span><span lang="en">1/94 of the box side</span></td></tr>
+        <tr><td><span lang="ru">Ячейка</span><span lang="en">Cell</span></td><td>8u</td></tr>
+        <tr><td><span lang="ru">Плитка</span><span lang="en">Tile</span></td><td>6.6u, <span lang="ru">зазор</span><span lang="en">gap</span> 1.4u</td></tr>
+        <tr><td><span lang="ru">Скругление плитки</span><span lang="en">Tile radius</span></td><td>1.7u</td></tr>
+        <tr><td><span lang="ru">Диагональ</span><span lang="en">Diagonal</span></td><td><span lang="ru">2 плитки в ширину</span><span lang="en">2 tiles wide</span></td></tr>
+        <tr><td><span lang="ru">Частицы</span><span lang="en">Particles</span></td><td><span lang="ru">4 плитки 78%, прозрачность 85/55/35/25%</span><span lang="en">4 tiles at 78%, opacity 85/55/35/25%</span></td></tr>
+        <tr><td><span lang="ru">Градиент</span><span lang="en">Gradient</span></td><td>#F2F5FF → #8FCAFF → #A597FF, 135°</td></tr>
+      </table>
+    </div>
+  </div>
+  <span class="no">05</span>
+</section>
+
+<!-- 6 clear space / min size -->
+<section class="pg">
+  <p class="sec"><span lang="ru">Логотип / поле и размер</span><span lang="en">Logo / clear space and size</span></p>
+  <h2 class="silver"><span lang="ru">Пусть дышит</span><span lang="en">Let it breathe</span></h2>
+  <div class="g2">
+    <div>
+      <div class="stage" style="height:330px;position:relative">
+        <div style="position:relative;padding:36px;border:1px dashed #a597ff;border-radius:6px"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94"><defs><linearGradient id="g3" gradientUnits="userSpaceOnUse" x1="19" y1="19" x2="75" y2="75"><stop offset="0" stop-color="#F2F5FF"/><stop offset=".5" stop-color="#8FCAFF"/><stop offset="1" stop-color="#A597FF"/></linearGradient></defs>
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g3)"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="url(#g3)" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="url(#g3)" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="url(#g3)" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="url(#g3)" opacity="0.25"/>
+</svg></div>
+      </div>
+      <p class="muted" style="margin-top:14px"><span lang="ru">Охранное поле равно двум ячейкам сетки (16u) с каждой стороны. Внутрь не заходят текст, края экрана и другие знаки.</span><span lang="en">Clear space equals two grid cells (16u) on every side. No text, screen edges or other marks inside it.</span></p>
+    </div>
+    <div>
+      <div class="stage" style="height:330px"><div class="sizes">
+        <div><svg class="s96" viewBox="0 0 94 94"><use href="#mk-ref"/></svg>96 px</div>
+        <div><svg class="s48" viewBox="0 0 94 94"><use href="#mk-ref"/></svg>48 px</div>
+        <div><svg class="s24" viewBox="0 0 94 94"><use href="#mk-ref"/></svg>24 px<br><span lang="ru">минимум</span><span lang="en">minimum</span></div>
+      </div></div>
+      <p class="muted" style="margin-top:14px"><span lang="ru">Знак: не меньше 24 px на экране и 8 мм в печати. Меньше 24 px используйте иконку приложения: на тёмной плашке плитки читаются лучше.</span><span lang="en">Mark: at least 24 px on screen and 8 mm in print. Below 24 px use the app icon, tiles read better on the dark plate.</span></p>
+    </div>
+  </div>
+  <span class="no">06</span>
+</section>
+
+<!-- 7 variants -->
+<section class="pg">
+  <p class="sec"><span lang="ru">Логотип / варианты</span><span lang="en">Logo / variants</span></p>
+  <h2 class="silver"><span lang="ru">Четыре версии</span><span lang="en">Four versions</span></h2>
+  <div class="g4">
+    <div><div class="stage" style="background:var(--ink)"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94"><defs><linearGradient id="g4" gradientUnits="userSpaceOnUse" x1="19" y1="19" x2="75" y2="75"><stop offset="0" stop-color="#F2F5FF"/><stop offset=".5" stop-color="#8FCAFF"/><stop offset="1" stop-color="#A597FF"/></linearGradient></defs>
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g4)"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="url(#g4)" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="url(#g4)" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="url(#g4)" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="url(#g4)" opacity="0.25"/>
+</svg></div><h3 style="margin-top:14px"><span lang="ru">Основной знак</span><span lang="en">Primary mark</span></h3><p class="muted"><span lang="ru">На тёмном фоне. Главная версия.</span><span lang="en">On dark backgrounds. The main version.</span></p></div>
+    <div><div class="stage" style="background:radial-gradient(circle,#1b2a5a,#070c19)"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94"><defs><linearGradient id="g15" gradientUnits="userSpaceOnUse" x1="19" y1="19" x2="75" y2="75"><stop offset="0" stop-color="#F2F5FF"/><stop offset=".5" stop-color="#8FCAFF"/><stop offset="1" stop-color="#A597FF"/></linearGradient></defs><rect width="94" height="94" rx="22" fill="#0A1122"/>
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g15)"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="url(#g15)" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="url(#g15)" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="url(#g15)" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="url(#g15)" opacity="0.25"/>
+</svg></div><h3 style="margin-top:14px"><span lang="ru">Иконка приложения</span><span lang="en">App icon</span></h3><p class="muted"><span lang="ru">Аватары, фавикон, ярлыки.</span><span lang="en">Avatars, favicon, shortcuts.</span></p></div>
+    <div><div class="stage" style="background:#2a3a73"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94">
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#E9EEFF"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="#E9EEFF" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="#E9EEFF" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="#E9EEFF" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="#E9EEFF" opacity="0.25"/>
+</svg></div><h3 style="margin-top:14px"><span lang="ru">Моно светлый</span><span lang="en">Mono light</span></h3><p class="muted"><span lang="ru">На цветных и фото-фонах.</span><span lang="en">On coloured and photo backgrounds.</span></p></div>
+    <div><div class="stage" style="background:#eef2ff"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94">
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="#050913"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="#050913" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="#050913" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="#050913" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="#050913" opacity="0.25"/>
+</svg></div><h3 style="margin-top:14px"><span lang="ru">Моно тёмный</span><span lang="en">Mono dark</span></h3><p class="muted"><span lang="ru">Светлые документы и печать.</span><span lang="en">Light documents and print.</span></p></div>
+  </div>
+  <span class="no">07</span>
+</section>
+
+<!-- 8 lockups -->
+<section class="pg">
+  <p class="sec"><span lang="ru">Логотип / локапы</span><span lang="en">Logo / lock-ups</span></p>
+  <h2 class="silver"><span lang="ru">Знак и имя</span><span lang="en">Mark and name</span></h2>
+  <div class="g2">
+    <div class="stage" style="height:300px"><div class="lock"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94"><defs><linearGradient id="g5" gradientUnits="userSpaceOnUse" x1="19" y1="19" x2="75" y2="75"><stop offset="0" stop-color="#F2F5FF"/><stop offset=".5" stop-color="#8FCAFF"/><stop offset="1" stop-color="#A597FF"/></linearGradient></defs>
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g5)"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="url(#g5)" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="url(#g5)" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="url(#g5)" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="url(#g5)" opacity="0.25"/>
+</svg><div class="wm"><span lang="ru">ЗАХАР СОКОЛИНСКИЙ</span><span lang="en">ZAKHAR SOKOLINSKY</span><small>AI · automation · web</small></div></div></div>
+    <div class="stage" style="height:300px"><div class="vlock"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94"><defs><linearGradient id="g6" gradientUnits="userSpaceOnUse" x1="19" y1="19" x2="75" y2="75"><stop offset="0" stop-color="#F2F5FF"/><stop offset=".5" stop-color="#8FCAFF"/><stop offset="1" stop-color="#A597FF"/></linearGradient></defs>
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g6)"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="url(#g6)" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="url(#g6)" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="url(#g6)" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="url(#g6)" opacity="0.25"/>
+</svg><div class="wm" style="font-size:24px"><span lang="ru">ЗАХАР<br>СОКОЛИНСКИЙ</span><span lang="en">ZAKHAR<br>SOKOLINSKY</span><small>AI · automation · web</small></div></div></div>
+  </div>
+  <div class="g2" style="margin-top:18px">
+    <p class="muted"><span lang="ru">Горизонтальный: шапка сайта, подпись письма, документы. Высота знака равна двум строкам имени, расстояние до имени 1/4 знака.</span><span lang="en">Horizontal: site header, email signature, documents. Mark height equals two name lines, gap to the name is 1/4 of the mark.</span></p>
+    <p class="muted"><span lang="ru">Вертикальный: обложки, визитки, квадратные форматы. Имя по центру, расстояние до знака 1/6 его высоты.</span><span lang="en">Vertical: covers, business cards, square formats. Name centred, gap to the mark is 1/6 of its height.</span></p>
+  </div>
+  <span class="no">08</span>
+</section>
+
+<!-- 9 misuse -->
+<section class="pg">
+  <p class="sec"><span lang="ru">Логотип / так нельзя</span><span lang="en">Logo / don'ts</span></p>
+  <h2 class="silver"><span lang="ru">Шесть ошибок</span><span lang="en">Six mistakes</span></h2>
+  <div class="g3 fill">
+    <div class="bad"><div style="transform:scaleX(1.6)"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94"><defs><linearGradient id="g7" gradientUnits="userSpaceOnUse" x1="19" y1="19" x2="75" y2="75"><stop offset="0" stop-color="#F2F5FF"/><stop offset=".5" stop-color="#8FCAFF"/><stop offset="1" stop-color="#A597FF"/></linearGradient></defs>
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g7)"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="url(#g7)" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="url(#g7)" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="url(#g7)" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="url(#g7)" opacity="0.25"/>
+</svg></div><span><span lang="ru">Не растягивать</span><span lang="en">Don't stretch</span></span></div>
+    <div class="bad"><div style="transform:rotate(-24deg)"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94"><defs><linearGradient id="g8" gradientUnits="userSpaceOnUse" x1="19" y1="19" x2="75" y2="75"><stop offset="0" stop-color="#F2F5FF"/><stop offset=".5" stop-color="#8FCAFF"/><stop offset="1" stop-color="#A597FF"/></linearGradient></defs>
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g8)"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="url(#g8)" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="url(#g8)" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="url(#g8)" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="url(#g8)" opacity="0.25"/>
+</svg></div><span><span lang="ru">Не поворачивать</span><span lang="en">Don't rotate</span></span></div>
+    <div class="bad"><div style="filter:hue-rotate(150deg) saturate(3)"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94"><defs><linearGradient id="g9" gradientUnits="userSpaceOnUse" x1="19" y1="19" x2="75" y2="75"><stop offset="0" stop-color="#F2F5FF"/><stop offset=".5" stop-color="#8FCAFF"/><stop offset="1" stop-color="#A597FF"/></linearGradient></defs>
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g9)"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="url(#g9)" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="url(#g9)" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="url(#g9)" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="url(#g9)" opacity="0.25"/>
+</svg></div><span><span lang="ru">Не перекрашивать</span><span lang="en">Don't recolour</span></span></div>
+    <div class="bad"><div style="filter:drop-shadow(6px 8px 0 #ff4fa3) drop-shadow(0 0 14px #ffe14f)"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94"><defs><linearGradient id="g10" gradientUnits="userSpaceOnUse" x1="19" y1="19" x2="75" y2="75"><stop offset="0" stop-color="#F2F5FF"/><stop offset=".5" stop-color="#8FCAFF"/><stop offset="1" stop-color="#A597FF"/></linearGradient></defs>
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g10)"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="url(#g10)" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="url(#g10)" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="url(#g10)" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="url(#g10)" opacity="0.25"/>
+</svg></div><span><span lang="ru">Без теней и обводок</span><span lang="en">No shadows or outlines</span></span></div>
+    <div class="bad lt" style="background:#dfe6f5"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94"><defs><linearGradient id="g11" gradientUnits="userSpaceOnUse" x1="19" y1="19" x2="75" y2="75"><stop offset="0" stop-color="#F2F5FF"/><stop offset=".5" stop-color="#8FCAFF"/><stop offset="1" stop-color="#A597FF"/></linearGradient></defs>
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g11)"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="url(#g11)" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="url(#g11)" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="url(#g11)" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="url(#g11)" opacity="0.25"/>
+</svg><span><span lang="ru">Не ставить на светлый без моно</span><span lang="en">No light background without mono</span></span></div>
+    <div class="bad"><div style="display:flex;align-items:center;gap:6px"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94"><defs><linearGradient id="g12" gradientUnits="userSpaceOnUse" x1="19" y1="19" x2="75" y2="75"><stop offset="0" stop-color="#F2F5FF"/><stop offset=".5" stop-color="#8FCAFF"/><stop offset="1" stop-color="#A597FF"/></linearGradient></defs>
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g12)"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="url(#g12)" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="url(#g12)" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="url(#g12)" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="url(#g12)" opacity="0.25"/>
+</svg><b style="font:800 22px var(--display);color:#e9eeff">AI!!!</b></div><span><span lang="ru">Не добавлять слова к знаку</span><span lang="en">Don't add words to the mark</span></span></div>
+  </div>
+  <span class="no">09</span>
+</section>
+
+<!-- 10 colour -->
+<section class="pg" id="colour">
+  <p class="sec"><span lang="ru">Цвет</span><span lang="en">Colour</span></p>
+  <h2 class="silver"><span lang="ru">Ночное небо и лёд</span><span lang="en">Night sky and ice</span></h2>
+  <div class="g4 fill" style="grid-template-columns:repeat(8,1fr);gap:12px">
+    <div class="sw"><i style="background:#050913"></i><div><b>Ink</b>#050913<br>5 9 19</div></div>
+    <div class="sw"><i style="background:#0a1122"></i><div><b>Deep</b>#0A1122<br>10 17 34</div></div>
+    <div class="sw"><i style="background:#e9eeff"></i><div><b>Text</b>#E9EEFF<br>233 238 255</div></div>
+    <div class="sw"><i style="background:#8a96b6"></i><div><b>Mute</b>#8A96B6<br>138 150 182</div></div>
+    <div class="sw"><i style="background:#7d89a8"></i><div><b>Dim</b>#7D89A8<br>125 137 168</div></div>
+    <div class="sw"><i style="background:#8fcaff"></i><div><b>Ice</b>#8FCAFF<br>143 202 255</div></div>
+    <div class="sw"><i style="background:#a597ff"></i><div><b>Peri</b>#A597FF<br>165 151 255</div></div>
+    <div class="sw"><i style="background:#5fe3b1"></i><div><b>Mint</b>#5FE3B1<br>95 227 177</div></div>
+  </div>
+  <div class="g2" style="margin-top:22px">
+    <p class="muted"><span lang="ru">Ink - фон всего. Deep - карточки и плашки. Text, Mute и Dim - три уровня текста. Ice и Peri - акценты и градиенты. Mint - только статус «онлайн» и успех.</span><span lang="en">Ink is the background. Deep is cards and plates. Text, Mute and Dim are three text levels. Ice and Peri are accents and gradients. Mint is only for "online" status and success.</span></p>
+    <p class="muted"><span lang="ru">Красного и оранжевого в бренде нет. Ошибки показываем мягким розовым #FF9D9D и только в интерфейсе.</span><span lang="en">There is no red or orange in the brand. Errors use a soft pink #FF9D9D, in UI only.</span></p>
+  </div>
+  <span class="no">10</span>
+</section>
+
+<!-- 11 ratio + gradients -->
+<section class="pg">
+  <p class="sec"><span lang="ru">Цвет / пропорции и градиенты</span><span lang="en">Colour / ratio and gradients</span></p>
+  <h2 class="silver"><span lang="ru">Много тишины, мало света</span><span lang="en">Lots of calm, a little light</span></h2>
+  <div class="ratio"><i style="flex:60;background:#050913;color:#8a96b6">Ink 60%</i><i style="flex:18;background:#0a1122;color:#8a96b6">Deep 18%</i><i style="flex:12;background:#e9eeff;color:#050913">Text 12%</i><i style="flex:5;background:#8fcaff;color:#050913">5%</i><i style="flex:3;background:#a597ff"></i><i style="flex:2;background:#5fe3b1"></i></div>
+  <div class="g4" style="margin-top:26px">
+    <div><div class="grad" style="background:linear-gradient(180deg,#f6f8ff,#cbd5ee 42%,#5a6990);color:#050913">Silver</div><p class="muted" style="margin-top:10px"><span lang="ru">Только для крупных заголовков, сверху вниз.</span><span lang="en">Large headings only, top to bottom.</span></p></div>
+    <div><div class="grad" style="background:linear-gradient(90deg,#8fcaff,#a597ff);color:#050913">Ice → Peri</div><p class="muted" style="margin-top:10px"><span lang="ru">Тумблеры, прогресс, точки, частицы.</span><span lang="en">Toggles, progress, dots, particles.</span></p></div>
+    <div><div class="grad" style="background:radial-gradient(circle at 35% 30%,#d9ecff,#6aa8ff 35%,#5b44d6 70%,#1b1748)">Orb</div><p class="muted" style="margin-top:10px"><span lang="ru">Только шар Джарвиса.</span><span lang="en">Jarvis orb only.</span></p></div>
+    <div><div class="grad" style="background:radial-gradient(90% 120% at 50% 0%,#1d2f66,#0a1124)">Night</div><p class="muted" style="margin-top:10px"><span lang="ru">Фон блоков-призывов и шторки.</span><span lang="en">Call-to-action blocks and the curtain.</span></p></div>
+  </div>
+  <span class="no">11</span>
+</section>
+
+<!-- 12 contrast -->
+<section class="pg">
+  <p class="sec"><span lang="ru">Цвет / доступность</span><span lang="en">Colour / accessibility</span></p>
+  <div class="g2" style="grid-template-columns:1fr 1.25fr">
+    <div>
+      <h2 class="silver"><span lang="ru">Читается всеми</span><span lang="en">Readable by all</span></h2>
+      <p class="lead" style="font-size:17px"><span lang="ru">Коэффициенты посчитаны по формуле WCAG 2.2. Основной текст держим не ниже AA (4.5:1). Dim годится для подписей от 13 px.</span><span lang="en">Ratios are computed with the WCAG 2.2 formula. Body text stays at AA (4.5:1) or higher. Dim is fine for captions from 13 px.</span></p>
+    </div>
+    <table><tr><th></th><th><span lang="ru">Текст / фон</span><span lang="en">Text / background</span></th><th><span lang="ru">Контраст</span><span lang="en">Ratio</span></th><th>WCAG</th></tr><tr><td><span class="sw2" style="background:#050913;color:#e9eeff">Aa</span></td><td>text / ink</td><td><b>17.2:1</b></td><td class="gr">AAA</td></tr><tr><td><span class="sw2" style="background:#0a1122;color:#e9eeff">Aa</span></td><td>text / deep</td><td><b>16.3:1</b></td><td class="gr">AAA</td></tr><tr><td><span class="sw2" style="background:#050913;color:#8a96b6">Aa</span></td><td>mute / ink</td><td><b>6.7:1</b></td><td class="gr">AA</td></tr><tr><td><span class="sw2" style="background:#050913;color:#7d89a8">Aa</span></td><td>dim / ink</td><td><b>5.7:1</b></td><td class="gr">AA</td></tr><tr><td><span class="sw2" style="background:#050913;color:#8fcaff">Aa</span></td><td>ice / ink</td><td><b>11.4:1</b></td><td class="gr">AAA</td></tr><tr><td><span class="sw2" style="background:#050913;color:#a597ff">Aa</span></td><td>peri / ink</td><td><b>8.0:1</b></td><td class="gr">AAA</td></tr><tr><td><span class="sw2" style="background:#050913;color:#5fe3b1">Aa</span></td><td>mint / ink</td><td><b>12.4:1</b></td><td class="gr">AAA</td></tr><tr><td><span class="sw2" style="background:#e9eeff;color:#050913">Aa</span></td><td>ink / text</td><td><b>17.2:1</b></td><td class="gr">AAA</td></tr><tr><td><span class="sw2" style="background:#0b1223;color:#8a96b6">Aa</span></td><td>mute / glass</td><td><b>6.3:1</b></td><td class="gr">AA</td></tr></table>
+  </div>
+  <span class="no">12</span>
+</section>
+
+<!-- 13 type -->
+<section class="pg" id="type">
+  <p class="sec"><span lang="ru">Типографика</span><span lang="en">Typography</span></p>
+  <h2 class="silver"><span lang="ru">Три голоса</span><span lang="en">Three voices</span></h2>
+  <div class="g3 fill">
+    <div class="card"><p style="font:800 84px/1 var(--display);color:var(--text);letter-spacing:-.04em">Аа Zz</p><h3 style="margin-top:16px">Unbounded</h3><p><span lang="ru">Заголовки, цифры, кнопки-ярлыки. 600 и 800. Широкий, уверенный.</span><span lang="en">Headings, numbers, labels. 600 and 800. Wide and confident.</span></p></div>
+    <div class="card"><p style="font:400 84px/1 var(--body);color:var(--text)">Аа Zz</p><h3 style="margin-top:16px">Manrope</h3><p><span lang="ru">Весь текст и интерфейс. 300 для лидов, 400 текст, 700 акценты.</span><span lang="en">All text and UI. 300 for leads, 400 body, 700 emphasis.</span></p></div>
+    <div class="card"><p style="font:italic 500 96px/1 var(--serif);color:var(--text)">Аа Zz</p><h3 style="margin-top:16px">Cormorant Garamond</h3><p><span lang="ru">Только курсив, одно-два слова в заголовке. Мягкость и человечность.</span><span lang="en">Italic only, one or two words in a heading. Softness and warmth.</span></p></div>
+  </div>
+  <p class="muted" style="margin-top:22px"><span lang="ru">Все три шрифта поддерживают кириллицу. Подключение: Google Fonts, display=swap. Запасные: system-ui и Georgia.</span><span lang="en">All three fonts support Cyrillic. Loaded from Google Fonts, display=swap. Fallbacks: system-ui and Georgia.</span></p>
+  <span class="no">13</span>
+</section>
+
+<!-- 14 scale -->
+<section class="pg">
+  <p class="sec"><span lang="ru">Типографика / шкала</span><span lang="en">Typography / scale</span></p>
+  <div class="spec"><small>Display</small><span style="font:800 64px/1 var(--display);letter-spacing:-.045em" class="silver"><span lang="ru">Привет</span><span lang="en">Hello</span></span><code>Unbounded 800 · 42-118 · -0.045em</code></div>
+  <div class="spec"><small>H1 <span lang="ru">кейса</span><span lang="en">case</span></small><span style="font:800 40px/1 var(--display);letter-spacing:-.045em">Bitrix24 <span class="it">→</span> PF</span><code>800 · 38-80 · -0.045em</code></div>
+  <div class="spec"><small>H3</small><span style="font:600 20px/1.2 var(--display)"><span lang="ru">Карточка проекта</span><span lang="en">Project card</span></span><code>600 · 17-20</code></div>
+  <div class="spec"><small>Lead</small><span style="font:300 21px/1.55 var(--body);color:#c9d2ec"><span lang="ru">Дорогие друзья, привет!</span><span lang="en">Hello, dear friends!</span></span><code>Manrope 300 · 18-21 · 1.55</code></div>
+  <div class="spec"><small>Body</small><span style="font:400 17px/1.65 var(--body)"><span lang="ru">Основной текст, не длиннее 60 знаков в строке.</span><span lang="en">Body text, no more than 60 characters a line.</span></span><code>400 · 17 · 1.65</code></div>
+  <div class="spec"><small>Kicker</small><span style="font:700 14px var(--body);color:var(--ice)"><span lang="ru">Самое любимое</span><span lang="en">Favourites</span></span><code>700 · 14 · ice</code></div>
+  <div class="spec"><small>Caption</small><span style="font:400 13px var(--body);color:var(--mute)"><span lang="ru">Подпись под цифрой</span><span lang="en">Caption under a number</span></span><code>400 · 13 · mute</code></div>
+  <p class="muted" style="margin-top:16px"><span lang="ru">Правила: без капса в подписях, без длинных тире (только дефис), кавычки «ёлочки» в русском и "лапки" в английском, цифры всегда Unbounded.</span><span lang="en">Rules: no all-caps labels, no em dashes (hyphen only), «guillemets» in Russian and "quotes" in English, numbers always in Unbounded.</span></p>
+  <span class="no">14</span>
+</section>
+
+<!-- 15 grid -->
+<section class="pg" id="grid">
+  <p class="sec"><span lang="ru">Сетка, отступы, скругления</span><span lang="en">Grid, spacing, radius</span></p>
+  <h2 class="silver"><span lang="ru">Ритм и мягкость</span><span lang="en">Rhythm and softness</span></h2>
+  <div class="g3 fill">
+    <div class="card"><h3><span lang="ru">Сетка</span><span lang="en">Grid</span></h3><div style="display:grid;grid-template-columns:repeat(12,1fr);gap:4px;height:80px;margin:12px 0">
+      <i style="background:rgba(143,202,255,.18);border-radius:4px"></i><i style="background:rgba(143,202,255,.18);border-radius:4px"></i><i style="background:rgba(143,202,255,.18);border-radius:4px"></i><i style="background:rgba(143,202,255,.18);border-radius:4px"></i><i style="background:rgba(143,202,255,.18);border-radius:4px"></i><i style="background:rgba(143,202,255,.18);border-radius:4px"></i><i style="background:rgba(143,202,255,.18);border-radius:4px"></i><i style="background:rgba(143,202,255,.18);border-radius:4px"></i><i style="background:rgba(143,202,255,.18);border-radius:4px"></i><i style="background:rgba(143,202,255,.18);border-radius:4px"></i><i style="background:rgba(143,202,255,.18);border-radius:4px"></i><i style="background:rgba(143,202,255,.18);border-radius:4px"></i></div>
+      <p><span lang="ru">12 колонок, ширина до 1400 px, поля 16-56 px (4vw). Карточки работ: колонки от 360 px.</span><span lang="en">12 columns, up to 1400 px wide, margins 16-56 px (4vw). Work cards: columns from 360 px.</span></p></div>
+    <div class="card"><h3><span lang="ru">Отступы</span><span lang="en">Spacing</span></h3><div style="display:flex;align-items:flex-end;gap:8px;height:80px;margin:12px 0">
+      <i style="width:14px;height:8px;background:var(--ice);border-radius:3px"></i><i style="width:14px;height:16px;background:var(--ice);border-radius:3px"></i><i style="width:14px;height:22px;background:var(--ice);border-radius:3px"></i><i style="width:14px;height:32px;background:var(--ice);border-radius:3px"></i><i style="width:14px;height:46px;background:var(--peri);border-radius:3px"></i><i style="width:14px;height:60px;background:var(--peri);border-radius:3px"></i><i style="width:14px;height:80px;background:var(--peri);border-radius:3px"></i></div>
+      <p><span lang="ru">Шкала: 8, 16, 22, 32, 46, 60, 110. Между секциями 110 px, на телефоне 80 px.</span><span lang="en">Scale: 8, 16, 22, 32, 46, 60, 110. 110 px between sections, 80 px on phones.</span></p></div>
+    <div class="card"><h3><span lang="ru">Скругления</span><span lang="en">Radius</span></h3><div style="display:flex;align-items:flex-end;gap:10px;height:80px;margin:12px 0">
+      <i style="width:60px;height:60px;border:2px solid var(--ice);border-radius:32px 0 0 0"></i><i style="width:60px;height:60px;border:2px solid var(--ice);border-radius:22px 0 0 0"></i><i style="width:60px;height:60px;border:2px solid var(--ice);border-radius:14px 0 0 0"></i><i style="width:60px;height:30px;border:2px solid var(--peri);border-radius:99px"></i></div>
+      <p><span lang="ru">32 крупные карточки, 22 вложенные блоки, 14 мелкие плашки, 99 кнопки и чипы. Острых углов нет.</span><span lang="en">32 large cards, 22 nested blocks, 14 small plates, 99 buttons and chips. No sharp corners.</span></p></div>
+  </div>
+  <span class="no">15</span>
+</section>
+
+<!-- 16 components 1 -->
+<section class="pg" id="ui">
+  <p class="sec"><span lang="ru">Компоненты / управление</span><span lang="en">Components / controls</span></p>
+  <h2 class="silver"><span lang="ru">Кнопки и тумблеры</span><span lang="en">Buttons and toggles</span></h2>
+  <div class="g2 fill">
+    <div class="card spot" style="padding:28px">
+      <h3><span lang="ru">Кнопки-пилюли</span><span lang="en">Pill buttons</span></h3>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 16px"><button class="pill solid"><span lang="ru">Написать мне</span><span lang="en">Write to me</span></button><button class="pill"><span lang="ru">Все работы</span><span lang="en">All work</span></button><button class="pill" style="width:52px;height:52px;padding:0;justify-content:center" aria-label="→"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 7l10 10M17 8v9H8"/></svg></button></div>
+      <p><span lang="ru">Одна светлая кнопка на экран, это главное действие. Остальные стеклянные. На сайте кнопки магнитные: тянутся к курсору.</span><span lang="en">One light button per screen, the main action. The rest are glass. On the site buttons are magnetic and lean toward the cursor.</span></p>
+    </div>
+    <div class="card spot" style="padding:28px">
+      <h3><span lang="ru">Тумблеры и чипы</span><span lang="en">Toggles and chips</span></h3>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 14px;align-items:center"><button class="swt" role="switch" aria-checked="true"><span lang="ru">Анимации</span><span lang="en">Motion</span><i></i></button><button class="swt" role="switch" aria-checked="false"><span lang="ru">Синий</span><span lang="en">Blue</span><i></i></button><div class="seg"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button></div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px"><span class="chip">n8n</span><span class="chip">Telegram API</span><span class="chip">GSAP</span><span class="chip">Bitrix24</span></div>
+      <p><span lang="ru">Тумблеры кликаются прямо здесь. Чипы только для технологий и тегов, не для действий.</span><span lang="en">Toggles are clickable right here. Chips are for technologies and tags only, never actions.</span></p>
+    </div>
+  </div>
+  <span class="no">16</span>
+</section>
+
+<!-- 17 components 2 -->
+<section class="pg">
+  <p class="sec"><span lang="ru">Компоненты / карточки и Джарвис</span><span lang="en">Components / cards and Jarvis</span></p>
+  <h2 class="silver"><span lang="ru">Стекло и свет</span><span lang="en">Glass and light</span></h2>
+  <div class="g3 fill">
+    <div class="card spot" style="padding:26px"><h3><span lang="ru">Стеклянная карточка</span><span lang="en">Glass card</span></h3><p><span lang="ru">Полупрозрачный синий, размытие 16 px, рамка 14% и подсветка рамки, которая идёт за курсором. Попробуйте провести мышкой.</span><span lang="en">Translucent blue, 16 px blur, a 14% border and a border glow that follows the cursor. Try moving your mouse here.</span></p></div>
+    <div class="pcard" id="tilt"><div class="th"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94"><defs><linearGradient id="g16" gradientUnits="userSpaceOnUse" x1="19" y1="19" x2="75" y2="75"><stop offset="0" stop-color="#F2F5FF"/><stop offset=".5" stop-color="#8FCAFF"/><stop offset="1" stop-color="#A597FF"/></linearGradient></defs><rect width="94" height="94" rx="22" fill="#0A1122"/>
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g16)"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="url(#g16)" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="url(#g16)" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="url(#g16)" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="url(#g16)" opacity="0.25"/>
+</svg></div><div class="m"><small>EQT Real Estate</small><h4>Bitrix24 <span class="it">→</span> PF</h4><p><span lang="ru">Наклон за курсором, блик, превью прокручивается.</span><span lang="en">Tilts with the cursor, glares, preview scrolls.</span></p></div></div>
+    <div class="card" style="padding:22px">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px"><div class="orb">J</div><div><h3 style="margin:0"><span lang="ru">Джарвис</span><span lang="en">Jarvis</span></h3><p style="color:var(--mint);font-size:12px"><span lang="ru">помощник, онлайн</span><span lang="en">helper, online</span></p></div></div>
+      <div style="display:grid;gap:8px"><div class="bub"><span lang="ru">Добрый день! Что показать?</span><span lang="en">Good day! What shall I show?</span></div><div class="bub u"><span lang="ru">Покажи ботов</span><span lang="en">Show me bots</span></div></div>
+    </div>
+  </div>
+  <span class="no">17</span>
+</section>
+
+<!-- 18 icons -->
+<section class="pg">
+  <p class="sec"><span lang="ru">Иконография</span><span lang="en">Iconography</span></p>
+  <h2 class="silver"><span lang="ru">Тонкая линия</span><span lang="en">A thin line</span></h2>
+  <div class="icons">
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10M17 8v9H8"/></svg></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h4l3-7 2 14 3-7h4"/></svg></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4L3 11l6 2 2 7 3-5 5 4z"/></svg></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="3"/><path d="M8 21h8"/></svg></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9zM16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11"/></svg></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+  </div>
+  <div class="g3" style="margin-top:30px">
+    <p class="muted"><span lang="ru">Сетка 24 px, линия 1.6 px, скруглённые концы и углы, без заливок.</span><span lang="en">24 px grid, 1.6 px stroke, round caps and joins, no fills.</span></p>
+    <p class="muted"><span lang="ru">Иконка стоит рядом с заголовком, а не в квадрате над ним.</span><span lang="en">An icon sits next to its heading, not in a tile above it.</span></p>
+    <p class="muted"><span lang="ru">Цвет иконки равен цвету текста или Ice. Без эмодзи в интерфейсе.</span><span lang="en">Icon colour equals the text colour or Ice. No emoji in the UI.</span></p>
+  </div>
+  <span class="no">18</span>
+</section>
+
+<!-- 19 images -->
+<section class="pg">
+  <p class="sec"><span lang="ru">Изображения</span><span lang="en">Imagery</span></p>
+  <div class="g2" style="grid-template-columns:400px 1fr;gap:44px;margin-top:-20px">
+    <canvas id="pp" width="380" height="500" aria-label="Мини-версия портрета из частиц"></canvas>
+    <div>
+      <h2 class="silver"><span lang="ru">Портрет из частиц</span><span lang="en">Particle portrait</span></h2>
+      <p class="lead" style="font-size:17px"><span lang="ru">Фото вырезается от фона (rembg) и разбивается на плитки 3-4 px. Цвет переводится в семь оттенков синего, 4% плиток белые искры. Плитки слетаются, расходятся под курсором и рассыпаются при прокрутке.</span><span lang="en">The photo is cut from its background (rembg) and split into 3-4 px tiles. Colour maps to seven shades of blue, 4% of tiles are white sparks. Tiles gather, part under the cursor and scatter on scroll.</span></p>
+      <h3 style="margin-top:26px"><span lang="ru">Скриншоты работ</span><span lang="en">Work screenshots</span></h3>
+      <p class="muted"><span lang="ru">Снимаем в 1440 px шириной, во всю страницу, сохраняем в WebP q80. В карточке выравнивание по верху, скругление 32, тонкая рамка. При наведении скриншот медленно прокручивается вниз, как живой сайт. Без мокапов-телефонов на столе и без размытых кадров.</span><span lang="en">Capture at 1440 px wide, full page, save as WebP q80. In a card: top-aligned, 32 radius, thin border. On hover the screenshot slowly scrolls down like a live site. No phone-on-a-desk mock-ups, no blurry frames.</span></p>
+    </div>
+  </div>
+  <span class="no">19</span>
+</section>
+
+<!-- 20 motion -->
+<section class="pg go" id="motion">
+  <p class="sec"><span lang="ru">Моушн</span><span lang="en">Motion</span></p>
+  <h2 class="silver"><span lang="ru">Плавно, как дыхание</span><span lang="en">Smooth as breathing</span></h2>
+  <div class="g3">
+    <div>
+      <svg class="curve" viewBox="0 0 300 150" preserveAspectRatio="none"><defs><linearGradient id="cg"><stop offset="0" stop-color="#8fcaff"/><stop offset="1" stop-color="#a597ff"/></linearGradient></defs><path d="M20 130 C 60 10, 120 20, 280 20"/></svg>
+      <h3 style="margin-top:12px"><span lang="ru">Кривые</span><span lang="en">Easing</span></h3><p class="muted">expo.out <code>cubic-bezier(.16,1,.3,1)</code> <span lang="ru">для появлений, expo.inOut для шторки. Без пружин и отскоков.</span><span lang="en">for reveals, expo.inOut for the curtain. No springs or bounces.</span></p>
+    </div>
+    <div>
+      <div class="cur-demo"><span lang="ru">Работы</span><span lang="en">Work</span><div class="cv"><span class="silver"><span lang="ru">Обо мне</span><span lang="en">About</span></span></div></div>
+      <h3 style="margin-top:12px"><span lang="ru">Шторка</span><span lang="en">Curtain</span></h3><p class="muted"><span lang="ru">Между страницами: въезд 0.55 с, название раздела, выезд 0.65 с.</span><span lang="en">Between pages: in 0.55 s, section name, out 0.65 s.</span></p>
+    </div>
+    <div>
+      <canvas id="lp" width="360" height="150" aria-label="Частицы"></canvas>
+      <h3 style="margin-top:12px"><span lang="ru">Частицы</span><span lang="en">Particles</span></h3><p class="muted"><span lang="ru">Пружина 0.045, затухание 0.86, радиус курсора 120 px.</span><span lang="en">Spring 0.045, damping 0.86, cursor radius 120 px.</span></p>
+    </div>
+  </div>
+  <table style="margin-top:22px"><tr><th><span lang="ru">Токен</span><span lang="en">Token</span></th><th><span lang="ru">Длительность</span><span lang="en">Duration</span></th><th><span lang="ru">Где</span><span lang="en">Where</span></th></tr>
+    <tr><td>micro</td><td>0.2-0.3 s</td><td><span lang="ru">наведение, тумблер</span><span lang="en">hover, toggle</span></td></tr>
+    <tr><td>reveal</td><td>0.6-1.0 s</td><td><span lang="ru">появление блоков при прокрутке, шаг 0.05-0.1 с</span><span lang="en">blocks on scroll, stagger 0.05-0.1 s</span></td></tr>
+    <tr><td>hero</td><td>1.2-1.4 s</td><td><span lang="ru">интро, заголовки по буквам, сборка портрета</span><span lang="en">intro, letter-by-letter headings, portrait</span></td></tr></table>
+  <span class="foot"><span lang="ru">При prefers-reduced-motion и тумблере «Анимации» выключено всё движение.</span><span lang="en">With prefers-reduced-motion or the Motion toggle off, all motion stops.</span></span><span class="no">20</span>
+</section>
+
+<!-- 21 voice -->
+<section class="pg" id="voice">
+  <p class="sec"><span lang="ru">Голос и тон</span><span lang="en">Voice and tone</span></p>
+  <h2 class="silver"><span lang="ru">Как с другом</span><span lang="en">Like a friend</span></h2>
+  <div class="g2" style="grid-template-columns:.8fr 1.2fr">
+    <div>
+      <p class="lead" style="font-size:17px"><span lang="ru">Пишу от первого лица, тепло и вежливо. Рассказываю, а не продаю. Короткие фразы, простые слова, честные цифры, немного улыбки.</span><span lang="en">I write in the first person, warmly and politely. I tell, not sell. Short sentences, simple words, honest numbers, a bit of a smile.</span></p>
+      <ul style="margin-top:18px;padding-left:18px;color:#c9d2ec;font-size:14.5px;display:grid;gap:6px"><li><span lang="ru">Обращение: «вы», «дорогие друзья»</span><span lang="en">Address: "you", "dear friends"</span></li><li><span lang="ru">Без длинных тире и капса</span><span lang="en">No em dashes, no all caps</span></li><li><span lang="ru">Кнопка говорит, что будет: «Написать мне»</span><span lang="en">A button says what happens: "Write to me"</span></li><li><span lang="ru">Ошибки без извинений, с выходом</span><span lang="en">Errors without apologies, with a way out</span></li></ul>
+    </div>
+    <div class="dd">
+      <div class="ok"><small><span lang="ru">Так</span><span lang="en">Do</span></small><span lang="ru">Дорогие друзья, привет! Сейчас всё покажу.</span><span lang="en">Hello, dear friends! Let me show you around.</span></div>
+      <div class="no2"><small><span lang="ru">Не так</span><span lang="en">Don't</span></small><span lang="ru">Предоставляю полный спектр digital-услуг.</span><span lang="en">Providing a full range of digital services.</span></div>
+      <div class="ok"><small><span lang="ru">Так</span><span lang="en">Do</span></small><span lang="ru">Через пару минут объявление уже на портале.</span><span lang="en">A couple of minutes later the listing is live.</span></div>
+      <div class="no2"><small><span lang="ru">Не так</span><span lang="en">Don't</span></small><span lang="ru">Инновационное решение для оптимизации бизнес-процессов.</span><span lang="en">An innovative solution for business process optimisation.</span></div>
+      <div class="ok"><small><span lang="ru">Так</span><span lang="en">Do</span></small><span lang="ru">Не расслышал, попробуйте ещё раз или напишите.</span><span lang="en">I didn't catch that, try again or type it.</span></div>
+      <div class="no2"><small><span lang="ru">Не так</span><span lang="en">Don't</span></small><span lang="ru">ОШИБКА! Распознавание недоступно.</span><span lang="en">ERROR! Recognition unavailable.</span></div>
+    </div>
+  </div>
+  <span class="no">21</span>
+</section>
+
+<!-- 22 carriers -->
+<section class="pg" id="carriers">
+  <p class="sec"><span lang="ru">Носители</span><span lang="en">Brand carriers</span></p>
+  <h2 class="silver"><span lang="ru">Бренд в жизни</span><span lang="en">The brand in use</span></h2>
+  <div class="g2" style="grid-template-columns:auto 1fr;gap:30px;align-items:center">
+    <div style="text-align:center"><div class="tg"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94"><defs><linearGradient id="g17" gradientUnits="userSpaceOnUse" x1="19" y1="19" x2="75" y2="75"><stop offset="0" stop-color="#F2F5FF"/><stop offset=".5" stop-color="#8FCAFF"/><stop offset="1" stop-color="#A597FF"/></linearGradient></defs><rect width="94" height="94" rx="22" fill="#0A1122"/>
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g17)"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="url(#g17)" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="url(#g17)" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="url(#g17)" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="url(#g17)" opacity="0.25"/>
+</svg></div><p class="muted" style="margin-top:8px"><span lang="ru">Аватар Telegram</span><span lang="en">Telegram avatar</span></p></div>
+    <div class="cover-sm"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94"><defs><linearGradient id="g13" gradientUnits="userSpaceOnUse" x1="19" y1="19" x2="75" y2="75"><stop offset="0" stop-color="#F2F5FF"/><stop offset=".5" stop-color="#8FCAFF"/><stop offset="1" stop-color="#A597FF"/></linearGradient></defs>
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g13)"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="url(#g13)" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="url(#g13)" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="url(#g13)" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="url(#g13)" opacity="0.25"/>
+</svg><div><b style="font:800 26px/1.05 var(--display);display:block"><span lang="ru">Рутина работает сама</span><span lang="en">Routine runs itself</span></b><span style="color:var(--mute);font-size:13px"><span lang="ru">AI-автоматизация, боты и сайты · t.me/sklnsky</span><span lang="en">AI automation, bots and websites · t.me/sklnsky</span></span></div></div>
+  </div>
+  <div class="g3" style="grid-template-columns:270px 270px 1fr;margin-top:24px;align-items:center">
+    <div class="bc"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94"><defs><linearGradient id="g14" gradientUnits="userSpaceOnUse" x1="19" y1="19" x2="75" y2="75"><stop offset="0" stop-color="#F2F5FF"/><stop offset=".5" stop-color="#8FCAFF"/><stop offset="1" stop-color="#A597FF"/></linearGradient></defs>
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g14)"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="url(#g14)" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="url(#g14)" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="url(#g14)" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="url(#g14)" opacity="0.25"/>
+</svg><div><b style="font:800 15px var(--display)"><span lang="ru">ЗАХАР СОКОЛИНСКИЙ</span><span lang="en">ZAKHAR SOKOLINSKY</span></b><br><span style="font-size:11px;color:var(--mute)"><span lang="ru">AI-автоматизация и веб</span><span lang="en">AI automation &amp; web</span></span></div></div>
+    <div class="bc back"><span>t.me/sklnsky</span><span>zsklnskky@gmail.com</span><span>github.com/zsklnskky</span><span style="color:var(--ice)"><span lang="ru">Минск, работаю со всем миром</span><span lang="en">Minsk, working worldwide</span></span></div>
+    <div class="sig"><svg class="mk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94"><defs><linearGradient id="g18" gradientUnits="userSpaceOnUse" x1="19" y1="19" x2="75" y2="75"><stop offset="0" stop-color="#F2F5FF"/><stop offset=".5" stop-color="#8FCAFF"/><stop offset="1" stop-color="#A597FF"/></linearGradient></defs><rect width="94" height="94" rx="22" fill="#0A1122"/>
+  <rect x="19.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="19.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="19.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="27.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="27.0" y="59.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="27.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="35.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="35.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="35.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="43.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="43.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="43.0" y="51.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="43.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="51.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="51.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="51.0" y="43.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="51.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="59.0" y="19.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="59.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="59.0" y="35.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="59.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="67.0" y="27.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="67.0" y="67.0" width="6.6" height="6.6" rx="1.7" fill="url(#g18)"/>
+  <rect x="75.0" y="11.8" width="5.1" height="5.1" rx="1.5" fill="url(#g18)" opacity="0.85"/>
+  <rect x="82.2" y="6.2" width="5.1" height="5.1" rx="1.5" fill="url(#g18)" opacity="0.55"/>
+  <rect x="86.2" y="15.8" width="5.1" height="5.1" rx="1.5" fill="url(#g18)" opacity="0.35"/>
+  <rect x="78.2" y="0.6" width="5.1" height="5.1" rx="1.5" fill="url(#g18)" opacity="0.25"/>
+</svg><div><b><span lang="ru">Захар Соколинский</span><span lang="en">Zakhar Sokolinsky</span></b><br><span lang="ru">AI-автоматизация, боты и сайты</span><span lang="en">AI automation, bots and websites</span><br><a href="https://t.me/sklnsky">t.me/sklnsky</a> · <a href="mailto:zsklnskky@gmail.com">zsklnskky@gmail.com</a></div></div>
+  </div>
+  <div class="g3" style="grid-template-columns:270px 270px 1fr;margin-top:8px"><p class="muted"><span lang="ru">Визитка 90×50 мм, лицо</span><span lang="en">Card 90×50 mm, front</span></p><p class="muted"><span lang="ru">Оборот</span><span lang="en">Back</span></p><p class="muted"><span lang="ru">Подпись письма, светлая тема почты</span><span lang="en">Email signature, light mail theme</span></p></div>
+  <span class="no">22</span>
+</section>
+
+<!-- 23 index -->
+<section class="pg">
+  <p class="sec"><span lang="ru">Файлы</span><span lang="en">Files</span></p>
+  <h2 class="silver"><span lang="ru">Всё под рукой</span><span lang="en">Everything at hand</span></h2>
+  <ul class="idx">
+    <li><code>brandbook.html</code> <span lang="ru">этот брендбук, RU/EN</span><span lang="en">this brand book, RU/EN</span></li>
+    <li><code>brandbook-ru.pdf</code>, <code>brandbook-en.pdf</code> <span lang="ru">для отправки</span><span lang="en">for sharing</span></li>
+    <li><code>logo-mark.svg</code> <span lang="ru">основной знак</span><span lang="en">primary mark</span></li>
+    <li><code>logo-app.svg</code> <span lang="ru">иконка приложения</span><span lang="en">app icon</span></li>
+    <li><code>logo-mono-light.svg</code>, <code>logo-mono-dark.svg</code> <span lang="ru">моно версии</span><span lang="en">mono versions</span></li>
+    <li><code>png/logo-mark-512.png</code>, <code>-1024.png</code> <span lang="ru">знак без фона</span><span lang="en">mark, transparent</span></li>
+    <li><code>png/logo-app-512.png</code>, <code>-1024.png</code> <span lang="ru">аватар</span><span lang="en">avatar</span></li>
+    <li><code>png/favicon-32.png</code>, <code>png/apple-touch-icon-180.png</code> <span lang="ru">фавиконки</span><span lang="en">favicons</span></li>
+    <li><code>build_brandbook.py</code> <span lang="ru">пересборка HTML</span><span lang="en">rebuilds the HTML</span></li>
+    <li><code>export.js</code> <span lang="ru">PDF и PNG через Playwright</span><span lang="en">PDF and PNG via Playwright</span></li>
+  </ul>
+  <p class="lead" style="margin-top:34px;font-size:17px"><span lang="ru">Спасибо, что бережёте бренд! Если что-то непонятно, пишите мне в Telegram, с радостью помогу.</span><span lang="en">Thank you for taking care of the brand! If anything is unclear, message me on Telegram, I'm happy to help.</span></p>
+  <span class="no">23</span>
+</section>
+</main>
+
+<svg width="0" height="0" style="position:absolute"><defs><linearGradient id="gref" gradientUnits="userSpaceOnUse" x1="19" y1="19" x2="75" y2="75"><stop offset="0" stop-color="#F2F5FF"/><stop offset=".5" stop-color="#8FCAFF"/><stop offset="1" stop-color="#A597FF"/></linearGradient><g id="mk-ref" fill="url(#gref)"></g></defs></svg>
+
+<script>
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const qs = new URLSearchParams(location.search);
+let lang = qs.get('lang') || (() => { try { return localStorage.getItem('bb-lang') } catch { return null } })() || 'ru';
+function setLang(l) {
+  lang = l; document.documentElement.dataset.lang = l; document.documentElement.lang = l;
+  $$('[data-l]').forEach(b => b.setAttribute('aria-pressed', b.dataset.l === l));
+  document.title = l === 'ru' ? 'Брендбук - Захар Соколинский' : 'Brand book - Zakhar Sokolinsky';
+  try { localStorage.setItem('bb-lang', l) } catch {}
+}
+$$('[data-l]').forEach(b => b.onclick = () => setLang(b.dataset.l));
+setLang(lang);
+
+/* slides scale down on mid-size screens; phones get the flowing layout instead */
+function fit() { const d = $('#deck'); d.style.zoom = innerWidth > 900 ? Math.min(1, (innerWidth - 48) / 1280) : '' }
+addEventListener('resize', fit); fit();
+addEventListener('beforeprint', () => $('#deck').style.zoom = '');
+addEventListener('afterprint', fit);
+
+/* mark tiles for <use>: copy the first inline mark's tiles */
+const first = $('.mk'); if (first) $('#mk-ref').innerHTML = [...first.querySelectorAll('rect')].map(r => r.outerHTML.replace(/fill="[^"]*"/, '')).join('');
+
+/* toggles + spotlight + tilt */
+$$('.swt').forEach(b => b.onclick = () => b.setAttribute('aria-checked', b.getAttribute('aria-checked') !== 'true'));
+document.addEventListener('pointermove', e => {
+  const c = e.target.closest?.('.spot'); if (!c) return;
+  const r = c.getBoundingClientRect(), z = parseFloat($('#deck').style.zoom) || 1;
+  c.style.setProperty('--mx', (e.clientX / z - r.left / z) + 'px'); c.style.setProperty('--my', (e.clientY / z - r.top / z) + 'px');
+});
+const tilt = $('#tilt');
+tilt.addEventListener('pointermove', e => { if (reduce) return; const r = tilt.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; tilt.style.transform = `perspective(800px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg)` });
+tilt.addEventListener('pointerleave', () => tilt.style.transform = '');
+
+/* particles: same physics as the site, small scale */
+function particles(cv, pts, opts = {}) {
+  const ctx = cv.getContext('2d'), W = cv.width, H = cv.height, n = pts.length;
+  const P = pts.map(p => ({ ...p, x: Math.random() * W, y: Math.random() * H, vx: 0, vy: 0 }));
+  const m = { x: -1e4, y: -1e4 };
+  cv.addEventListener('pointermove', e => { const r = cv.getBoundingClientRect(); m.x = (e.clientX - r.left) * W / r.width; m.y = (e.clientY - r.top) * H / r.height });
+  cv.addEventListener('pointerleave', () => { m.x = m.y = -1e4 });
+  let t = 0;
+  (function loop() {
+    t++;
+    ctx.clearRect(0, 0, W, H);
+    for (const p of P) {
+      if (reduce) { p.x = p.hx; p.y = p.hy }
+      else {
+        const dx = p.x - m.x, dy = p.y - m.y, d = Math.hypot(dx, dy) || 1, R = opts.r || 60;
+        if (d < R) { const f = (1 - d / R) * 4; p.vx += dx / d * f; p.vy += dy / d * f }
+        const tx = p.hx + (opts.idle ? Math.sin(t / 40 + p.hy * .05) * opts.idle : 0);
+        p.vx = (p.vx + (tx - p.x) * .045) * .86; p.vy = (p.vy + (p.hy - p.y) * .045) * .86; p.x += p.vx; p.y += p.vy;
+      }
+      ctx.globalAlpha = p.a ?? 1; ctx.fillStyle = p.c; ctx.fillRect(p.x, p.y, p.s, p.s);
+    }
+    if (!reduce || t < 2) requestAnimationFrame(loop);
+  })();
+}
+/* logo mark as particles */
+(() => {
+  const rects = [...first.querySelectorAll('rect')], cols = ['#f2f5ff', '#cfe2ff', '#a9d4ff', '#8fcaff', '#9cb3ff', '#a597ff'];
+  for (const [id, sc, ox, oy] of [['#lp2', 4.4, 0, -15], ['#lp', 1.9, 90, -20]]) {
+    const cv = $(id), pts = [];
+    rects.forEach(r => {
+      const x = +r.getAttribute('x'), y = +r.getAttribute('y'), w = +r.getAttribute('width'), a = +(r.getAttribute('opacity') || 1);
+      const k = Math.round(w * sc / 4); // each tile becomes k*k particles
+      for (let i = 0; i < k; i++) for (let j = 0; j < k; j++)
+        pts.push({ hx: ox + x * sc + i * 4, hy: oy + y * sc + j * 4, s: 3, a, c: cols[Math.min(5, ((x + y) / 160 * 6) | 0)] });
+    });
+    particles(cv, pts, { r: id === '#lp2' ? 90 : 45, idle: 1.2 });
+  }
+})();
+/* mini portrait */
+(() => {
+  const img = new Image(); img.src = 'data:image/webp;base64,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';
+  img.onload = () => {
+    const cv = $('#pp'), W = cv.width, H = cv.height, gap = 3, h = H * .96, w = h * img.width / img.height;
+    const gw = w / gap | 0, gh = h / gap | 0, oc = document.createElement('canvas'); oc.width = gw; oc.height = gh;
+    const o = oc.getContext('2d'); o.drawImage(img, 0, 0, gw, gh);
+    const d = o.getImageData(0, 0, gw, gh).data, B = ['#122152', '#1f3577', '#2f4fa3', '#4c74cf', '#7d9ee8', '#b4c8f6', '#e6eeff'], pts = [];
+    for (let j = 0; j < gh; j++) for (let i = 0; i < gw; i++) {
+      const k = (j * gw + i) * 4; if (d[k + 3] < 150 || Math.random() < .05 + Math.max(0, j / gh - .8) * 5) continue;
+      const l = (.299 * d[k] + .587 * d[k + 1] + .114 * d[k + 2]) / 255;
+      pts.push({ hx: (W - w) / 2 + i * gap, hy: H - h + j * gap, s: 2, c: Math.random() < .04 ? '#fff' : B[Math.min(6, l * 7.4 | 0)] });
+    }
+    particles(cv, pts, { r: 50 });
+  };
+})();
+</script>
+</body>
+</html>

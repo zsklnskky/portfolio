@@ -1,0 +1,1296 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <title>SYNC SURVIVAL</title>
+    <style>
+      /* display font embedded at build time (data-URI); dev falls back to system */
+      @font-face {
+        font-family: 'Orbitron';
+        font-style: normal;
+        font-weight: 600 800;
+        font-display: swap;
+        src: url(__ORBITRON_DATAURI__) format('woff2');
+      }
+
+      :root {
+        --cyan: #00e5ff;
+        --magenta: #ff2d9b;
+        --deep: #070a18;
+        --glass: rgba(14, 20, 42, 0.55);
+        --glass-brd: rgba(120, 200, 255, 0.35);
+        --ok: #18e89a;
+        --warn: #ffb000;
+        --bad: #ff3b5c;
+        --display: 'Orbitron', 'Segoe UI', system-ui, sans-serif;
+        --body: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        --rad: 16px;
+        --t-fast: 160ms;
+        --t-mid: 260ms;
+        --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+      html, body { height: 100%; overflow: hidden; background: var(--deep); touch-action: none; font-family: var(--body); color: #fff; }
+      #app { display: block; width: 100vw; height: 100vh; cursor: crosshair; }
+
+      .layer { position: fixed; inset: 0; pointer-events: none; }
+
+      /* ---- cinematic grade + vignette over the 3D (cheap mood lift) ---- */
+      #cine { position: fixed; inset: 0; pointer-events: none; z-index: 2;
+        background:
+          radial-gradient(120% 90% at 50% 38%, transparent 55%, rgba(4, 6, 18, 0.55) 100%),
+          linear-gradient(180deg, rgba(0, 229, 255, 0.05), transparent 30%, rgba(255, 45, 155, 0.06));
+        mix-blend-mode: soft-light; }
+      #vignette { position: fixed; inset: 0; pointer-events: none; opacity: 0; z-index: 3;
+        background: radial-gradient(ellipse at center, transparent 42%, rgba(255, 17, 51, 0.75) 100%);
+        transition: opacity 120ms linear; }
+
+      /* ---- HUD ---- */
+      #hud { position: fixed; inset: 0; z-index: 4; pointer-events: none;
+        padding: max(18px, env(safe-area-inset-top)) 20px 0; display: flex; justify-content: space-between; align-items: flex-start; }
+      .glass { background: var(--glass); border: 1px solid var(--glass-brd); border-radius: var(--rad);
+        backdrop-filter: blur(10px) saturate(1.2); -webkit-backdrop-filter: blur(10px) saturate(1.2);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08); }
+
+      #health { padding: 11px 14px 12px; min-width: 248px; animation: slideL var(--t-mid) var(--ease-out) both; }
+      .hp-row { display: flex; align-items: center; gap: 8px; }
+      .hp-row .ico { width: 20px; height: 20px; color: var(--bad); filter: drop-shadow(0 0 6px rgba(255, 59, 92, 0.8)); }
+      .hp-row .lbl { font-family: var(--display); font-weight: 700; font-size: 13px; letter-spacing: 2px; color: #cfe7ff; }
+      .hp-row .val { margin-left: auto; font-family: var(--display); font-weight: 800; font-size: 18px;
+        font-variant-numeric: tabular-nums; }
+      #hp-bar { margin-top: 8px; height: 16px; border-radius: 10px; background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.14); overflow: hidden; position: relative; }
+      #hp-fill { height: 100%; width: 100%; border-radius: 10px; background: var(--ok);
+        transition: width var(--t-mid) var(--ease-out), background var(--t-mid) linear;
+        box-shadow: 0 0 14px currentColor; }
+      #hp-fill::after { content: ''; position: absolute; inset: 0; border-radius: 10px;
+        background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, 0.55) 50%, transparent 80%);
+        background-size: 240% 100%; animation: shimmer 2.4s linear infinite; }
+
+      #right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+        animation: slideR var(--t-mid) var(--ease-out) both; }
+      #logo { font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: 3px; color: var(--cyan);
+        text-shadow: 0 0 18px rgba(0, 229, 255, 0.7); }
+      #crystals { padding: 9px 14px; display: flex; align-items: center; gap: 9px;
+        font-family: var(--display); font-weight: 800; font-size: 18px; font-variant-numeric: tabular-nums; }
+      #crystals .ico { width: 18px; height: 18px; color: var(--cyan); filter: drop-shadow(0 0 7px rgba(0, 229, 255, 0.9)); }
+
+      #hint { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 4;
+        padding: 8px 16px; font-size: 13px; letter-spacing: 0.3px; color: #cfe0ff; white-space: nowrap;
+        animation: fadeUp 600ms var(--ease-out) both 200ms; }
+
+      /* ---- crosshair ---- */
+      #crosshair { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 4;
+        width: 26px; height: 26px; mix-blend-mode: difference; }
+      #crosshair i { position: absolute; background: #fff; }
+      #crosshair .h { top: 12px; left: 0; width: 26px; height: 2px; }
+      #crosshair .v { left: 12px; top: 0; width: 2px; height: 26px; }
+      #crosshair .d { left: 11px; top: 11px; width: 4px; height: 4px; border-radius: 50%; }
+
+      /* ---- overlays ---- */
+      .overlay { position: fixed; inset: 0; z-index: 10; display: none; flex-direction: column; align-items: center;
+        justify-content: center; text-align: center; gap: 16px; pointer-events: auto;
+        background: radial-gradient(circle at 50% 35%, rgba(26, 16, 64, 0.6), rgba(4, 6, 18, 0.86));
+        backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+      .overlay.show { display: flex; animation: fade var(--t-mid) ease-out both; }
+      .card { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 8px;
+        animation: popIn 380ms var(--ease-out) both; }
+      .badge { width: 76px; height: 76px; border-radius: 22px; display: grid; place-items: center;
+        background: var(--glass); border: 1px solid var(--glass-brd);
+        box-shadow: 0 0 34px rgba(0, 229, 255, 0.35); animation: floaty 3s ease-in-out infinite; }
+      .badge svg { width: 40px; height: 40px; }
+      .brand { font-family: var(--display); font-weight: 700; font-size: 16px; letter-spacing: 6px; color: var(--cyan);
+        text-shadow: 0 0 16px rgba(0, 229, 255, 0.7); }
+      .title { font-family: var(--display); font-weight: 800; font-size: clamp(40px, 9vw, 60px); line-height: 1.05;
+        letter-spacing: 1px; text-shadow: 0 4px 30px rgba(0, 0, 0, 0.6); }
+      .sub { font-size: 18px; line-height: 1.55; color: #cdd9f2; max-width: 520px; }
+      .score { font-family: var(--display); font-weight: 800; font-size: 30px; color: var(--cyan);
+        font-variant-numeric: tabular-nums; text-shadow: 0 0 18px rgba(0, 229, 255, 0.5); }
+      .stagger > * { animation: fadeUp 420ms var(--ease-out) both; }
+      .stagger > *:nth-child(1) { animation-delay: 80ms; }
+      .stagger > *:nth-child(2) { animation-delay: 140ms; }
+      .stagger > *:nth-child(3) { animation-delay: 200ms; }
+      .stagger > *:nth-child(4) { animation-delay: 260ms; }
+      .stagger > *:nth-child(5) { animation-delay: 320ms; }
+
+      .btn { position: relative; overflow: hidden; pointer-events: auto; cursor: pointer;
+        min-height: 56px; padding: 16px 40px; margin-top: 6px;
+        font-family: var(--display); font-weight: 800; font-size: 24px; letter-spacing: 1px; color: #fff;
+        border: 2px solid var(--cyan); border-radius: 16px;
+        background: linear-gradient(135deg, var(--magenta), #c8197a);
+        box-shadow: 0 10px 28px rgba(255, 45, 155, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        transition: transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out); }
+      .btn:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 16px 40px rgba(255, 45, 155, 0.6); }
+      .btn:active { transform: scale(0.97); }
+      .btn::after { content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; transform: skewX(-20deg);
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent); animation: sweep 2.6s ease-in-out infinite; }
+      .btn .ico { width: 22px; height: 22px; vertical-align: -4px; margin-right: 8px; }
+      .btn.ghost { background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.4); color: #dbe6ff;
+        font-size: 18px; min-height: 48px; padding: 12px 28px; box-shadow: none; }
+      .btn.ghost::after { display: none; }
+
+      /* ---- keyframes ---- */
+      @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+      @keyframes popIn { 0% { opacity: 0; transform: scale(0.86); } 100% { opacity: 1; transform: scale(1); } }
+      @keyframes slideL { from { opacity: 0; transform: translateX(-22px); } to { opacity: 1; transform: none; } }
+      @keyframes slideR { from { opacity: 0; transform: translateX(22px); } to { opacity: 1; transform: none; } }
+      @keyframes shimmer { from { background-position: 240% 0; } to { background-position: -40% 0; } }
+      @keyframes sweep { 0%, 60% { left: -60%; } 100% { left: 130%; } }
+      @keyframes floaty { 50% { transform: translateY(-7px); } }
+      .low #health { animation: lowpulse 0.8s ease-in-out infinite; }
+      @keyframes lowpulse { 50% { box-shadow: 0 0 26px rgba(255, 59, 92, 0.7); } }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::after { animation: none !important; transition: none !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="app"></canvas>
+    <div id="cine" class="layer"></div>
+    <div id="vignette"></div>
+
+    <!-- HUD -->
+    <div id="hud">
+      <div id="health" class="glass">
+        <div class="hp-row">
+          <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.7 5.4 4.7c2 0 3.4 1.2 4.6 2.9 1.2-1.7 2.6-2.9 4.6-2.9C18 4.7 19.6 8.4 18 11.7 16.5 14.7 12 21 12 21z"/></svg>
+          <span class="lbl">HEALTH</span>
+          <span class="val" id="hp-text">100</span>
+        </div>
+        <div id="hp-bar"><div id="hp-fill"></div></div>
+      </div>
+      <div id="right">
+        <div id="logo">SYNC AGENCY</div>
+        <div id="crystals" class="glass">
+          <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M6 2h12l4 7-10 13L2 9 6 2zm.6 2L4 8.7 12 19l8-10.3L17.4 4H6.6z"/></svg>
+          <span id="crystal-count">0 / 5</span>
+        </div>
+      </div>
+    </div>
+    <div id="crosshair" class="layer"><i class="h"></i><i class="v"></i><i class="d"></i></div>
+    <div id="hint" class="glass">WASD move · mouse look · SPACE jump · LMB attack/mine · RMB place · dig for crystals</div>
+
+    <!-- START -->
+    <div class="overlay show" id="overlay-start">
+      <div class="card stagger">
+        <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2"><path d="M6 2h12l4 7-10 13L2 9 6 2z"/><path d="M2 9h20M12 2 8 9l4 13 4-13-4-7z"/></svg></div>
+        <div class="brand">SYNC AGENCY</div>
+        <div class="title">SYNC<br />SURVIVAL</div>
+        <div class="sub">Dig to uncover 5 buried SYNC crystals. Fend off zombies &amp; skeletons — jump-attacks hit harder. Survive.</div>
+        <button class="btn" id="btn-play"><svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>PLAY</button>
+      </div>
+    </div>
+
+    <!-- DEATH -->
+    <div class="overlay" id="overlay-death">
+      <div class="card stagger">
+        <div class="badge" style="box-shadow:0 0 34px rgba(255,59,92,.45);border-color:rgba(255,120,140,.5)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ff3b5c" stroke-width="2"><circle cx="9" cy="10" r="1.4" fill="#ff3b5c"/><circle cx="15" cy="10" r="1.4" fill="#ff3b5c"/><path d="M12 2a8 8 0 0 0-8 8v4l2 2v3h2v-2h2v2h4v-2h2v2h2v-3l2-2v-4a8 8 0 0 0-8-8z"/></svg>
+        </div>
+        <div class="title" style="color:#ff5b73;text-shadow:0 0 26px rgba(255,59,92,.6)">YOU DIED</div>
+        <div class="sub">The monsters got you. Regroup and sync back up.</div>
+        <button class="btn" id="btn-respawn">RESPAWN</button>
+      </div>
+    </div>
+
+    <!-- WIN -->
+    <div class="overlay" id="overlay-win">
+      <div class="card stagger">
+        <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg></div>
+        <div class="brand">ALL SYNCED</div>
+        <div class="title">YOU WIN</div>
+        <div class="score" id="win-score">Score 0</div>
+        <div class="sub">We turn scattered ideas into shipped products. So can you.</div>
+        <button class="btn" id="btn-cta"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>WORK WITH SYNC</button>
+        <button class="btn ghost" id="btn-replay">Play again</button>
+      </div>
+    </div>
+
+    <script type="importmap">
+      { "imports": { "three": "https://esm.sh/three@0.168.0" } }
+    </script>
+    <script>/**
+ * sdk-bridge.js — safe wrappers over the Rosebud runtime SDK.
+ *
+ * The parent Rosebud runtime injects window.ProgressLogger, window.RosebudOGP,
+ * window.ImageGenerator and window.ChatManager into the iframe. When the creative
+ * runs standalone (local preview, an ad network without the SDK), those globals
+ * are missing — so every call here degrades to a no-op / fallback instead of
+ * throwing or hanging on a 150s timeout.
+ *
+ * Keep this file dependency-free. It is the single point of contact with the host.
+ */
+(function () {
+  'use strict';
+
+  const hasSDK = (name) => typeof window[name] !== 'undefined' && window[name] !== null;
+
+  /** Race a promise against a timeout so a dead host never freezes the game. */
+  function withTimeout(promise, ms, fallback) {
+    return Promise.race([
+      promise,
+      new Promise((resolve) => setTimeout(() => resolve(fallback), ms)),
+    ]).catch(() => fallback);
+  }
+
+  const SDK = {
+    /** True when running inside the real Rosebud runtime. */
+    get isHosted() {
+      return hasSDK('ProgressLogger') || hasSDK('RosebudOGP');
+    },
+
+    /** Fire-and-forget analytics. Safe everywhere. */
+    logProgress(eventName, eventData = {}) {
+      try {
+        if (hasSDK('ProgressLogger')) {
+          window.ProgressLogger.logProgress(eventName, eventData);
+        } else {
+          console.debug('[progress]', eventName, eventData);
+        }
+      } catch (_) {
+        /* analytics must never break gameplay */
+      }
+    },
+
+    /** Submit final score to the Rosebud Open Game Protocol. Returns a status string. */
+    async submitPoints(points = 0) {
+      if (!hasSDK('RosebudOGP')) return 'offline';
+      try {
+        return await withTimeout(window.RosebudOGP.submitPoints(points), 8000, 'timeout');
+      } catch (e) {
+        return `error:${e.message}`;
+      }
+    },
+
+    /**
+     * Generate a sprite image from a text prompt. Returns an object-URL string,
+     * or null when the host is absent / generation fails. Callers must have a
+     * drawn fallback ready.
+     */
+    async generateImage(prompt, { removeBackground = true, timeoutMs = 20000 } = {}) {
+      if (!hasSDK('ImageGenerator')) return null;
+      try {
+        return await withTimeout(
+          window.ImageGenerator.requestEphemeralImageGeneration({ prompt, removeBackground }),
+          timeoutMs,
+          null,
+        );
+      } catch (_) {
+        return null;
+      }
+    },
+
+    /**
+     * Tiny chat helper around ChatManager. Holds one rolling history so the
+     * boss "remembers" the fight. Falls back to a canned line list offline.
+     */
+    createChat(characterDescription, fallbackLines = []) {
+      const live = hasSDK('ChatManager') ? new window.ChatManager(characterDescription) : null;
+      let fallbackIdx = 0;
+
+      return {
+        get isLive() {
+          return !!live;
+        },
+        async say(playerMessage, { maxTokens = 60, timeoutMs = 6000 } = {}) {
+          if (!live) {
+            const line = fallbackLines[fallbackIdx % fallbackLines.length] || '...';
+            fallbackIdx++;
+            return line;
+          }
+          live.addMessage('user', playerMessage);
+          const reply = await withTimeout(
+            live.getCharacterResponse('chat', maxTokens),
+            timeoutMs,
+            fallbackLines[fallbackIdx++ % fallbackLines.length] || '...',
+          );
+          live.addMessage('assistant', reply);
+          return reply;
+        },
+      };
+    },
+  };
+
+  window.SDK = SDK;
+})();
+</script>
+    <script type="module">/**
+ * game.module.js — "SYNC SURVIVAL" 3D voxel playable creative (Three.js r168).
+ *
+ * Real voxel game: a third-person hero walks the world (gravity + AABB collision,
+ * jump to climb, can't pass through blocks), digs to find 5 buried SYNC crystals
+ * while fighting zombies & skeletons. Jump-attacks crit. Animated health, screen
+ * shake at low HP, x-ray hint on a crystal you can't find. Ambient synth music.
+ *
+ * Sections mirror a Rosebud build: config / textures / World(mesh+gen) /
+ * Physics / Entities(player,mob) / Audio / Game(loop,combat) / UI.
+ * Host I/O through window.SDK (sdk-bridge.js) so it runs standalone.
+ */
+
+import * as THREE from 'three';
+
+/* ============================================================ config */
+
+const CFG = {
+  world: { W: 48, D: 48, H: 22, crystalsToWin: 5, crystalsBuried: 7, treeChance: 0.04 },
+  player: { speed: 5.2, jump: 8.2, eye: 1.5, hw: 0.32, height: 1.75, reach: 6, hp: 100 },
+  combat: { atkCd: 0.38, atkRange: 2.3, dmgGround: 2, dmgJump: 3, mobMax: 5, mobRespawn: 8,
+    mobDmgZombie: 6, mobDmgSkeleton: 4, mobAtkCd: 1.6, heartDrop: 0.4, heartHeal: 30 },
+  phys: { gravity: 26, terminal: 40 },
+  hint: { afterSeconds: 4 },
+  brand: { cyan: 0x00e5ff, magenta: 0xff2d9b, deep: 0x070a18, ctaUrl: 'https://sync-agency.com/' },
+};
+
+// block ids
+const AIR = 0, GRASS = 1, DIRT = 2, STONE = 3, LOG = 4, LEAVES = 5, CRYSTAL = 6, BEDROCK = 7;
+const log = (n, d) => window.SDK?.logProgress(n, d);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+/* ============================================================ texture atlas */
+
+const TILE = 16;
+// atlas tile indices
+const T = { grassTop: 0, grassSide: 1, dirt: 2, stone: 3, logSide: 4, logTop: 5, leaves: 6, crystal: 7, bedrock: 8 };
+const ATLAS_N = 9;
+
+function px(ctx, x, y, c) {
+  ctx.fillStyle = c;
+  ctx.fillRect(x, y, 1, 1);
+}
+function fillTile(ctx, ox, base) {
+  ctx.fillStyle = base;
+  ctx.fillRect(ox, 0, TILE, TILE);
+}
+function noiseTile(ctx, ox, base, dots, seed) {
+  fillTile(ctx, ox, base);
+  let s = seed;
+  const rnd = () => ((s = (s * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);
+  for (let i = 0; i < 46; i++) {
+    ctx.globalAlpha = 0.18 + rnd() * 0.22;
+    px(ctx, ox + Math.floor(rnd() * TILE), Math.floor(rnd() * TILE), dots);
+  }
+  ctx.globalAlpha = 1;
+}
+
+function buildAtlas() {
+  const c = document.createElement('canvas');
+  c.width = ATLAS_N * TILE;
+  c.height = TILE;
+  const x = c.getContext('2d');
+  noiseTile(x, T.grassTop * TILE, '#5fbf3f', '#3f9a2c', 3);
+  noiseTile(x, T.grassSide * TILE, '#7a4d28', '#5b3a1e', 7); // dirt body...
+  x.fillStyle = '#5fbf3f'; x.fillRect(T.grassSide * TILE, 0, TILE, 4); // ...green cap
+  x.globalAlpha = 0.5; x.fillStyle = '#3f9a2c'; x.fillRect(T.grassSide * TILE, 4, TILE, 1); x.globalAlpha = 1;
+  noiseTile(x, T.dirt * TILE, '#7a4d28', '#5b3a1e', 11);
+  noiseTile(x, T.stone * TILE, '#8b939e', '#6b7280', 17);
+  noiseTile(x, T.logSide * TILE, '#6b4a2a', '#4a3219', 23);
+  noiseTile(x, T.logTop * TILE, '#a07a4a', '#7a5a32', 29);
+  noiseTile(x, T.leaves * TILE, '#3f8f33', '#2c6b22', 31);
+  // crystal: glowing diamond
+  fillTile(x, T.crystal * TILE, '#0a3d4a');
+  x.fillStyle = '#00e5ff';
+  const o = T.crystal * TILE;
+  for (let i = 0; i < TILE; i++) {
+    const w = 8 - Math.abs(i - 8);
+    x.fillRect(o + 8 - w, i, w * 2, 1);
+  }
+  x.fillStyle = '#bdf6ff'; x.fillRect(o + 5, 4, 2, 7);
+  // bedrock — unbreakable border block
+  noiseTile(x, T.bedrock * TILE, '#4a5160', '#2a2f3a', 41);
+
+  const tex = new THREE.CanvasTexture(c);
+  tex.magFilter = THREE.NearestFilter;
+  tex.minFilter = THREE.NearestFilter;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
+// tile for (blockType, faceDir): 0 +x,1 -x,2 +y,3 -y,4 +z,5 -z
+function faceTile(type, dir) {
+  switch (type) {
+    case GRASS: return dir === 2 ? T.grassTop : dir === 3 ? T.dirt : T.grassSide;
+    case DIRT: return T.dirt;
+    case STONE: return T.stone;
+    case LOG: return dir === 2 || dir === 3 ? T.logTop : T.logSide;
+    case LEAVES: return T.leaves;
+    case CRYSTAL: return T.crystal;
+    case BEDROCK: return T.bedrock;
+    default: return T.stone;
+  }
+}
+
+/* ============================================================ world */
+
+// face definitions: normal + 4 corner offsets (CCW) + two tangent unit dirs for AO
+const FACES = [
+  { n: [1, 0, 0], c: [[1, 0, 0], [1, 0, 1], [1, 1, 1], [1, 1, 0]], u: [0, 0, 1], v: [0, 1, 0] },
+  { n: [-1, 0, 0], c: [[0, 0, 1], [0, 0, 0], [0, 1, 0], [0, 1, 1]], u: [0, 0, 1], v: [0, 1, 0] },
+  { n: [0, 1, 0], c: [[0, 1, 1], [1, 1, 1], [1, 1, 0], [0, 1, 0]], u: [1, 0, 0], v: [0, 0, 1] },
+  { n: [0, -1, 0], c: [[0, 0, 0], [1, 0, 0], [1, 0, 1], [0, 0, 1]], u: [1, 0, 0], v: [0, 0, 1] },
+  { n: [0, 0, 1], c: [[1, 0, 1], [0, 0, 1], [0, 1, 1], [1, 1, 1]], u: [1, 0, 0], v: [0, 1, 0] },
+  { n: [0, 0, -1], c: [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], u: [1, 0, 0], v: [0, 1, 0] },
+];
+const AO_LIGHT = [0.58, 0.74, 0.88, 1.0];
+
+class World {
+  constructor(scene, atlas) {
+    this.scene = scene;
+    this.W = CFG.world.W; this.D = CFG.world.D; this.H = CFG.world.H;
+    this.data = new Uint8Array(this.W * this.D * this.H);
+    this.crystals = []; // {x,y,z, found}
+    this.material = new THREE.MeshStandardMaterial({
+      map: atlas, vertexColors: true, roughness: 1, metalness: 0, side: THREE.DoubleSide,
+    });
+    this.mesh = null;
+    this.generate();
+    this.rebuild();
+  }
+
+  inB(x, y, z) { return x >= 0 && x < this.W && z >= 0 && z < this.D && y >= 0 && y < this.H; }
+  idx(x, y, z) { return x + z * this.W + y * this.W * this.D; }
+  get(x, y, z) {
+    if (y < 0) return STONE; // bedrock under the world (collision floor)
+    if (!this.inB(x, y, z)) return AIR;
+    return this.data[this.idx(x, y, z)];
+  }
+  set(x, y, z, v) { if (this.inB(x, y, z)) this.data[this.idx(x, y, z)] = v; }
+  solid(x, y, z) { return this.get(x, y, z) !== AIR; }
+
+  // --- generation ---
+  hash2(x, z) {
+    let h = (x | 0) * 374761393 + (z | 0) * 668265263;
+    h = (h ^ (h >> 13)) * 1274126177;
+    return ((h ^ (h >> 16)) >>> 0) / 4294967295;
+  }
+  vnoise(x, z) {
+    const xi = Math.floor(x), zi = Math.floor(z), xf = x - xi, zf = z - zi;
+    const u = xf * xf * (3 - 2 * xf), v = zf * zf * (3 - 2 * zf);
+    const a = this.hash2(xi, zi), b = this.hash2(xi + 1, zi);
+    const c = this.hash2(xi, zi + 1), d = this.hash2(xi + 1, zi + 1);
+    return (a * (1 - u) + b * u) * (1 - v) + (c * (1 - u) + d * u) * v;
+  }
+  fbm(x, z) {
+    let s = 0, a = 0.5, f = 1;
+    for (let i = 0; i < 4; i++) { s += a * this.vnoise(x * f, z * f); a *= 0.5; f *= 2; }
+    return s;
+  }
+  heightAt(x, z) {
+    const base = 7 + this.fbm(x * 0.08, z * 0.08) * 11;
+    return clamp(Math.round(base), 4, this.H - 6);
+  }
+
+  generate() {
+    const tops = [];
+    for (let x = 0; x < this.W; x++) {
+      for (let z = 0; z < this.D; z++) {
+        const h = this.heightAt(x, z);
+        for (let y = 0; y <= h; y++) {
+          const t = y === h ? GRASS : y > h - 3 ? DIRT : STONE;
+          this.set(x, y, z, t);
+        }
+        tops.push({ x, z, h });
+      }
+    }
+    // trees
+    let s = 5;
+    const rnd = () => ((s = (s * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);
+    for (const t of tops) {
+      if (t.x < 3 || t.z < 3 || t.x > this.W - 4 || t.z > this.D - 4) continue;
+      if (rnd() > CFG.world.treeChance) continue;
+      const th = 4 + Math.floor(rnd() * 2);
+      for (let i = 1; i <= th; i++) this.set(t.x, t.h + i, t.z, LOG);
+      const top = t.h + th;
+      for (let dx = -2; dx <= 2; dx++) for (let dy = -1; dy <= 2; dy++) for (let dz = -2; dz <= 2; dz++) {
+        if (dx * dx + dy * dy + dz * dz > 6) continue;
+        const lx = t.x + dx, ly = top + dy, lz = t.z + dz;
+        if (this.get(lx, ly, lz) === AIR) this.set(lx, ly, lz, LEAVES);
+      }
+    }
+    // bury crystals inside stone
+    let placed = 0, guard = 0;
+    while (placed < CFG.world.crystalsBuried && guard++ < 500) {
+      const x = 4 + Math.floor(rnd() * (this.W - 8));
+      const z = 4 + Math.floor(rnd() * (this.D - 8));
+      const h = this.heightAt(x, z);
+      const y = clamp(h - 1 - Math.floor(rnd() * 2), 2, h - 1); // shallow: 1-2 blocks under the surface
+      if (this.get(x, y, z) === STONE || this.get(x, y, z) === DIRT) {
+        this.set(x, y, z, CRYSTAL);
+        this.crystals.push({ x, y, z, found: false });
+        placed++;
+      }
+    }
+    // unbreakable bedrock: floor across the map + a short visible wall lip at the edges
+    // (an invisible barrier in moveEntity stops you actually leaving — keeps the mesh light)
+    for (let x = 0; x < this.W; x++)
+      for (let z = 0; z < this.D; z++) {
+        this.set(x, 0, z, BEDROCK);
+        if (x === 0 || z === 0 || x === this.W - 1 || z === this.D - 1) {
+          const top = this.heightAt(x, z) + 3;
+          for (let y = 0; y <= top; y++) this.set(x, y, z, BEDROCK);
+        }
+      }
+  }
+
+  groundHeight(x, z) {
+    for (let y = this.H - 1; y >= 0; y--) if (this.solid(x, y, z)) return y + 1;
+    return 1;
+  }
+
+  // --- meshing (face culling + baked AO) ---
+  rebuild() {
+    const pos = [], nor = [], uv = [], col = [], idxArr = [];
+    let vi = 0;
+    const eu = 0.5 / (ATLAS_N * TILE), ev = 0.5 / TILE;
+    for (let x = 0; x < this.W; x++)
+      for (let y = 0; y < this.H; y++)
+        for (let z = 0; z < this.D; z++) {
+          const t = this.get(x, y, z);
+          if (t === AIR) continue;
+          for (let f = 0; f < 6; f++) {
+            const F = FACES[f];
+            if (this.solid(x + F.n[0], y + F.n[1], z + F.n[2])) continue;
+            const tile = faceTile(t, f);
+            for (let k = 0; k < 4; k++) {
+              const cx = F.c[k][0], cy = F.c[k][1], cz = F.c[k][2];
+              pos.push(x + cx, y + cy, z + cz);
+              nor.push(F.n[0], F.n[1], F.n[2]);
+              // AO: sample the two side neighbours + corner in the neighbour layer
+              const s1 = (2 * (cx * F.u[0] + cy * F.u[1] + cz * F.u[2]) - 1);
+              const s2 = (2 * (cx * F.v[0] + cy * F.v[1] + cz * F.v[2]) - 1);
+              const nx = x + F.n[0], ny = y + F.n[1], nz = z + F.n[2];
+              const a = this.solid(nx + s1 * F.u[0], ny + s1 * F.u[1], nz + s1 * F.u[2]) ? 1 : 0;
+              const b = this.solid(nx + s2 * F.v[0], ny + s2 * F.v[1], nz + s2 * F.v[2]) ? 1 : 0;
+              const cc = this.solid(nx + s1 * F.u[0] + s2 * F.v[0], ny + s1 * F.u[1] + s2 * F.v[1], nz + s1 * F.u[2] + s2 * F.v[2]) ? 1 : 0;
+              const ao = a && b ? 0 : 3 - (a + b + cc);
+              let L = AO_LIGHT[ao];
+              if (t === CRYSTAL) L = 1;
+              col.push(L, L, L);
+              const cu = k === 1 || k === 2 ? 1 : 0;
+              const cv = k >= 2 ? 1 : 0;
+              uv.push((tile + (cu ? 1 - eu : eu)) / ATLAS_N, cv ? 1 - ev : ev);
+            }
+            idxArr.push(vi, vi + 1, vi + 2, vi, vi + 2, vi + 3);
+            vi += 4;
+          }
+        }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+    g.setAttribute('normal', new THREE.Float32BufferAttribute(nor, 3));
+    g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+    g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+    g.setIndex(idxArr);
+    if (this.mesh) { this.scene.remove(this.mesh); this.mesh.geometry.dispose(); }
+    this.mesh = new THREE.Mesh(g, this.material);
+    this.mesh.castShadow = true;
+    this.mesh.receiveShadow = true;
+    this.scene.add(this.mesh);
+  }
+
+  // DDA voxel raycast from origin along dir, max dist. returns {hit:[x,y,z], prev:[x,y,z]} or null
+  raycast(origin, dir, maxDist) {
+    let x = Math.floor(origin.x), y = Math.floor(origin.y), z = Math.floor(origin.z);
+    const sx = Math.sign(dir.x), sy = Math.sign(dir.y), sz = Math.sign(dir.z);
+    const tdx = sx !== 0 ? Math.abs(1 / dir.x) : Infinity;
+    const tdy = sy !== 0 ? Math.abs(1 / dir.y) : Infinity;
+    const tdz = sz !== 0 ? Math.abs(1 / dir.z) : Infinity;
+    let tmx = sx > 0 ? (x + 1 - origin.x) / dir.x : sx < 0 ? (x - origin.x) / dir.x : Infinity;
+    let tmy = sy > 0 ? (y + 1 - origin.y) / dir.y : sy < 0 ? (y - origin.y) / dir.y : Infinity;
+    let tmz = sz > 0 ? (z + 1 - origin.z) / dir.z : sz < 0 ? (z - origin.z) / dir.z : Infinity;
+    let px2 = x, py = y, pz = z;
+    for (let i = 0; i < 200; i++) {
+      if (this.solid(x, y, z)) return { hit: [x, y, z], prev: [px2, py, pz] };
+      px2 = x; py = y; pz = z;
+      if (tmx < tmy && tmx < tmz) { if (tmx > maxDist) break; x += sx; tmx += tdx; }
+      else if (tmy < tmz) { if (tmy > maxDist) break; y += sy; tmy += tdy; }
+      else { if (tmz > maxDist) break; z += sz; tmz += tdz; }
+    }
+    return null;
+  }
+}
+
+/* ============================================================ physics (AABB vs voxels) */
+
+function moveEntity(world, ent, dt) {
+  const hw = ent.hw, ht = ent.height, eps = 1e-3;
+  ent.onGround = false;
+  // integrate gravity
+  ent.vel.y = Math.max(-CFG.phys.terminal, ent.vel.y - CFG.phys.gravity * dt);
+  const disp = { x: ent.vel.x * dt, y: ent.vel.y * dt, z: ent.vel.z * dt };
+
+  // resolve each axis independently
+  for (const axis of ['x', 'z', 'y']) {
+    if (disp[axis] === 0) continue;
+    ent.pos[axis] += disp[axis];
+    const minX = Math.floor(ent.pos.x - hw), maxX = Math.floor(ent.pos.x + hw);
+    const minZ = Math.floor(ent.pos.z - hw), maxZ = Math.floor(ent.pos.z + hw);
+    const minY = Math.floor(ent.pos.y), maxY = Math.floor(ent.pos.y + ht);
+    let collided = false, bound = 0;
+    for (let bx = minX; bx <= maxX; bx++)
+      for (let by = minY; by <= maxY; by++)
+        for (let bz = minZ; bz <= maxZ; bz++) {
+          if (!world.solid(bx, by, bz)) continue;
+          collided = true;
+          if (axis === 'x') bound = disp.x > 0 ? Math.min(bound || Infinity, bx) : Math.max(bound, bx + 1);
+          else if (axis === 'z') bound = disp.z > 0 ? Math.min(bound || Infinity, bz) : Math.max(bound, bz + 1);
+          else bound = disp.y > 0 ? Math.min(bound || Infinity, by) : Math.max(bound, by + 1);
+        }
+    if (collided) {
+      if (axis === 'x') ent.pos.x = disp.x > 0 ? bound - hw - eps : bound + hw + eps;
+      else if (axis === 'z') ent.pos.z = disp.z > 0 ? bound - hw - eps : bound + hw + eps;
+      else {
+        if (disp.y < 0) { ent.pos.y = bound + eps; ent.onGround = true; }
+        else ent.pos.y = bound - ht - eps;
+        ent.vel.y = 0;
+      }
+    }
+  }
+  // hard barrier at the map edges — can't leave the play area
+  ent.pos.x = clamp(ent.pos.x, 1.6, world.W - 1.6);
+  ent.pos.z = clamp(ent.pos.z, 1.6, world.D - 1.6);
+
+  // horizontal velocity damping (friction); keep input-driven each frame
+  ent.vel.x = 0; ent.vel.z = 0;
+}
+
+/* ============================================================ humanoid model */
+
+function box(w, h, d, color, emissive = 0) {
+  return new THREE.Mesh(
+    new THREE.BoxGeometry(w, h, d),
+    new THREE.MeshStandardMaterial({ color, emissive, emissiveIntensity: emissive ? 0.5 : 0, roughness: 0.8 }),
+  );
+}
+
+function makeHumanoid({ skin, body, limb, accent }) {
+  const g = new THREE.Group();
+  const head = box(0.5, 0.5, 0.5, skin, accent ? skin : 0);
+  head.position.y = 1.55; g.add(head);
+  // glowing eyes
+  const eye = box(0.1, 0.1, 0.02, accent || 0x111111, accent || 0);
+  eye.position.set(0.12, 1.58, 0.26); g.add(eye);
+  const eye2 = eye.clone(); eye2.position.x = -0.12; g.add(eye2);
+  const torso = box(0.5, 0.6, 0.26, body); torso.position.y = 1.05; g.add(torso);
+
+  const mkLimb = (x, color) => {
+    const pivot = new THREE.Group();
+    pivot.position.set(x, 1.3, 0);
+    const m = box(0.17, 0.6, 0.17, color);
+    m.position.y = -0.3; pivot.add(m); g.add(pivot);
+    return pivot;
+  };
+  const larm = mkLimb(0.34, limb), rarm = mkLimb(-0.34, limb);
+  const mkLeg = (x) => {
+    const pivot = new THREE.Group();
+    pivot.position.set(x, 0.72, 0);
+    const m = box(0.18, 0.72, 0.18, limb);
+    m.position.y = -0.36; pivot.add(m); g.add(pivot);
+    return pivot;
+  };
+  const lleg = mkLeg(0.13), rleg = mkLeg(-0.13);
+  g.traverse((o) => { if (o.isMesh) { o.castShadow = true; } });
+  return { group: g, larm, rarm, lleg, rleg, head };
+}
+
+function animateHumanoid(parts, phase, moving) {
+  const a = moving ? Math.sin(phase) * 0.7 : 0;
+  parts.lleg.rotation.x = a; parts.rleg.rotation.x = -a;
+  parts.larm.rotation.x = -a; parts.rarm.rotation.x = a;
+}
+
+/* ============================================================ mobs */
+
+class Mob {
+  constructor(world, scene, type, pos) {
+    this.world = world; this.scene = scene; this.type = type;
+    this.pos = { ...pos }; this.vel = { x: 0, y: 0, z: 0 };
+    this.hw = 0.3; this.height = 1.7; this.onGround = false;
+    this.hp = 5; this.atkCd = 0; this.phase = Math.random() * 6; this.dead = false;
+    const skins = type === 'zombie'
+      ? { skin: 0x4a8f3a, body: 0x2f6b8f, limb: 0x3a6b2f, accent: 0xff3b3b }
+      : { skin: 0xe8e8e8, body: 0xcfcfcf, limb: 0xbcbcbc, accent: 0xff7b00 };
+    this.parts = makeHumanoid(skins);
+    this.speed = type === 'skeleton' ? 3.6 : 2.6;
+    scene.add(this.parts.group);
+  }
+
+  update(dt, player, game) {
+    if (this.dead) return;
+    const dx = player.pos.x - this.pos.x, dz = player.pos.z - this.pos.z;
+    const dist = Math.hypot(dx, dz);
+    const moving = dist > 1.3;
+    if (moving) {
+      const inv = 1 / (dist || 1);
+      this.vel.x = dx * inv * this.speed;
+      this.vel.z = dz * inv * this.speed;
+      // hop over 1-block ledges
+      if (this.onGround && this.world.solid(Math.floor(this.pos.x + dx * inv * 0.5), Math.floor(this.pos.y), Math.floor(this.pos.z + dz * inv * 0.5)))
+        this.vel.y = CFG.player.jump * 0.8;
+    }
+    moveEntity(this.world, this, dt);
+    this.parts.group.position.set(this.pos.x, this.pos.y, this.pos.z);
+    this.parts.group.rotation.y = Math.atan2(dx, dz);
+    this.phase += dt * 9;
+    animateHumanoid(this.parts, this.phase, moving);
+
+    this.atkCd -= dt;
+    if (dist < 1.5 && this.atkCd <= 0) {
+      this.atkCd = CFG.combat.mobAtkCd;
+      game.damagePlayer(this.type === 'zombie' ? CFG.combat.mobDmgZombie : CFG.combat.mobDmgSkeleton, this.pos);
+    }
+  }
+
+  hurt(dmg, fromPos) {
+    this.hp -= dmg;
+    // knockback
+    const dx = this.pos.x - fromPos.x, dz = this.pos.z - fromPos.z;
+    const d = Math.hypot(dx, dz) || 1;
+    this.pos.x += (dx / d) * 0.4; this.pos.z += (dz / d) * 0.4;
+    this.vel.y = 3;
+    if (this.hp <= 0) this.dead = true;
+    return this.dead;
+  }
+
+  remove() { this.scene.remove(this.parts.group); }
+}
+
+/* ============================================================ audio (synth, no assets) */
+
+class Audio {
+  constructor() { this.ctx = null; this.musicTimer = 0; this.step = 0; }
+  ensure() {
+    if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (this.ctx.state === 'suspended') this.ctx.resume();
+  }
+  tone(freq, dur, type = 'square', vol = 0.08, glideTo) {
+    return; // sounds disabled (all audio muted)
+    try {
+      this.ensure();
+      const t = this.ctx.currentTime;
+      const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+      o.type = type; o.frequency.setValueAtTime(freq, t);
+      if (glideTo) o.frequency.exponentialRampToValueAtTime(glideTo, t + dur);
+      g.gain.setValueAtTime(vol, t);
+      g.gain.exponentialRampToValueAtTime(0.0008, t + dur);
+      o.connect(g).connect(this.ctx.destination);
+      o.start(t); o.stop(t + dur);
+    } catch (_) { /* audio optional */ }
+  }
+  break_() { this.tone(180 + Math.random() * 40, 0.12, 'square', 0.06, 90); }
+  crystal() { this.tone(660, 0.18, 'sine', 0.12, 1320); this.tone(990, 0.25, 'triangle', 0.07); }
+  hit() { this.tone(120, 0.1, 'sawtooth', 0.09, 60); }
+  hurt() { this.tone(200, 0.18, 'sawtooth', 0.1, 80); }
+  // calm ambient: slow arpeggio over a soft chord
+  music(dt) {
+    if (!this.ctx) return;
+    this.musicTimer -= dt;
+    if (this.musicTimer > 0) return;
+    this.musicTimer = 0.85;
+    const scale = [220, 277, 330, 440, 494, 554]; // A major-ish, mellow
+    const f = scale[this.step % scale.length];
+    this.tone(f, 1.6, 'sine', 0.035);
+    if (this.step % 4 === 0) this.tone(f / 2, 2.4, 'triangle', 0.03);
+    this.step++;
+  }
+}
+
+/* ============================================================ game */
+
+class Game {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this.renderer.toneMappingExposure = 1.35;
+
+    this.scene = new THREE.Scene();
+    // gradient sky (deep navy zenith → soft magenta/cyan horizon) — depth without a busy skybox
+    const sc = document.createElement('canvas'); sc.width = 2; sc.height = 256;
+    const sg = sc.getContext('2d'); const grd = sg.createLinearGradient(0, 0, 0, 256);
+    grd.addColorStop(0, '#0a1330'); grd.addColorStop(0.55, '#1d2a55'); grd.addColorStop(0.82, '#5a2f6e'); grd.addColorStop(1, '#2a6f8f');
+    sg.fillStyle = grd; sg.fillRect(0, 0, 2, 256);
+    const skyTex = new THREE.CanvasTexture(sc); skyTex.colorSpace = THREE.SRGBColorSpace;
+    this.scene.background = skyTex;
+    this.scene.fog = new THREE.Fog(0x2a3a66, 42, 105);
+    this.buildLights();
+
+    this.camera = new THREE.PerspectiveCamera(72, 1, 0.1, 200);
+    this.atlas = buildAtlas();
+    this.world = new World(this.scene, this.atlas);
+
+    // player
+    const sx = Math.floor(CFG.world.W / 2), sz = Math.floor(CFG.world.D / 2);
+    this.player = {
+      pos: { x: sx + 0.5, y: this.world.groundHeight(sx, sz) + 0.2, z: sz + 0.5 },
+      vel: { x: 0, y: 0, z: 0 }, hw: CFG.player.hw, height: CFG.player.height,
+      onGround: false, hp: CFG.player.hp, phase: 0,
+    };
+    this.hero = makeHumanoid({ skin: 0x1ad1e5, body: 0xff2d9b, limb: 0x0a9fb5, accent: 0x00e5ff });
+    this.hero.group.visible = false; // first-person: hide own body
+    this.scene.add(this.hero.group);
+
+    this.yaw = 0; this.pitch = -0.25; this.camDist = 5.2;
+    this.keys = new Set();
+    this.mobs = [];
+    this.particles = [];
+    this.hearts = [];
+    this.collected = 0;
+    this.atkTimer = 0;
+    this.hurtCd = 0;
+    this.searchTimer = 0;
+    this.respawnTimer = CFG.combat.mobRespawn;
+    this.damageFlash = 0;
+    this.dead = false;
+    this.audio = new Audio();
+
+    this.hintMarker = this.buildHintMarker();
+    this.blockHighlight = new THREE.LineSegments(
+      new THREE.EdgesGeometry(new THREE.BoxGeometry(1.02, 1.02, 1.02)),
+      new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.6 }),
+    );
+    this.blockHighlight.visible = false;
+    this.scene.add(this.blockHighlight);
+    this.buildBeacons();
+    this.clock = new THREE.Clock();
+    this.resize();
+    addEventListener('resize', () => this.resize());
+    this.bindInput();
+    for (let i = 0; i < 3; i++) this.spawnMob();
+  }
+
+  buildLights() {
+    this.scene.add(new THREE.HemisphereLight(0xcfe9ff, 0x4a5578, 1.05));
+    this.scene.add(new THREE.AmbientLight(0x6a78a8, 0.4));
+    const sun = new THREE.DirectionalLight(0xfff3da, 2.4);
+    sun.position.set(30, 50, 18);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(2048, 2048);
+    const d = 40;
+    Object.assign(sun.shadow.camera, { left: -d, right: d, top: d, bottom: -d, near: 1, far: 140 });
+    sun.shadow.bias = -0.0006;
+    this.sun = sun;
+    this.scene.add(sun);
+    this.scene.add(sun.target);
+  }
+
+  buildBeacons() {
+    // a soft cyan light pillar over every buried crystal — visible through the ground ("dig here")
+    const topY = this.world.H + 5;
+    for (const c of this.world.crystals) {
+      const h = topY - c.y;
+      const geo = new THREE.CylinderGeometry(0.08, 0.08, h, 6);
+      const mat = new THREE.MeshBasicMaterial({ color: CFG.brand.cyan, transparent: true, opacity: 0.28, depthTest: false, fog: false });
+      const m = new THREE.Mesh(geo, mat);
+      m.position.set(c.x + 0.5, c.y + h / 2, c.z + 0.5);
+      m.renderOrder = 998;
+      this.scene.add(m);
+      c.beacon = m;
+    }
+  }
+
+  buildHintMarker() {
+    const m = new THREE.Mesh(
+      new THREE.BoxGeometry(1.25, 1.25, 1.25),
+      new THREE.MeshBasicMaterial({ color: CFG.brand.cyan, wireframe: true, transparent: true, opacity: 0.9, depthTest: false }),
+    );
+    m.renderOrder = 999; m.visible = false;
+    this.scene.add(m);
+    return m;
+  }
+
+  /* ---- input ---- */
+  bindInput() {
+    addEventListener('keydown', (e) => {
+      this.keys.add(e.code);
+      if (e.code === 'Space') e.preventDefault();
+    });
+    addEventListener('keyup', (e) => this.keys.delete(e.code));
+
+    this.canvas.addEventListener('mousedown', (e) => {
+      if (document.pointerLockElement !== this.canvas) { this.canvas.requestPointerLock(); return; }
+      if (e.button === 0) this.primaryAction();
+      else if (e.button === 2) this.placeBlock();
+    });
+    this.canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+    document.addEventListener('mousemove', (e) => {
+      if (document.pointerLockElement === this.canvas) {
+        this.yaw -= e.movementX * 0.0022;
+        this.pitch = clamp(this.pitch - e.movementY * 0.0022, -1.45, 1.45); // 1:1 — mouse up → look up
+      }
+    });
+    // touch: drag look + tap action
+    let last = null, moved = 0;
+    this.canvas.addEventListener('touchstart', (e) => { last = e.touches[0]; moved = 0; }, { passive: true });
+    this.canvas.addEventListener('touchmove', (e) => {
+      const t = e.touches[0];
+      if (last) { const dx = t.clientX - last.clientX, dy = t.clientY - last.clientY; moved += Math.abs(dx) + Math.abs(dy); this.yaw -= dx * 0.005; this.pitch = clamp(this.pitch - dy * 0.005, -1.45, 1.45); }
+      last = t;
+    }, { passive: true });
+    this.canvas.addEventListener('touchend', () => { if (moved < 12) this.primaryAction(); last = null; });
+  }
+
+  forwardDir() { return new THREE.Vector3(0, 0, -1).applyEuler(new THREE.Euler(0, this.yaw, 0)); }
+  lookDir() { return new THREE.Vector3(0, 0, -1).applyEuler(new THREE.Euler(this.pitch, this.yaw, 0)); }
+
+  /* ---- combat & blocks ---- */
+  primaryAction() {
+    if (this.atkTimer > 0) return;
+    this.atkTimer = CFG.combat.atkCd;
+    this.swingArm();
+
+    const r = this.crosshair(), eye = r.o, look = r.d;
+    // distance to the block under the crosshair
+    const bh = this.world.raycast(eye, look, CFG.player.reach);
+    let dBlock = Infinity;
+    if (bh) dBlock = eye.distanceTo(new THREE.Vector3(bh.hit[0] + 0.5, bh.hit[1] + 0.5, bh.hit[2] + 0.5));
+
+    // a mob is "under the crosshair" only if the look ray passes through it AND it's nearer than the block
+    let best = null, bestT = Infinity;
+    for (const m of this.mobs) {
+      const to = new THREE.Vector3(m.pos.x - eye.x, m.pos.y + 0.9 - eye.y, m.pos.z - eye.z);
+      const tAlong = to.dot(look);
+      if (tAlong <= 0 || tAlong > CFG.combat.atkRange || tAlong > dBlock) continue;
+      const perp = to.addScaledVector(look, -tAlong).length();
+      if (perp < 0.75 && tAlong < bestT) { bestT = tAlong; best = m; }
+    }
+
+    if (best) {
+      const jump = !this.player.onGround && this.player.vel.y < 0;
+      const dmg = jump ? CFG.combat.dmgJump : CFG.combat.dmgGround;
+      this.audio.hit();
+      if (best.hurt(dmg, this.player.pos)) this.killMob(best);
+      this.spawnParticles({ x: best.pos.x, y: best.pos.y + 1, z: best.pos.z }, jump ? 0xffd23f : 0xff5555, 6);
+      log('mob_hit', { type: best.type, dmg, jump });
+      return;
+    }
+    if (bh) this.mineBlock(); // mine exactly the block under the crosshair
+  }
+
+  swingArm() { this.heroSwing = 0.35; }
+
+  eyePos() { return new THREE.Vector3(this.player.pos.x, this.player.pos.y + CFG.player.eye, this.player.pos.z); }
+
+  // the exact ray the crosshair points along — taken straight from the rendered camera,
+  // so what you aim at is what you hit (no Euler re-derivation drift)
+  crosshair() {
+    this.camera.updateMatrixWorld();
+    const d = new THREE.Vector3();
+    this.camera.getWorldDirection(d);
+    return { o: this.camera.position.clone(), d };
+  }
+
+  mineBlock() {
+    const r = this.crosshair();
+    const hit = this.world.raycast(r.o, r.d, CFG.player.reach);
+    if (!hit) return;
+    const [x, y, z] = hit.hit;
+    const t = this.world.get(x, y, z);
+    if (t === BEDROCK || t === AIR) return; // unbreakable border
+    this.world.set(x, y, z, AIR);
+    this.world.rebuild();
+    const center = { x: x + 0.5, y: y + 0.5, z: z + 0.5 };
+    this.spawnParticles(center, t === CRYSTAL ? CFG.brand.cyan : 0x9a6b3f, 10);
+    if (t === CRYSTAL) {
+      this.audio.crystal();
+      const c = this.world.crystals.find((q) => q.x === x && q.y === y && q.z === z);
+      if (c) { c.found = true; if (c.beacon) c.beacon.visible = false; }
+      this.collected++;
+      this.searchTimer = 0;
+      this.hintMarker.visible = false;
+      UI.setCrystals(this.collected, CFG.world.crystalsToWin);
+      log('crystal', { collected: this.collected });
+      if (this.collected >= CFG.world.crystalsToWin) this.win();
+    } else {
+      this.audio.break_();
+      log('break', { t });
+    }
+  }
+
+  placeBlock() {
+    const r = this.crosshair();
+    const hit = this.world.raycast(r.o, r.d, CFG.player.reach);
+    if (!hit) return;
+    const [x, y, z] = hit.prev;
+    if (this.world.get(x, y, z) !== AIR) return;
+    // don't place inside the player
+    const p = this.player.pos;
+    if (x === Math.floor(p.x) && z === Math.floor(p.z) && (y === Math.floor(p.y) || y === Math.floor(p.y + 1))) return;
+    this.world.set(x, y, z, DIRT);
+    this.world.rebuild();
+    this.audio.break_();
+  }
+
+  /* ---- mobs ---- */
+  spawnMob() {
+    if (this.mobs.length >= CFG.combat.mobMax) return;
+    let s = (Math.random() * 1e6) | 0;
+    const rnd = () => ((s = (s * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);
+    for (let tries = 0; tries < 20; tries++) {
+      const x = 2 + Math.floor(rnd() * (CFG.world.W - 4));
+      const z = 2 + Math.floor(rnd() * (CFG.world.D - 4));
+      const gy = this.world.groundHeight(x, z);
+      const dx = x - this.player.pos.x, dz = z - this.player.pos.z;
+      if (Math.hypot(dx, dz) < 8) continue; // not on top of player
+      const type = rnd() > 0.5 ? 'zombie' : 'skeleton';
+      this.mobs.push(new Mob(this.world, this.scene, type, { x: x + 0.5, y: gy + 0.1, z: z + 0.5 }));
+      return;
+    }
+  }
+  killMob(m) {
+    m.remove();
+    this.mobs.splice(this.mobs.indexOf(m), 1);
+    this.spawnParticles({ x: m.pos.x, y: m.pos.y + 0.8, z: m.pos.z }, m.type === 'zombie' ? 0x4a8f3a : 0xe8e8e8, 12);
+    if (Math.random() < CFG.combat.heartDrop) this.spawnHeart({ x: m.pos.x, y: m.pos.y + 0.6, z: m.pos.z });
+    log('mob_kill', { type: m.type });
+  }
+
+  spawnHeart(pos) {
+    const g = new THREE.Group();
+    const mat = new THREE.MeshStandardMaterial({ color: 0xff3b5c, emissive: 0xff1133, emissiveIntensity: 0.8, roughness: 0.4 });
+    const s1 = new THREE.Mesh(new THREE.SphereGeometry(0.15, 12, 12), mat); s1.position.set(-0.11, 0.09, 0);
+    const s2 = s1.clone(); s2.position.x = 0.11;
+    const b = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.32, 0.2), mat); b.rotation.z = Math.PI / 4; b.position.y = -0.07;
+    g.add(s1, s2, b);
+    g.add(new THREE.PointLight(0xff3b5c, 3, 4));
+    g.position.set(pos.x, pos.y, pos.z);
+    g.userData.bob = Math.random() * 6;
+    this.scene.add(g); this.hearts.push(g);
+  }
+
+  updateHearts(dt) {
+    for (let i = this.hearts.length - 1; i >= 0; i--) {
+      const h = this.hearts[i];
+      h.rotation.y += dt * 2.2;
+      h.userData.bob += dt * 3;
+      h.position.y += Math.sin(h.userData.bob) * 0.004;
+      const dx = h.position.x - this.player.pos.x, dz = h.position.z - this.player.pos.z;
+      const dy = h.position.y - (this.player.pos.y + 0.8);
+      if (Math.hypot(dx, dy, dz) < 1.3 && this.player.hp < 100) {
+        this.player.hp = Math.min(100, this.player.hp + CFG.combat.heartHeal); // cap 100
+        UI.setHealth(this.player.hp, CFG.player.hp);
+        this.audio.crystal();
+        this.scene.remove(h); this.hearts.splice(i, 1);
+        log('heart_pickup', { hp: this.player.hp });
+      }
+    }
+  }
+
+  damagePlayer(dmg, fromPos) {
+    if (this.dead || this.hurtCd > 0) return; // brief i-frames so HP can't chain-drain
+    this.hurtCd = 0.7;
+    this.player.hp = Math.max(0, this.player.hp - dmg);
+    this.damageFlash = 0.4;
+    this.audio.hurt();
+    // knockback
+    const dx = this.player.pos.x - fromPos.x, dz = this.player.pos.z - fromPos.z;
+    const d = Math.hypot(dx, dz) || 1;
+    this.player.pos.x += (dx / d) * 0.3; this.player.pos.z += (dz / d) * 0.3;
+    UI.setHealth(this.player.hp, CFG.player.hp);
+    if (this.player.hp <= 0) this.die();
+  }
+
+  die() {
+    this.dead = true;
+    log('player_dead', { collected: this.collected });
+    UI.showDeath();
+  }
+
+  respawn() {
+    const sx = Math.floor(CFG.world.W / 2), sz = Math.floor(CFG.world.D / 2);
+    this.player.pos = { x: sx + 0.5, y: this.world.groundHeight(sx, sz) + 0.2, z: sz + 0.5 };
+    this.player.vel = { x: 0, y: 0, z: 0 };
+    this.player.hp = CFG.player.hp; this.dead = false;
+    UI.setHealth(this.player.hp, CFG.player.hp);
+    UI.hideDeath();
+  }
+
+  /* ---- particles ---- */
+  spawnParticles(pos, color, n) {
+    const geo = new THREE.BoxGeometry(0.14, 0.14, 0.14);
+    const mat = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.25 });
+    for (let i = 0; i < n; i++) {
+      const p = new THREE.Mesh(geo, mat);
+      p.position.set(pos.x, pos.y, pos.z);
+      p.userData.vel = new THREE.Vector3((Math.random() - 0.5) * 4, Math.random() * 4 + 1.5, (Math.random() - 0.5) * 4);
+      p.userData.life = 0.7;
+      this.scene.add(p); this.particles.push(p);
+    }
+  }
+  updateParticles(dt) {
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      const p = this.particles[i];
+      p.userData.life -= dt;
+      p.userData.vel.y -= 14 * dt;
+      p.position.addScaledVector(p.userData.vel, dt);
+      p.rotation.x += dt * 6; p.rotation.y += dt * 5;
+      if (p.userData.life <= 0) { this.scene.remove(p); this.particles.splice(i, 1); }
+    }
+  }
+
+  /* ---- lifecycle ---- */
+  async win() {
+    log('win', { collected: this.collected });
+    document.exitPointerLock?.();
+    const score = this.collected * 1000 + Math.max(0, this.player.hp) * 10;
+    const status = await window.SDK?.submitPoints(score);
+    log('points_submitted', { status });
+    UI.showWin(score);
+  }
+
+  resize() {
+    const w = innerWidth, h = innerHeight;
+    this.renderer.setSize(w, h, false);
+    this.camera.aspect = w / h; this.camera.updateProjectionMatrix();
+  }
+
+  start() {
+    this.audio.ensure();
+    UI.setHealth(this.player.hp, CFG.player.hp);
+    UI.setCrystals(0, CFG.world.crystalsToWin);
+    log('play_start');
+    this.renderer.setAnimationLoop(() => this.frame());
+  }
+
+  updatePlayer(dt) {
+    if (this.dead) return;
+    const fwd = this.forwardDir(), right = new THREE.Vector3().crossVectors(fwd, new THREE.Vector3(0, 1, 0));
+    const move = new THREE.Vector3();
+    if (this.keys.has('KeyW')) move.add(fwd);
+    if (this.keys.has('KeyS')) move.sub(fwd);
+    if (this.keys.has('KeyD')) move.add(right);
+    if (this.keys.has('KeyA')) move.sub(right);
+    const moving = move.lengthSq() > 0;
+    if (moving) { move.normalize(); this.player.vel.x = move.x * CFG.player.speed; this.player.vel.z = move.z * CFG.player.speed; }
+    if (this.keys.has('Space') && this.player.onGround) { this.player.vel.y = CFG.player.jump; this.player.onGround = false; }
+    moveEntity(this.world, this.player, dt);
+
+    // hero model
+    this.hero.group.position.set(this.player.pos.x, this.player.pos.y, this.player.pos.z);
+    this.hero.group.rotation.y = this.yaw;
+    this.player.phase += dt * (moving ? 9 : 0);
+    animateHumanoid(this.hero, this.player.phase, moving);
+    if (this.heroSwing > 0) { this.heroSwing -= dt; this.hero.rarm.rotation.x = -1.4; }
+  }
+
+  updateCamera(dt) {
+    // first-person: camera sits at the eyes
+    const eye = this.eyePos();
+    // low-health screen shake
+    if (this.player.hp < 30 && !this.dead) {
+      const amp = ((30 - this.player.hp) / 30) * 0.16;
+      eye.x += (Math.random() - 0.5) * amp;
+      eye.y += (Math.random() - 0.5) * amp;
+      eye.z += (Math.random() - 0.5) * amp;
+    }
+    this.camera.position.copy(eye);
+    // orient straight from yaw/pitch — no lookAt(), so no roll / no flip through the back
+    this.camera.quaternion.setFromEuler(new THREE.Euler(this.pitch, this.yaw, 0, 'YXZ'));
+    // keep the sun shadow box centred on the player
+    this.sun.position.set(this.player.pos.x + 30, 50, this.player.pos.z + 18);
+    this.sun.target.position.set(this.player.pos.x, 0, this.player.pos.z);
+  }
+
+  updateHint(dt) {
+    if (this.collected >= CFG.world.crystalsToWin) return;
+    this.searchTimer += dt;
+    const remaining = this.world.crystals.filter((c) => !c.found);
+    if (this.searchTimer > CFG.hint.afterSeconds && remaining.length) {
+      // nearest unfound crystal glows through walls
+      let best = remaining[0], bd = Infinity;
+      for (const c of remaining) {
+        const d = (c.x - this.player.pos.x) ** 2 + (c.z - this.player.pos.z) ** 2;
+        if (d < bd) { bd = d; best = c; }
+      }
+      this.hintMarker.position.set(best.x + 0.5, best.y + 0.5, best.z + 0.5);
+      this.hintMarker.visible = true;
+    }
+  }
+
+  frame() {
+    const dt = Math.min(this.clock.getDelta(), 0.05);
+    this.atkTimer -= dt;
+    if (this.hurtCd > 0) this.hurtCd -= dt;
+    this.updatePlayer(dt);
+    for (const m of this.mobs) m.update(dt, this.player, this);
+    this.updateParticles(dt);
+    this.updateHearts(dt);
+    this.updateCamera(dt);
+    this.updateHint(dt);
+
+    // mob respawn pressure
+    this.respawnTimer -= dt;
+    if (this.respawnTimer <= 0) { this.respawnTimer = CFG.combat.mobRespawn; this.spawnMob(); }
+
+    // outline the block under the crosshair (the one LMB will break)
+    const cr = this.crosshair();
+    const bh = this.world.raycast(cr.o, cr.d, CFG.player.reach);
+    if (bh) { this.blockHighlight.visible = true; this.blockHighlight.position.set(bh.hit[0] + 0.5, bh.hit[1] + 0.5, bh.hit[2] + 0.5); }
+    else this.blockHighlight.visible = false;
+
+    // pulse hint marker + beacons
+    if (this.hintMarker.visible) this.hintMarker.material.opacity = 0.6 + Math.sin(this.clock.elapsedTime * 6) * 0.35;
+    const bo = 0.2 + Math.sin(this.clock.elapsedTime * 3) * 0.13;
+    for (const c of this.world.crystals) if (c.beacon && c.beacon.visible) c.beacon.material.opacity = bo;
+
+    // damage vignette
+    if (this.damageFlash > 0) { this.damageFlash -= dt; }
+    UI.setVignette(Math.max(this.damageFlash * 1.6, this.player.hp < 30 && !this.dead ? (30 - this.player.hp) / 60 : 0));
+
+    this.audio.music(dt);
+    this.renderer.render(this.scene, this.camera);
+  }
+}
+
+/* ============================================================ ui glue */
+
+const UI = {
+  setCrystals(n, t) { const e = document.getElementById('crystal-count'); if (e) e.textContent = `${n} / ${t}`; },
+  setHealth(hp, max) {
+    const pct = clamp((hp / max) * 100, 0, 100);
+    const bar = document.getElementById('hp-fill');
+    if (bar) {
+      bar.style.width = pct + '%';
+      bar.style.color = pct > 50 ? '#18e89a' : pct > 25 ? '#ffb000' : '#ff3b5c';
+      bar.style.background = 'currentColor';
+    }
+    const txt = document.getElementById('hp-text'); if (txt) txt.textContent = Math.ceil(hp);
+    const hud = document.getElementById('hud'); if (hud) hud.classList.toggle('low', pct <= 30);
+  },
+  setVignette(a) { const e = document.getElementById('vignette'); if (e) e.style.opacity = clamp(a, 0, 0.85); },
+  showWin(score) { const s = document.getElementById('win-score'); if (s) s.textContent = `Score ${score}`; const e = document.getElementById('overlay-win'); if (e) e.classList.add('show'); },
+  showDeath() { const e = document.getElementById('overlay-death'); if (e) e.classList.add('show'); },
+  hideDeath() { const e = document.getElementById('overlay-death'); if (e) e.classList.remove('show'); },
+};
+
+/* ============================================================ boot */
+
+function boot() {
+  const canvas = document.getElementById('app');
+  const game = new Game(canvas);
+
+  document.getElementById('btn-play').addEventListener('click', () => {
+    document.getElementById('overlay-start').classList.remove('show');
+    game.start();
+    canvas.requestPointerLock?.();
+  });
+  document.getElementById('btn-cta')?.addEventListener('click', () => {
+    log('cta_click', { url: CFG.brand.ctaUrl });
+    window.open(CFG.brand.ctaUrl, '_blank');
+  });
+  document.getElementById('btn-replay')?.addEventListener('click', () => location.reload());
+  document.getElementById('btn-respawn')?.addEventListener('click', () => { game.respawn(); canvas.requestPointerLock?.(); });
+
+  log('boot_done');
+  window.__game = game;
+}
+
+if (document.readyState === 'loading') addEventListener('DOMContentLoaded', boot);
+else boot();
+</script>
+  </body>
+</html>
