@@ -66,7 +66,7 @@ p{text-wrap:pretty}
 /* nav: fixed bar, active page marked with a lime underline; detaches into a panel on scroll (navbar.gallery: Greptile, Twenty) */
 .nav{position:fixed;z-index:50;top:0;left:0;right:0;height:var(--nav-h);transition:background-color var(--t-state) var(--ease),box-shadow var(--t-state) var(--ease)}
 .nav.up{background:rgba(11,12,14,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
-.nav .wrap{height:100%;display:flex;align-items:center;gap:28px}
+.nav .wrap{display:flex;align-items:center;gap:28px}
 .brand{display:flex;align-items:center;gap:10px;font:800 15px/1 var(--d);letter-spacing:.02em;color:var(--ink)}
 .brand .mk{width:28px;height:28px;flex:0 0 28px;color:var(--ink)}
 .brand .mk svg{width:100%;height:100%;overflow:visible}
@@ -118,7 +118,6 @@ p{text-wrap:pretty}
 .hero .proof{display:flex;gap:10px 24px;flex-wrap:wrap;margin-top:20px;font-size:14px;line-height:1.3;color:var(--text-2)}
 .hero .proof>span{max-width:13em}
 .hero .proof b{display:block;font:800 22px/1.1 var(--d);color:var(--lime)}
-@media (max-width:600px){.hero .proof{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;font-size:12px;margin-top:16px}.hero .proof b{font-size:19px}.hero p.slogan+p,.hero p.slogan+p+p{font-size:16px}}
 .hint{position:absolute;z-index:2;right:var(--pad);bottom:26px;font-size:13px;color:var(--text-2)}
 
 /* specialisations on home: three rows, one line each */
@@ -383,6 +382,48 @@ p{text-wrap:pretty}
 .bar{position:absolute;bottom:0;width:7%;border-radius:.4em .4em 0 0;background:linear-gradient(180deg,var(--lime),rgba(223,255,58,.2));transform-origin:bottom}
 
 html.still *{animation:none!important;transition:none!important}
+/* ===== liquid glass (v8) =====
+   nav: full-width bar at the top, on scroll it detaches into a centred glass pill
+   (navbar.gallery: Greptile - detaches from the edges; TUX - floating glass bar ~15px from the top; Clerk - top 8px).
+   Glass = dark tint + top-lit gradient + 1px inner highlight + blur/saturate; refraction via SVG displacement in Chromium only. */
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+:root{--spring:cubic-bezier(.34,1.32,.64,1);
+  --glass-bg:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.02) 55%,rgba(255,255,255,.04)),rgba(18,19,22,.5);
+  --glass-hl:inset 0 1px 0 rgba(255,255,255,.24),inset 0 -1px 0 rgba(255,255,255,.05),inset 0 0 0 1px rgba(255,255,255,.10)}
+@keyframes edge{to{--a:360deg}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(223,255,58,.55)}70%,100%{box-shadow:0 0 0 10px rgba(223,255,58,0)}}
+/* animated rim: a conic gradient masked to a 1px ring, slowly rotating */
+.rim::after,.nav .wrap::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:conic-gradient(from var(--a),transparent 0 18%,rgba(223,255,58,.75) 28%,transparent 40% 60%,rgba(255,255,255,.55) 72%,transparent 84%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:edge 7s linear infinite}
+.nav{pointer-events:none}
+.nav .wrap{pointer-events:auto;height:var(--nav-h);border-radius:0;
+  transition:max-width .45s var(--spring),height .45s var(--spring),margin-top .45s var(--spring),border-radius .45s var(--spring),padding .45s var(--spring)}
+.nav .wrap::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--glass-bg);
+  -webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%);box-shadow:var(--glass-hl),0 14px 34px -14px rgba(0,0,0,.75);opacity:0;transition:opacity .3s var(--ease-std)}
+.nav .wrap::after{opacity:0;transition:opacity .3s}
+html.refract .nav .wrap::before{backdrop-filter:url(#lg) blur(14px) saturate(170%)}
+.nav.up{background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.nav.up .wrap{max-width:min(940px,calc(100% - 24px));height:56px;margin-top:12px;border-radius:28px;padding:0 8px 0 20px}
+.nav.up .wrap::before{opacity:1}
+.nav.up .wrap::after{opacity:.7}
+.nav.up .links a.on::after{bottom:2px}
+/* glass chips and badges */
+.chip{background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.015));box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 0 0 1px rgba(255,255,255,.08);transition:transform var(--t-micro) var(--ease),box-shadow var(--t-micro),color var(--t-micro)}
+.chip:hover{transform:translateY(-1px);color:var(--ink);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 0 0 1px rgba(223,255,58,.4)}
+.cover .tag{background:var(--glass-bg);-webkit-backdrop-filter:blur(10px) saturate(160%);backdrop-filter:blur(10px) saturate(160%);box-shadow:var(--glass-hl)}
+.status{position:relative;display:inline-flex;align-items:center;gap:10px;min-height:36px;margin-bottom:22px;padding:0 16px 0 13px;border-radius:999px;font-size:14px;font-weight:600;color:var(--ink);
+  background:var(--glass-bg);-webkit-backdrop-filter:blur(12px) saturate(170%);backdrop-filter:blur(12px) saturate(170%);box-shadow:var(--glass-hl),0 10px 24px -12px rgba(0,0,0,.7)}
+html.refract .status{backdrop-filter:url(#lg) blur(10px) saturate(170%)}
+.status i{width:8px;height:8px;border-radius:50%;background:var(--lime);animation:pulse 2s var(--ease-std) infinite}
+/* direction cards: a soft glare follows the pointer (--mx/--my set from JS) */
+.spec a,.svc article{position:relative;isolation:isolate}
+.spec a::before,.svc article::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s var(--ease-std);
+  background:radial-gradient(380px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.07),rgba(223,255,58,.05) 35%,transparent 65%)}
+.spec a:hover::before,.svc article:hover::before{opacity:1}
+.svc article{background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,0) 40%),var(--bg-2);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 0 0 1px var(--line)}
+.svc article.main{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,0) 45%),var(--bg-3);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 0 0 1px var(--line-2)}
+@media (prefers-reduced-motion:reduce){.nav .wrap{transition:opacity .12s}.rim::after,.nav .wrap::after,.status i{animation:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:120ms!important;transition-delay:0s!important}}
 
 @media (max-width:1080px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.svc article,.svc article.main,.svc article:not(.main){grid-column:span 6}}
@@ -421,6 +462,7 @@ html.still *{animation:none!important;transition:none!important}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="lg" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".006 .028" numOctaves="2" seed="7" result="n"/><feGaussianBlur in="n" stdDeviation="2" result="b"/><feDisplacementMap in="SourceGraphic" in2="b" scale="22" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
 <a class="skip" href="#main"><span lang="ru">К содержанию</span><span lang="en">Skip to content</span></a>
 
 <header class="nav" id="nav"><div class="wrap">
@@ -452,6 +494,7 @@ html.still *{animation:none!important;transition:none!important}
   <section class="hero" aria-labelledby="h-hero">
     <canvas id="face" aria-label="Портрет Захара из частиц" role="img"></canvas>
     <div class="wrap"><div class="hero-in">
+      <span class="status rim"><i aria-hidden="true"></i><span lang="ru">Открыт для проектов</span><span lang="en">Open for projects</span></span>
       <h1 id="h-hero"><span class="ln"><span lang="ru">Захар</span><span lang="en">Zakhar</span></span><span class="ln"><span class="lime" lang="ru">Соколинский</span><span class="lime" lang="en">Sokolinsky</span></span></h1>
       <p class="slogan" lang="ru">Рутину - машинам. <b>Клиентов - вам.</b></p>
       <p class="slogan" lang="en">Routine to machines. <b>Clients to you.</b></p>
@@ -701,6 +744,10 @@ const root = document.documentElement;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const motion = store.get('motion') ? store.get('motion') === '1' : !reduce;
 if (!motion) root.classList.add('still');
+// SVG refraction behind the glass only where backdrop-filter:url() works (Chromium); Safari/Firefox keep the plain blur
+if (/Chrome\//.test(navigator.userAgent)) root.classList.add('refract');
+// glare on direction cards follows the pointer
+if (matchMedia('(hover: hover) and (pointer: fine)').matches) addEventListener('pointermove', e => { const g = e.target.closest?.('.spec a, .svc article'); if (!g) return; const r = g.getBoundingClientRect(); g.style.setProperty('--mx', e.clientX - r.left + 'px'); g.style.setProperty('--my', e.clientY - r.top + 'px') }, { passive: true });
 gsap.registerPlugin(ScrollTrigger);
 history.scrollRestoration = 'manual';
 let lang = store.get('lang') || 'ru';
@@ -1388,7 +1435,7 @@ document.addEventListener('click', e => { const a = e.target.closest('a[href^="#
 
 function heroIn() {
   gsap.from('.hero h1 .ln>span', { yPercent: 100, opacity: 0, filter: 'blur(10px)', duration: 1, stagger: .16, ease: 'expo.out', delay: .3, clearProps: 'filter' });
-  gsap.from('.hero-in p, .hero-in .proof, .hero-in .btns', { y: 18, opacity: 0, duration: .7, delay: .7, stagger: .08, ease: 'expo.out', clearProps: 'transform' });
+  gsap.from('.hero-in .status, .hero-in p, .hero-in .btns', { y: 18, opacity: 0, duration: .7, delay: .7, stagger: .08, ease: 'expo.out', clearProps: 'transform' });
   face.start(); logo.assemble(.2);
 }
 
