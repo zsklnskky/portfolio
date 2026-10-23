@@ -119,9 +119,9 @@ p{text-wrap:pretty}
 .hero .wrap{width:100%;pointer-events:none}
 .hero .wrap>*{pointer-events:auto}
 .hero-in{max-width:700px;padding:calc(var(--nav-h) + 24px) 0 56px}
-.hero h1{font-size:clamp(32px,4.5vw,66px);line-height:.98;font-weight:800;letter-spacing:-.035em;text-transform:uppercase}
-.hero h1 .ln{display:block;padding-bottom:.06em}.hero h1 .ln>span{display:inline-block}
-.hero h1 .lime{text-shadow:0 0 40px rgba(223,255,58,.35)}
+.hero h1,.lz-s h1{font-size:clamp(32px,4.5vw,66px);line-height:.98;font-weight:800;letter-spacing:-.035em;text-transform:uppercase}
+.hero h1 .ln,.lz-s .ln{display:block;padding-bottom:.06em}.hero h1 .ln>span,.lz-s .ln>span{display:inline-block}
+.hero h1 .lime,.lz-s .lime{text-shadow:0 0 40px rgba(223,255,58,.35)}
 .hero p{margin-top:22px;font-size:clamp(18px,1.5vw,21px);color:var(--text);max-width:34ch}
 .hero .btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
 .hero p.slogan{margin-top:20px;font:800 clamp(22px,2.5vw,36px)/1.06 var(--d);letter-spacing:-.02em;text-transform:uppercase;color:var(--ink);max-width:18ch}
@@ -715,6 +715,15 @@ html.refract .nav .wrap::before{backdrop-filter:url(#lg) blur(14px) saturate(170
   .next{padding:20px}
   .demo-bar{flex-direction:column;align-items:flex-start}
 }
+/* loupe: liquid-glass lens over the hero name and case screenshots (the reel "Fluid Glass"), mouse only.
+   Appear 220ms ease-out, leave 120ms ease-in (60fps.design: exit shorter than enter) */
+.lz{position:fixed;left:0;top:0;width:176px;height:176px;z-index:48;pointer-events:none;will-change:transform}
+.lz-b{position:absolute;inset:0;border-radius:50%;overflow:hidden;opacity:0;transform:scale(.6);transition:transform 120ms var(--ease-in),opacity 120ms var(--ease-in);box-shadow:0 26px 50px -14px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.16)}
+.lz.on .lz-b{opacity:1;transform:none;transition:transform 220ms var(--ease),opacity 160ms var(--ease)}
+.lz-f{position:absolute;inset:0;background:var(--bg);filter:url(#lzf)}
+.lz-s{position:absolute;left:0;top:0;transform-origin:0 0}
+.lz-s h1{margin:0}.lz-s img{display:block;width:100%;height:100%;object-fit:cover;object-position:top;transform:none}
+.lz-b::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(46% 30% at 36% 18%,rgba(255,255,255,.3),rgba(255,255,255,0) 72%),radial-gradient(closest-side,transparent 80%,rgba(223,255,58,.06) 92%,rgba(255,255,255,.2));box-shadow:inset 0 2px 1px rgba(255,255,255,.4),inset 0 -12px 24px rgba(0,0,0,.28)}
 </style>
 </head>
 <body>
@@ -1803,6 +1812,59 @@ function heroIn() {
   };
   addEventListener('langchange', () => { sug(); if (greeted && !history.some(h => h.role === 'user')) { log.innerHTML = ''; history.length = 0; greeted = false; if (box.classList.contains('open')) toggle(true) } });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && box.classList.contains('open')) { toggle(false); orb.focus() } });
+})();
+
+/* ================= LOUPE ================= */
+// liquid-glass loupe after the reel "Fluid Glass": a magnified clone inside a round lens, rim refraction with an RGB split
+// (SVG feDisplacementMap), follows the mouse with inertia and stretches a little with speed. Mouse only, off with reduced motion.
+(() => {
+  if (!motion || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  const SEL = '.hero h1, .gal figure:not(.tallshot):not(.v) img', D = 176, R = D / 2;
+  let lz, st, tgt = null, z = 2, px = 0, py = 0, lx = 0, ly = 0, raf = 0, last = 0;
+  function make() {
+    // displacement map: zero in the middle, sampling pushed outward toward the rim like the edge of a glass ball
+    const c = document.createElement('canvas'); c.width = c.height = D;
+    const g = c.getContext('2d'), im = g.createImageData(D, D);
+    for (let j = 0; j < D; j++) for (let i = 0; i < D; i++) {
+      const u = (i + .5 - R) / R, v = (j + .5 - R) / R, r2 = u * u + v * v, f = r2 < 1 ? r2 : 0, k = (j * D + i) * 4;
+      im.data[k] = 128 + 127 * u * f; im.data[k + 1] = 128 + 127 * v * f; im.data[k + 2] = 128; im.data[k + 3] = 255;
+    }
+    g.putImageData(im, 0, 0);
+    const ch = (s, m) => `<feDisplacementMap in="SourceGraphic" in2="m" scale="${s}" xChannelSelector="R" yChannelSelector="G"/><feColorMatrix values="${m} 0 0 0 1 0" result="c${s}"/>`;
+    document.body.insertAdjacentHTML('beforeend', `<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="lzf" x="0" y="0" width="${D}" height="${D}" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feImage href="${c.toDataURL()}" x="0" y="0" width="${D}" height="${D}" preserveAspectRatio="none" result="m"/>${ch(48, '1 0 0 0 0 0 0 0 0 0 0 0 0 0 0')}${ch(56, '0 0 0 0 0 0 1 0 0 0 0 0 0 0 0')}${ch(64, '0 0 0 0 0 0 0 0 0 0 0 0 1 0 0')}<feComposite in="c48" in2="c56" operator="arithmetic" k2="1" k3="1"/><feComposite in2="c64" operator="arithmetic" k2="1" k3="1"/></filter></svg><div class="lz" aria-hidden="true"><div class="lz-b"><div class="lz-f"><div class="lz-s"></div></div></div></div>`);
+    lz = $('.lz'); st = $('.lz-s');
+  }
+  function enter(el) {
+    if (!lz) make();
+    const r = el.getBoundingClientRect(), cl = el.cloneNode(true);
+    cl.removeAttribute('id'); cl.removeAttribute('loading');
+    tgt = el; z = el.tagName === 'IMG' ? 1.8 : 1.7;
+    st.replaceChildren(cl); st.style.width = r.width + 'px'; st.style.height = r.height + 'px';
+    if (!lz.classList.contains('on')) { lx = px; ly = py }
+    lz.classList.add('on');
+    if (!raf) { last = 0; raf = requestAnimationFrame(tick) }
+  }
+  function leave() { tgt = null; lz?.classList.remove('on') }
+  function tick(now) {
+    raf = 0;
+    if (!tgt) return;
+    const r = tgt.getBoundingClientRect();
+    if (!tgt.isConnected || px < r.left || px > r.right || py < r.top || py > r.bottom) return leave();
+    const k = 1 - Math.pow(.78, Math.min(64, last ? now - last : 16.7) / 16.7), ox = lx, oy = ly;
+    last = now; lx += (px - lx) * k; ly += (py - ly) * k;
+    const vx = lx - ox, vy = ly - oy, s = Math.min(.14, Math.hypot(vx, vy) * .006), a = Math.atan2(vy, vx);
+    lz.style.transform = `translate3d(${lx - R}px,${ly - R}px,0) rotate(${a}rad) scale(${1 + s},${1 - s}) rotate(${-a}rad)`;
+    st.style.transform = `translate(${R - (lx - r.left) * z}px,${R - (ly - r.top) * z}px) scale(${z})`;
+    raf = requestAnimationFrame(tick);
+  }
+  document.addEventListener('pointermove', e => {
+    if (e.pointerType !== 'mouse') return;
+    px = e.clientX; py = e.clientY;
+    const el = e.target.closest?.(SEL) || null;
+    if (el !== tgt) el ? enter(el) : leave();
+  }, { passive: true });
+  document.addEventListener('pointerdown', leave);
+  document.documentElement.addEventListener('mouseleave', leave);
 })();
 
 /* ================= BOOT ================= */
