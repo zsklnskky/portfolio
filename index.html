@@ -1148,7 +1148,9 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) addEventListener('
 gsap.registerPlugin(ScrollTrigger);
 /* STUDIO MOTION: Lenis lerp .12 поверх GSAP-тикера (ScrollTrigger видит каждый кадр); тач не сглаживается (syncTouch выкл.) */
 let lenis = null;
-if (motion) {
+// loaded after the first paint (when the preloader leaves): a third-party request before FCP costs ~3 s in mobile Lighthouse
+function loadLenis() {
+  if (!motion || window.Lenis) return;
   const ls = document.createElement('script');
   ls.src = 'https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js';
   ls.integrity = 'sha384-jqpi9VmOdhyLoLURgjCn7EpnG9BbnHW57ibIZoeaIU+erWDH3k8fQQg0xH2ySjnw'; ls.crossOrigin = 'anonymous';
@@ -2183,7 +2185,7 @@ function preloader() {
     })();
   });
 }
-preloader().then(() => { if (motion && first.page === 'home') heroIn(); else { root.classList.add('h-in', 'h-done'); face.start(); logo.assemble() } });
+preloader().then(() => { loadLenis(); if (motion && first.page === 'home') heroIn(); else { root.classList.add('h-in', 'h-done'); face.start(); logo.assemble() } });
 /* magnetic CTAs (starter data-magnetic): strength .35 / .45, mouse only, follow 150 ms linear, return .6 s with a slight overshoot */
 if (motion && fine) $$('[data-magnetic]').forEach(el => {
   const k = parseFloat(el.dataset.magnetic) || .35;
