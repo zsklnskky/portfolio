@@ -1406,7 +1406,7 @@ const DEMOS = {
   social(st, p) {
     const tiles = Array.from({ length: 9 }, (_, i) => `work/smm/ig/${String(i + 1).padStart(2, '0')}.webp`);
     st.innerHTML = SC('t-neutral', `<div class="soc3">
-      ${p.channels.map(c => `<figure class="dev"><figcaption>Telegram</figcaption><div class="phone"><div class="scr"><div class="hd"><i>${esc(c.title[0])}</i><div><b>${esc(c.title)}</b><span class="muted">${R('канал', 'channel')}</span></div></div><div class="vp"><img src="${c.img}" alt=""></div></div></div></figure>`).join('')}
+      ${p.channels.map(c => `<figure class="dev"><figcaption>Telegram</figcaption><div class="phone"><div class="scr"><div class="hd"><i>${esc(c.title[0])}</i><div><b>${esc(c.title)}</b><span class="muted">${R('канал', 'channel')}</span></div></div><div class="vp"><img src="${c.img}" alt="" width="860" height="7000"></div></div></div></figure>`).join('')}
       <figure class="dev"><figcaption>Instagram</figcaption><div class="phone"><div class="scr"><div class="vp"><div class="igp">
         <div class="igh"><img src="work/smm/ig/avatar.webp" alt=""><div><b>9</b><small>${R('публикаций', 'posts')}</small></div></div>
         <b class="ign">${R('Вячэра', 'Viachera')}</b><p>${R('Ужины на неделю под ваш бюджет', 'A week of dinners on your budget')}<br><span>dishday.xyz</span></p>
