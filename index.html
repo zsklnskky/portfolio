@@ -18,6 +18,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Person", "@id": "https://zsklnskky.dpdns.org/#person", "name": "Захар Соколинский", "url": "https://zsklnskky.dpdns.org/", "image": "https://zsklnskky.dpdns.org/img/me.webp", "jobTitle": "Маркетолог-автоматизатор", "alternateName": ["Zakhar Sokolinsky", "Соколинский Захар", "Zakhar Sokolinskiy", "Zahar Sokolinsky", "zsklnskky", "sklnsky"], "sameAs": ["https://t.me/sklnsky", "https://github.com/zsklnskky"], "email": "mailto:zsklnskky@gmail.com", "description": "Захар Соколинский (Zakhar Sokolinsky) - маркетолог-автоматизатор из Минска. Убирает ручную работу из бизнеса: заявки, напоминания, объявления и отчёты идут сами, а реклама и сайты приводят клиентов.", "alumniOf": {"@type": "CollegeOrUniversity", "name": "Белорусский государственный экономический университет", "alternateName": ["БГЭУ", "BSEU"], "url": "https://bseu.by/"}, "address": {"@type": "PostalAddress", "addressLocality": "Минск", "addressCountry": "BY"}, "knowsLanguage": [{"@type": "Language", "name": "Russian", "alternateName": "ru"}, {"@type": "Language", "name": "English", "alternateName": "en"}], "knowsAbout": ["маркетинговая автоматизация", "AI-автоматизация", "performance-маркетинг", "промпт-инженерия", "SMM", "копирайтинг", "веб-разработка", "моушн-дизайн", "360dialog", "Albato", "Altegio", "AppKit", "AppleScript", "Bitrix24", "Bun", "Canva", "Canvas", "ChatGPT", "Chrome", "Claude", "Claude Code", "CLI", "CSS", "edge-tts", "ffmpeg", "Figma", "GA4", "GitHub Pages", "Google Ads", "Google Ads API", "Google API", "Google Tag Manager", "GSAP", "HTML", "HTML/CSS/JS", "HTML5", "Instagram", "JavaScript", "Meta Ads", "Meta Marketing API", "n8n", "Node.js", "OpenCV", "PDF", "Peel (MIT)", "Phaser 3", "Piper TTS", "PocketBase", "Property Finder API", "PWA", "Python", "React", "Socket.IO", "Speech", "SQLite", "Swift", "SwiftUI", "Telegram", "Telegram Bot API", "Three.js", "TypeScript", "Vision OCR", "Vite", "Wan2GP", "Web Speech", "WhatsApp Business API", "Whisper", "WKWebView"]}, {"@type": "WebSite", "@id": "https://zsklnskky.dpdns.org/#website", "url": "https://zsklnskky.dpdns.org/", "name": "Захар Соколинский", "alternateName": ["Zakhar Sokolinsky", "zsklnskky"], "inLanguage": ["ru", "en"], "publisher": {"@id": "https://zsklnskky.dpdns.org/#person"}, "about": {"@id": "https://zsklnskky.dpdns.org/#person"}}]}</script>
 <meta property="og:description" content="Рутину - машинам. Клиентов - вам. Кейсы с живыми демо.">
 <meta name="theme-color" content="#0B0C0E">
+<script>try{var m=localStorage.getItem('motion');if(m?m==='1':!matchMedia('(prefers-reduced-motion: reduce)').matches){var c=document.documentElement.classList;c.add('mo','pl');if(sessionStorage.getItem('pl'))c.add('pl2')}}catch(e){}</script>
 <link rel="icon" href="img/logo-app.svg" type="image/svg+xml"><link rel="icon" href="/brand/png/favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="/brand/png/apple-touch-icon-180.png"><link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt">
 <!-- Подтверждение Search Console / Яндекс Вебмастера: мета-теги google-site-verification и yandex-verification вставлять сюда -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -782,9 +783,78 @@ html.refract .nav .wrap::before{backdrop-filter:url(#lg) blur(14px) saturate(170
 .fx-sent .ar{animation:fx-sent 900ms var(--ease) both}
 @keyframes fx-sent{0%{transform:none}40%{transform:translate(26px,-26px) rotate(10deg);opacity:0;animation-timing-function:steps(1)}41%{transform:translate(-18px,18px);opacity:0}100%{transform:none;opacity:1}}
 @media (prefers-reduced-motion:reduce){.fx-shake,.fx-sent .ar{animation:none}.card:hover .cover::after{transition:none;transform:translateX(-130%)}}
+
+/* STUDIO MOTION (studio-motion-refs starter, числа из catalog.md): Lenis, View Transitions карточка -> кейс,
+   строки заголовков из маски .9s/70ms, прелоадер по готовности портрета, маска + параллакс обложек, оглавление работ.
+   Всё живёт под html.mo: без JS, с reduce или выключенными «Анимациями» контент виден сразу. */
+html.lenis,html.lenis body{height:auto}
+.lenis-smooth{scroll-behavior:auto!important}
+.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis-stopped{overflow:clip}
+/* прелоадер: шторка с лаймовой кромкой уезжает вверх clip-path'ом 1 с in-out; повторный визит .6 с */
+.pre{display:none}
+html.pl .pre{display:grid;position:fixed;inset:0;z-index:120;place-items:end start;padding:var(--pad);background:linear-gradient(to top,var(--lime) 0 3px,var(--bg) 3px);clip-path:inset(0 0 0 0);transition:clip-path 1s cubic-bezier(.65,0,.35,1)}
+html.pl2 .pre{transition-duration:.6s}
+html.pl.pl-out .pre{clip-path:inset(0 0 100% 0);pointer-events:none}
+.pre-k{font:800 clamp(56px,12vw,168px)/.8 var(--d);color:var(--ink);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.pre-k::after{content:"%";margin-left:.08em;font-size:.3em;vertical-align:top;color:var(--lime)}
+/* hero: две строки имени выезжают из маски, стартуют, пока уходит шторка */
+html.mo .hero h1 .ln{clip-path:inset(-60px -60px 0 -60px)}
+html.mo.h-done .hero h1 .ln{clip-path:none}
+html.mo .hero h1 .ln>span{transform:translateY(110%);transition:transform .9s var(--ease)}
+html.mo .hero h1 .ln+.ln>span{transition-delay:70ms}
+html.mo.h-in .hero h1 .ln>span{transform:none}
+/* заголовки страниц и секций: по строкам из маски, 0.9 с, шаг 70 мс, cubic-bezier(.16,1,.3,1) */
+html.mo .ml{display:block;overflow:clip;padding-bottom:.08em;margin-bottom:-.08em}
+html.mo .ml-i{display:block;transform:translateY(110%);transition:transform .9s var(--ease);transition-delay:calc(var(--i) * 70ms)}
+html.mo .in .ml-i{transform:none}
+html.mo .phead h1>[lang],html.mo .h2>[lang]{display:inline-block;vertical-align:top}
+/* обложки карточек: шторка снизу 1.2 с in-out, картинка оседает со scale 1.25 за 1.6 с, потом лёгкий параллакс */
+html.mo .cover{clip-path:inset(100% 0 0 0);transition:clip-path 1.2s cubic-bezier(.65,0,.35,1)}
+html.mo .cover>img{scale:1.25;transition:transform 1.2s var(--ease),scale 1.6s var(--ease)}
+html.mo .cover.in{clip-path:inset(0 0 0 0)}
+html.mo .cover.in>img{scale:1}
+html.mo .cover.px>img{position:relative;top:-10%;height:120%;translate:0 var(--py,0)}
+@supports (animation-timeline:view()){
+  html.mo .cover.px>img{animation:cv-par linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+  @media (hover:none){html.mo .cover.px>img{animation-name:cv-par-s}}
+}
+@keyframes cv-par{from{translate:0 -8%}to{translate:0 8%}}
+@keyframes cv-par-s{from{translate:0 -4%}to{translate:0 4%}}
+/* переходы маршрутов: старый экран уходит вверх .5 с, новый открывается шторкой .8 с; обложка карточки и
+   заголовок перелетают в hero кейса (общие view-transition-name cv / ct) */
+.nav{view-transition-name:nav}.jv-orb{view-transition-name:jv}
+::view-transition-old(root){animation:vt-out .5s cubic-bezier(.65,0,.35,1) both}
+::view-transition-new(root){animation:vt-in .8s var(--ease) both}
+::view-transition-group(cv),::view-transition-group(ct){animation-duration:.8s;animation-timing-function:var(--ease)}
+::view-transition-group(cv){overflow:clip;border-radius:var(--r)}
+::view-transition-old(cv),::view-transition-new(cv){height:100%;object-fit:cover;object-position:top}
+@keyframes vt-out{to{opacity:0;transform:translateY(-6vh) scale(.98)}}
+@keyframes vt-in{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
+/* магнит CTA (только мышь): translate, чтобы не спорить с пружиной нажатия на transform */
+.btn[data-magnetic]{transition:background-color var(--t-micro),color var(--t-micro),transform 420ms cubic-bezier(.34,1.7,.5,1),box-shadow var(--t-state),translate .6s cubic-bezier(.34,1.56,.64,1)}
+.btn[data-magnetic].mag{transition-duration:var(--t-micro),var(--t-micro),420ms,var(--t-state),.15s;transition-timing-function:ease,ease,cubic-bezier(.34,1.7,.5,1),ease,linear}
+/* работы: переключатель «Сетка / Список» и типографское оглавление (Locomotive: антиква 5-6vw между линейками) */
+.wbar{display:flex;justify-content:space-between;align-items:flex-start;gap:12px 24px;flex-wrap:wrap;margin-bottom:28px}
+.wbar .filters{margin-bottom:0}
+.vsw{flex:none}
+.toc{list-style:none;border-top:1px solid var(--line-2)}
+.toc-r{display:grid;grid-template-columns:3.2em minmax(0,1fr) auto;align-items:baseline;gap:6px 24px;padding:clamp(16px,2.2vw,30px) 0;border-bottom:1px solid var(--line-2)}
+.toc-n{font-size:13px;font-weight:600;color:var(--text-2)}
+.toc-t{max-width:22ch;font:800 clamp(22px,3.2vw,46px)/1.02 var(--d);letter-spacing:-.035em;text-transform:uppercase;color:var(--ink);transition:color var(--t-micro),transform var(--t-state) var(--ease)}
+.toc-c{grid-column:2;font-size:14px;color:var(--text-2)}
+.toc-d{grid-row:1;grid-column:3;font-size:14px;color:var(--text-2);text-align:right;white-space:nowrap}
+.toc-r:focus-visible .toc-t{color:var(--lime)}
+@media (hover:hover){.toc:hover .toc-t{color:var(--text-2)}.toc .toc-r:hover .toc-t{color:var(--lime);transform:translateX(12px)}}
+@media (max-width:640px){.toc-r{grid-template-columns:2.2em minmax(0,1fr);gap:4px 12px}.toc-d{display:none}}
+.toc-pv{position:fixed;left:0;top:0;z-index:40;width:clamp(240px,24vw,360px);aspect-ratio:16/10;border-radius:var(--r);overflow:hidden;pointer-events:none;background:var(--bg-3);box-shadow:0 30px 60px -20px rgba(0,0,0,.85),inset 0 0 0 1px var(--line-2);opacity:0;scale:.86;transition:opacity .22s,scale .4s var(--ease)}
+.toc-pv.on{opacity:1;scale:1}
+.toc-pv img{width:100%;height:100%;object-fit:cover;object-position:top}
+.grid[hidden]{display:none}
 </style>
 </head>
 <body>
+<div class="pre" aria-hidden="true"><span class="pre-k" id="preK">0</span></div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="lg" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".006 .028" numOctaves="2" seed="7" result="n"/><feGaussianBlur in="n" stdDeviation="2" result="b"/><feDisplacementMap in="SourceGraphic" in2="b" scale="22" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
 <a class="skip" href="#main"><span lang="ru">К содержанию</span><span lang="en">Skip to content</span></a>
 
@@ -802,7 +872,7 @@ html.refract .nav .wrap::before{backdrop-filter:url(#lg) blur(14px) saturate(170
     <button class="burger" id="burger" aria-label="Меню" aria-expanded="false" aria-controls="menu"><i></i></button>
   </div>
 </div></header>
-<nav class="menu" id="menu" aria-label="Меню">
+<nav class="menu" id="menu" aria-label="Меню" data-lenis-prevent>
   <a href="#/" data-p="home" style="--i:0"><span lang="ru">Главная</span><span lang="en">Home</span></a>
   <a href="#/work" data-p="work" style="--i:1"><span lang="ru">Работы</span><span lang="en">Work</span></a>
   <a href="#/services" data-p="services" style="--i:2"><span lang="ru">Услуги</span><span lang="en">Services</span></a>
@@ -822,7 +892,7 @@ html.refract .nav .wrap::before{backdrop-filter:url(#lg) blur(14px) saturate(170
       <p class="slogan" lang="en">Routine to machines. <b>Clients to you.</b></p>
       <p lang="ru">Маркетолог-автоматизатор. Реклама и сайт приводят клиентов, а записи, напоминания и отчёты делают боты.</p>
       <p lang="en">Marketer who automates. Ads and a site bring the clients, bots handle bookings, reminders and reports.</p>
-      <div class="btns"><a class="btn pri" href="#/contact"><span lang="ru">Бесплатный разбор: ответ с планом за 2 часа</span><span lang="en">Free review: a plan back within 2 hours</span></a><a class="btn alt" href="#/work"><span lang="ru">Смотреть работы</span><span lang="en">See the work</span></a></div>
+      <div class="btns"><a class="btn pri" href="#/contact" data-magnetic=".45"><span lang="ru">Бесплатный разбор: ответ с планом за 2 часа</span><span lang="en">Free review: a plan back within 2 hours</span></a><a class="btn alt" href="#/work" data-magnetic=".35"><span lang="ru">Смотреть работы</span><span lang="en">See the work</span></a></div>
     </div></div>
   </section>
   <section class="wrap sec" aria-labelledby="h-spec">
@@ -835,15 +905,16 @@ html.refract .nav .wrap::before{backdrop-filter:url(#lg) blur(14px) saturate(170
   </section>
   <div class="wrap"><div class="band" data-r>
     <div><h2><span lang="ru">Где у вас теряются заявки?</span><span lang="en">Where do your leads get lost?</span></h2><p lang="ru">Опишите в двух словах. Отвечу сам и скажу, что автоматизировать первым.</p><p lang="en">Tell me in a few words. I'll reply myself and say what to automate first.</p></div>
-    <a class="btn pri" href="#/contact"><span lang="ru">Бесплатный разбор</span><span lang="en">Free review</span><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a>
+    <a class="btn pri" href="#/contact" data-magnetic=".45"><span lang="ru">Бесплатный разбор</span><span lang="en">Free review</span><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a>
   </div></div>
 </div>
 
 <!-- WORK -->
 <div class="page" data-page="work"><div class="wrap">
   <div class="phead"><h1 data-r><span lang="ru">Работы</span><span lang="en">Work</span><sup id="workCount"></sup></h1><p data-r lang="ru">Не скриншоты, а работающие вещи: демо, видео или живой сайт.</p><p data-r lang="en">Not screenshots but working things: a demo, a video or the live site.</p></div>
-  <div class="filters" id="filters" role="group" aria-label="Направления"></div>
+  <div class="wbar"><div class="filters" id="filters" role="group" aria-label="Направления"></div><div class="filters vsw" id="viewSw" role="group" aria-label="Вид списка работ"><button type="button" data-v="grid" aria-pressed="true"><span lang="ru">Сетка</span><span lang="en">Grid</span></button><button type="button" data-v="list" aria-pressed="false"><span lang="ru">Список</span><span lang="en">List</span></button></div></div>
   <div class="grid" id="workGrid"></div>
+  <ol class="toc" id="workList" hidden></ol>
 </div></div>
 
 <!-- CASE -->
@@ -915,7 +986,7 @@ html.refract .nav .wrap::before{backdrop-filter:url(#lg) blur(14px) saturate(170
 
 <div class="wipe" id="wipe" aria-hidden="true"></div>
 
-<dialog id="viewer" aria-label="Просмотр проекта">
+<dialog id="viewer" aria-label="Просмотр проекта" data-lenis-prevent>
   <div class="box">
     <header><h2 id="vTitle"></h2><a class="btn alt sm" id="vExt" target="_blank" rel="noopener"><span lang="ru">В новой вкладке</span><span lang="en">New tab</span></a><button class="x" id="vClose" aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
     <div class="vstage" id="vStage"></div>
@@ -923,7 +994,7 @@ html.refract .nav .wrap::before{backdrop-filter:url(#lg) blur(14px) saturate(170
 </dialog>
 
 <button class="jv-orb" id="jvOrb" aria-label="Джарвис, помощник по сайту" aria-expanded="false" aria-controls="jv">J</button>
-<div class="jv" id="jv" role="dialog" aria-label="Джарвис">
+<div class="jv" id="jv" role="dialog" aria-label="Джарвис" data-lenis-prevent>
   <header><div><b><span lang="ru">Джарвис</span><span lang="en">Jarvis</span></b><small><span lang="ru">помощник Захара, знает все проекты</span><span lang="en">Zakhar's helper, knows every project</span></small></div>
     <button id="jvVoice" aria-pressed="false" aria-label="Озвучивать ответы"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9v6h4l5 4V5L8 9zM16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11"/></svg></button></header>
   <div class="log" id="jvLog" aria-live="polite"></div>
@@ -1075,6 +1146,16 @@ if (/Chrome\//.test(navigator.userAgent)) root.classList.add('refract');
 // glare on direction cards follows the pointer
 if (matchMedia('(hover: hover) and (pointer: fine)').matches) addEventListener('pointermove', e => { const g = e.target.closest?.('.spec a, .svc article'); if (!g) return; const r = g.getBoundingClientRect(); g.style.setProperty('--mx', e.clientX - r.left + 'px'); g.style.setProperty('--my', e.clientY - r.top + 'px') }, { passive: true });
 gsap.registerPlugin(ScrollTrigger);
+/* STUDIO MOTION: Lenis lerp .12 поверх GSAP-тикера (ScrollTrigger видит каждый кадр); тач не сглаживается (syncTouch выкл.) */
+let lenis = null;
+if (motion) {
+  const ls = document.createElement('script');
+  ls.src = 'https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js';
+  ls.integrity = 'sha384-jqpi9VmOdhyLoLURgjCn7EpnG9BbnHW57ibIZoeaIU+erWDH3k8fQQg0xH2ySjnw'; ls.crossOrigin = 'anonymous';
+  ls.onload = () => { lenis = new Lenis({ lerp: .12 }); lenis.on('scroll', ScrollTrigger.update); gsap.ticker.add(t => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0) };
+  document.head.append(ls);
+}
+const jump = y => lenis ? lenis.scrollTo(y, { immediate: true, force: true }) : scrollTo(0, y);
 history.scrollRestoration = 'manual';
 let lang = store.get('lang') || 'ru';
 const L = o => o == null ? '' : typeof o === 'string' ? o : o[lang];
@@ -1113,7 +1194,7 @@ $$('[data-set-lang]').forEach(b => b.onclick = () => { setLang(b.dataset.setLang
 const mBtn = $('#motion'); mBtn.setAttribute('aria-checked', motion);
 mBtn.onclick = () => { store.set('motion', motion ? '0' : '1'); location.reload() };
 const menu = $('#menu'), burger = $('#burger');
-function setMenu(o) { menu.classList.toggle('open', o); burger.setAttribute('aria-expanded', o); $('main').inert = o; document.body.style.overflow = o ? 'hidden' : ''; if (o) setTimeout(() => $('a', menu).focus(), 60) }
+function setMenu(o) { o ? lenis?.stop() : lenis?.start(); menu.classList.toggle('open', o); burger.setAttribute('aria-expanded', o); $('main').inert = o; document.body.style.overflow = o ? 'hidden' : ''; if (o) setTimeout(() => $('a', menu).focus(), 60) }
 burger.onclick = () => setMenu(!menu.classList.contains('open'));
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && menu.classList.contains('open')) { setMenu(false); burger.focus() } });
 
@@ -1216,7 +1297,7 @@ const face = (() => {
   let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { W = 0; build() }, 200) });
   img.onload = build;
   requestAnimationFrame(frame);
-  return { build, start() { if (!started) { started = true; t0 = performance.now() } }, burst(px, py) { bx = px; by = py; burst = 1 }, scatter(v) { sp = motion ? v : 0 } };
+  return { build, ready: () => n > 0, loaded: () => img.complete && img.naturalWidth > 0, start() { if (!started) { started = true; t0 = performance.now() } }, burst(px, py) { bx = px; by = py; burst = 1 }, scatter(v) { sp = motion ? v : 0 } };
 })();
 
 /* ================= BRICK BREAKER (404) ================= */
@@ -1293,14 +1374,14 @@ function openViewer({ title, src, img, ext }) {
     const f = frame(src, title); f.onload = () => { sk.style.opacity = 0; setTimeout(() => sk.remove(), 500) };
     vStage.append(sk, f);
   } else { const i = new Image(); i.src = img; i.alt = title; vStage.append(i) }
-  viewer.showModal(); track('open_' + title);
+  viewer.showModal(); lenis?.stop(); track('open_' + title);
   if (motion) {
     const r = lastTrigger?.getBoundingClientRect(), b = $('#viewer .box').getBoundingClientRect();
     const from = r && r.width ? `inset(${Math.max(0, r.top - b.top)}px ${Math.max(0, b.right - r.right)}px ${Math.max(0, b.bottom - r.bottom)}px ${Math.max(0, r.left - b.left)}px round 16px)` : 'inset(8% 8% 8% 8% round 16px)';
     gsap.fromTo('#viewer .box', { clipPath: from }, { clipPath: 'inset(0px 0px 0px 0px round 16px)', duration: .55, ease: 'expo.out' });
   }
 }
-viewer.addEventListener('close', () => { vStage.innerHTML = '' });
+viewer.addEventListener('close', () => { vStage.innerHTML = ''; lenis?.start() });
 $('#vClose').onclick = () => viewer.close();
 viewer.addEventListener('click', e => { if (e.target === viewer) viewer.close() });
 const openDemoOf = p => openViewer({ title: plain(L(p.title)), src: p.demo, ext: p.ext });
@@ -1328,6 +1409,7 @@ function card(p) {
 // hover: tall screenshots scroll inside the cover, the motion card plays its preview (navbar.gallery cards / 60fps)
 const loopObs = 'IntersectionObserver' in window && new IntersectionObserver(es => es.forEach(e => { const v = e.target; if (e.isIntersecting && motion) { if (!v.src) v.src = v.dataset.src; v.play().then(() => v.classList.add('on')).catch(() => {}) } else v.pause() }), { threshold: .25 });
 function wireCards(scope) {
+  covers(scope);
   if (loopObs) $$('.cover.lp video', scope).forEach(v => loopObs.observe(v));
   $$('.card', scope).forEach(c => {
     const im = $('.cover img.tall', c), v = $('.cover:not(.lp) video', c);
@@ -1354,15 +1436,47 @@ function renderAll() {
   $('#svc').innerHTML = SPECS.map((s, i) => `${i === 3 ? `<p class="svc-h">${R('Смежные направления', 'Related skills')}</p>` : ''}<article class="${s.main ? 'main' : ''}" data-r><h2>${L(s.t)}</h2><p>${L(s.d)}</p><div class="roles">${s.tools.map(t => `<span class="chip">${t}</span>`).join('')}</div>${s.rel.length ? `<div class="rel">${s.rel.map(r => `<a href="#/work/${r}">${esc(plain(L(proj(r).title)))}</a>`).join('')}</div>` : ''}</article>`).join('');
   $('#tools').innerHTML = TOOLS.map(t => `<span class="chip">${t}</span>`).join('');
 }
+let wview = store.get('wview') === 'list' ? 'list' : 'grid';
+const pvSrc = p => p.loop ? p.loop + (p.loopLang ? '-' + lang : '') + '.jpg' : p.img ? IMG[p.img] : p.books ? `work/brand-inkside/${lang}/01.webp` : p.channels ? p.channels[0].img : '';
+const row = (p, i) => `<li data-r><a class="toc-r" href="#/work/${p.slug}" data-slug="${p.slug}" data-pv="${pvSrc(p) || ''}"><span class="toc-n">${String(i + 1).padStart(2, '0')}</span><b class="toc-t">${esc(plain(L(p.title)))}</b><span class="toc-c">${esc(plain(L(p.client)))}</span><span class="toc-d">${L(DIRS.find(([k]) => k === p.dirs[0])?.[1])}</span></a></li>`;
 function renderGrid() {
-  $('#workGrid').innerHTML = P.filter(p => inF(p, filter)).map(card).join('');
-  wireCards($('#workGrid'));
+  const ps = P.filter(p => inF(p, filter)), list = wview === 'list';
+  $('#workGrid').hidden = list; $('#workList').hidden = !list;
+  $$('#viewSw button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === wview));
+  if (list) { $('#workList').innerHTML = ps.map(row).join(''); $('#workGrid').innerHTML = '' }
+  else { $('#workGrid').innerHTML = ps.map(card).join(''); $('#workList').innerHTML = ''; wireCards($('#workGrid')) }
 }
+$('#viewSw').addEventListener('click', e => {
+  const b = e.target.closest('[data-v]'); if (!b || b.dataset.v === wview) return;
+  wview = b.dataset.v; store.set('wview', wview); renderGrid(); revealList(); ScrollTrigger.refresh();
+});
+function revealList() {
+  if (motion) gsap.fromTo(wview === 'list' ? '#workList li' : '#workGrid .card', { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: .5, stagger: .035, ease: 'expo.out' });
+  countUp($('#workGrid'));
+}
+// hover over a row swaps a floating preview that trails the mouse (Locomotive index); mouse only, never on touch
+if (motion && fine) (() => {
+  const pv = document.createElement('div'); pv.className = 'toc-pv'; pv.setAttribute('aria-hidden', 'true'); pv.innerHTML = '<img alt="">';
+  document.body.append(pv);
+  const im = $('img', pv); let x = 0, y = 0, tx = 0, ty = 0, raf = 0, on = false;
+  const tick = () => { x += (tx - x) * .16; y += (ty - y) * .16; pv.style.transform = `translate3d(${x}px,${y}px,0)`; raf = on || Math.abs(tx - x) > .5 ? requestAnimationFrame(tick) : 0 };
+  const list = $('#workList');
+  list.addEventListener('pointermove', e => {
+    if (e.pointerType !== 'mouse') return;
+    const r = e.target.closest('.toc-r'), src = r?.dataset.pv;
+    tx = Math.min(e.clientX + 28, innerWidth - pv.offsetWidth - 16); ty = Math.min(Math.max(16, e.clientY - pv.offsetHeight / 2), innerHeight - pv.offsetHeight - 16);
+    if (!on) { x = tx; y = ty }
+    on = !!src; pv.classList.toggle('on', on);
+    if (src && im.getAttribute('src') !== src) im.src = src;
+    if (!raf) raf = requestAnimationFrame(tick);
+  }, { passive: true });
+  list.addEventListener('pointerleave', () => { on = false; pv.classList.remove('on') });
+  addEventListener('hashchange', () => { on = false; pv.classList.remove('on') });
+})();
 $('#filters').addEventListener('click', e => {
   const b = e.target.closest('[data-f]'); if (!b) return;
   filter = b.dataset.f; $$('#filters button').forEach(x => x.setAttribute('aria-pressed', x.dataset.f === filter)); renderGrid();
-  if (motion) gsap.fromTo('#workGrid .card', { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: .5, stagger: .035, ease: 'expo.out' });
-  countUp($('#workGrid')); ScrollTrigger.refresh();
+  revealList(); ScrollTrigger.refresh();
 });
 
 /* ================= DEMOS: "how it works" in 8-15 s, loops while in view ================= */
@@ -1745,6 +1859,45 @@ function countUp(scope) {
     gsap.to(o, { v, duration: 1.4, ease: 'expo.out', immediateRender: false, scrollTrigger: { trigger: el, start: 'top 95%', once: true }, onUpdate: () => el.textContent = Math.round(o.v), onComplete: () => el.textContent = raw });
   });
 }
+/* headings by line from a mask (starter data-split): words are measured by offsetTop, every line gets its own mask */
+const SPLIT = '.page:not([data-page="case"]) .phead h1, .h2';
+function splitLines(el) {
+  if (el._src == null) el._src = el.innerHTML; else el.innerHTML = el._src;
+  if (!el.getClientRects().length) return el._dirty = true;
+  el._dirty = false;
+  const words = el.textContent.trim().split(/\s+/);
+  el.innerHTML = words.map(w => `<span style="display:inline-block">${esc(w)}</span>`).join(' ');
+  const lines = [];
+  let top = null;
+  $$(':scope>span', el).forEach(w => { if (top === null || Math.abs(w.offsetTop - top) > 4) { lines.push([]); top = w.offsetTop } lines.at(-1).push(w.textContent) });
+  el.innerHTML = lines.map((l, i) => `<span class="ml"><span class="ml-i" style="--i:${i}">${l.map(esc).join(' ')}</span></span>`).join('');
+}
+// a heading with RU/EN spans splits each language part; the hidden one waits for its turn (langchange)
+const splitParts = h => { const parts = $$(':scope>[lang]', h); return parts.length ? parts : [h] };
+const headIO = 'IntersectionObserver' in window && new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); headIO.unobserve(e.target) } }), { rootMargin: '0px 0px -10% 0px' });
+function splitHeads(el, replay) {
+  if (!motion || !headIO) return;
+  $$(SPLIT, el).forEach(h => {
+    splitParts(h).forEach(p => (replay || p._dirty || p._src == null) && splitLines(p));
+    if (replay) { h.classList.remove('in'); headIO.observe(h) }
+  });
+}
+addEventListener('langchange', () => { if (motion) $$(SPLIT).forEach(h => splitParts(h).forEach(p => p._src != null && splitLines(p))) });
+{ let lw = innerWidth, rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (innerWidth === lw) return; lw = innerWidth; $$(SPLIT).forEach(h => splitParts(h).forEach(p => p._src != null && splitLines(p))) }, 200) }) }
+/* covers: mask reveal when the card enters (observe the card: a fully clipped element never "intersects"), then parallax */
+const cssView = window.CSS && CSS.supports('animation-timeline: view()');
+const coverIO = 'IntersectionObserver' in window && new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { $('.cover', e.target)?.classList.add('in'); coverIO.unobserve(e.target) } }), { rootMargin: '0px 0px -8% 0px', threshold: .05 });
+function covers(scope) {
+  if (!motion || !coverIO) return;
+  $$('.card', scope).forEach(c => {
+    const cv = $('.cover', c); if (!cv || cv.classList.contains('in')) return;
+    coverIO.observe(c);
+    if (cv.classList.contains('lp') || cv.classList.contains('ph') || !$(':scope>img:not(.tall)', cv)) return;
+    cv.classList.add('px');
+    if (!cssView) gsap.fromTo($(':scope>img', cv), { '--py': fine ? '-8%' : '-4%' }, { '--py': fine ? '8%' : '4%', ease: 'none', scrollTrigger: { trigger: cv, start: 'top bottom', end: 'bottom top', scrub: true } });
+  });
+}
+let inVT = false;  // inside a view transition the new page is revealed by the transition itself
 let pageCtx = null;
 function animatePage(name, el) {
   pageCtx?.revert();
@@ -1753,12 +1906,14 @@ function animatePage(name, el) {
     if (!motion) return;
     // above the fold plays at once; the rest rises as it enters (unsection: fadeInUp 20px, stagger)
     $$('[data-r]', el).forEach((x, i) => {
+      if (x.matches(SPLIT)) return;
       const r = x.getBoundingClientRect(), now = r.top < innerHeight;
+      if (now && inVT) return;
       gsap.fromTo(x, { y: 22, opacity: 0 }, { y: 0, opacity: 1, duration: .7, ease: 'expo.out', delay: now ? .12 + Math.min(i, 8) * .045 : 0, ...(now ? {} : { scrollTrigger: { trigger: x, start: 'top 94%' } }) });
     });
     $$('.gal figure img', el).forEach(im => gsap.fromTo(im, { yPercent: -4 }, { yPercent: 4, ease: 'none', scrollTrigger: { trigger: im, start: 'top bottom', end: 'bottom top', scrub: true } }));
   }, el);
-  countUp(el);
+  countUp(el); splitHeads(el, true);
 }
 
 /* nav: active page, background after a little scroll */
@@ -1804,21 +1959,43 @@ function show(page, slug) {
   if (current === 'work') workY = scrollY;
   const back = view === 'work' && current?.startsWith('case');
   current = view + (slug || '');
-  scrollTo(0, back ? workY : 0);
+  jump(back ? workY : 0);
   markNav(view === 'case' ? 'work' : view);
   document.title = (view === 'case' ? plain(L(proj(slug).title)) + ' - ' : view !== 'home' ? R({ work: 'Работы', services: 'Услуги', about: 'Обо мне', contact: 'Контакты', 404: '404' }[view], { work: 'Work', services: 'Services', about: 'About', contact: 'Contact', 404: '404' }[view]) + ' - ' : '') + R('Захар Соколинский', 'Zakhar Sokolinsky');
   if (view === 'home') { face.scatter(0); face.build() }
   if (view === '404') brick.build();
   const el = $(`.page[data-page="${view}"]`);
   animatePage(view, el);
-  requestAnimationFrame(() => { ScrollTrigger.refresh(); if (back) scrollTo(0, workY) });
+  requestAnimationFrame(() => { ScrollTrigger.refresh(); if (back) jump(workY) });
   if (view !== 'home') { const h = $('h1', el); if (h) { h.tabIndex = -1; h.focus({ preventScroll: true }) } }
   track('view_' + (slug || page));
 }
 let busy = false, workY = 0;
+let vt = null, named = [];
+const nameIt = (el, n) => { if (el) { el.style.viewTransitionName = n; named.push(el) } };
+const unname = () => { named.forEach(el => el.style.viewTransitionName = ''); named = [] };
+const onScreen = el => { const r = el?.getBoundingClientRect(); return r && r.bottom > 0 && r.top < innerHeight };
 function go() {
   const { page, slug } = parse();
   if (!motion || current === null) return show(page, slug);
+  if (document.startViewTransition) {
+    vt?.skipTransition(); unname();
+    const prev = current?.startsWith('case') ? current.slice(4) : null, toCase = viewOf(page, slug) === 'case';
+    // card (grid or list row) -> case hero: the cover flies into the demo stage, the title into the h1; and back
+    const src = toCase && $(`.page.on [data-slug="${slug}"]`);
+    let pair = false;
+    if (src && onScreen(src)) { nameIt($('.cover', src), 'cv'); nameIt($('h2, .toc-t', src), 'ct'); pair = true }
+    else if (prev && page === 'work') { nameIt($('#case .demo'), 'cv'); nameIt($('#case h1'), 'ct'); pair = true }
+    vt = document.startViewTransition(() => {
+      unname(); inVT = true;
+      try { show(page, slug) } finally { inVT = false }
+      if (!pair) return;
+      if (toCase) { nameIt($('#case .demo'), 'cv'); nameIt($('#case h1'), 'ct') }
+      else { const c = $(`.page.on [data-slug="${prev}"]`); if (onScreen(c)) { nameIt($('.cover', c), 'cv'); nameIt($('h2, .toc-t', c), 'ct'); $('.cover', c)?.classList.add('in') } }
+    });
+    vt.ready.catch(() => {}); vt.finished.catch(() => {}).finally(() => { unname(); vt = null });
+    return;
+  }
   if (busy) return; busy = true;
   // page transition: graphite panel with a glowing lime edge sweeps up, the new page rises from under it
   const w = $('#wipe');
@@ -1833,11 +2010,11 @@ document.addEventListener('keydown', e => {
   if (e.key !== 'Escape' || viewer.open || $('#jv').classList.contains('open') || menu.classList.contains('open') || document.fullscreenElement) return;
   if (current?.startsWith('case')) location.hash = '#/work';
 });
-document.addEventListener('click', e => { const a = e.target.closest('a[href^="#/"]'); if (a && (a.getAttribute('href') === location.hash || (a.getAttribute('href') === '#/' && !location.hash))) { e.preventDefault(); scrollTo({ top: 0, behavior: motion ? 'smooth' : 'auto' }) } });
+document.addEventListener('click', e => { const a = e.target.closest('a[href^="#/"]'); if (a && (a.getAttribute('href') === location.hash || (a.getAttribute('href') === '#/' && !location.hash))) { e.preventDefault(); lenis ? lenis.scrollTo(0) : scrollTo({ top: 0, behavior: motion ? 'smooth' : 'auto' }) } });
 
 function heroIn() {
-  gsap.from('.hero h1 .ln>span', { yPercent: 100, opacity: 0, filter: 'blur(10px)', duration: 1, stagger: .16, ease: 'expo.out', delay: .3, clearProps: 'filter' });
-  gsap.from('.hero-in p, .hero-in .btns', { y: 18, opacity: 0, duration: .7, delay: .7, stagger: .08, ease: 'expo.out', clearProps: 'transform' });
+  root.classList.add('h-in'); setTimeout(() => root.classList.add('h-done'), 1100);
+  gsap.from('.hero-in p, .hero-in .btns', { y: 18, opacity: 0, duration: .7, delay: .35, stagger: .08, ease: 'expo.out', clearProps: 'transform' });
   face.start(); logo.assemble(.2);
 }
 
@@ -1986,7 +2163,33 @@ setLang(lang);
 renderAll();
 const first = parse();
 show(first.page, first.slug);
-if (motion && first.page === 'home') heroIn(); else { face.start(); logo.assemble() }
+/* preloader: waits for real readiness (fonts + portrait photo + particles built on home), not a timer;
+   600 ms - 3 s on the first visit, up to 1 s on a repeat visit in this tab session; hero starts while the curtain leaves */
+function preloader() {
+  return new Promise(done => {
+    if (!root.classList.contains('pl')) return done();
+    const again = root.classList.contains('pl2'), cap = again ? 1000 : 3000, min = again ? 0 : 600, t0 = performance.now(), k = $('#preK');
+    try { sessionStorage.setItem('pl', '1') } catch {}
+    let fonts = false, shown = 0; (document.fonts?.ready || Promise.resolve()).then(() => fonts = true);
+    (function step() {
+      const t = performance.now() - t0, home = first.page === 'home' && !first.slug;
+      let goal = home ? (fonts ? .3 : 0) + (face.loaded() ? .4 : 0) + (face.ready() ? .3 : 0) : fonts ? 1 : .5;
+      goal = t >= cap ? 1 : Math.min(goal, min ? t / min : 1);
+      shown += (goal - shown) * .2; if (goal === 1 && shown > .99) shown = 1;
+      k.textContent = Math.round(shown * 100);
+      if (shown < 1) return requestAnimationFrame(step);
+      root.classList.add('pl-out'); done();
+      setTimeout(() => root.classList.remove('pl', 'pl2', 'pl-out'), again ? 650 : 1050);
+    })();
+  });
+}
+preloader().then(() => { if (motion && first.page === 'home') heroIn(); else { root.classList.add('h-in', 'h-done'); face.start(); logo.assemble() } });
+/* magnetic CTAs (starter data-magnetic): strength .35 / .45, mouse only, follow 150 ms linear, return .6 s with a slight overshoot */
+if (motion && fine) $$('[data-magnetic]').forEach(el => {
+  const k = parseFloat(el.dataset.magnetic) || .35;
+  el.addEventListener('pointermove', e => { const r = el.getBoundingClientRect(); el.classList.add('mag'); el.style.translate = `${(e.clientX - r.left - r.width / 2) * k}px ${(e.clientY - r.top - r.height / 2) * k}px` });
+  el.addEventListener('pointerleave', () => { el.classList.remove('mag'); el.style.translate = '' });
+});
 /* ================= ui-effects: liquid pill / underline, shake, sent (см. CSS-блок ui-effects) ================= */
 (() => {
   // одна подложка на группу: при смене выбора сначала растягивается от старого пункта до нового (150ms), потом сжимается на новом
