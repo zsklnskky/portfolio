@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="ru" data-lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Политика конфиденциальности - Захар Соколинский</title>
+<meta name="description" content="Какие данные собирает сайт и бот Захара Соколинского, зачем, сколько хранятся и как их удалить. Куки, аналитика, Джарвис.">
+<link rel="canonical" href="https://zsklnskky.dpdns.org/privacy.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0B0C0E">
+<link rel="icon" href="img/logo-app.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700&family=Manrope:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#0B0C0E;--bg-2:#121316;--bg-3:#191B1F;--ink:#ECEDEF;--text:#B9BCC3;--text-2:#8A8E96;--line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.16);
+  --lime:#DFFF3A;--on-lime:#0B0C0E;--r:16px;--d:'Unbounded',system-ui,sans-serif;--f:'Manrope',system-ui,sans-serif;color-scheme:dark}
+[data-lang="ru"] [lang="en"],[data-lang="en"] [lang="ru"]{display:none!important}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.65 var(--f);-webkit-font-smoothing:antialiased}
+a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-underline-offset:3px}
+a:hover{color:var(--lime)}
+:focus-visible{outline:2px solid var(--lime);outline-offset:3px;border-radius:4px}
+.top{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px clamp(16px,4vw,40px);
+  background:rgba(11,12,14,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top a{text-decoration:none;font-weight:600}
+.lang{display:flex;gap:4px;padding:3px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line-2)}
+.lang button{border:0;background:none;color:var(--text-2);font:600 13px var(--f);padding:6px 12px;border-radius:999px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--lime);color:var(--on-lime)}
+main{max-width:780px;margin:0 auto;padding:clamp(32px,6vw,72px) 16px 96px}
+h1{font:700 clamp(28px,5.4vw,48px)/1.08 var(--d);color:var(--ink);margin:0 0 14px;letter-spacing:-.01em}
+.meta{color:var(--text-2);font-size:15px;margin:0 0 28px}
+.lead{font-size:clamp(18px,2vw,20px);color:var(--ink)}
+nav.toc{margin:28px 0 8px;padding:18px 20px;border-radius:var(--r);background:var(--bg-2);box-shadow:inset 0 0 0 1px var(--line)}
+nav.toc ol{margin:0;padding-left:20px;columns:2 220px;column-gap:28px}
+nav.toc li{margin:2px 0;break-inside:avoid}
+nav.toc a{text-decoration:none;color:var(--text)}
+nav.toc a:hover{color:var(--lime)}
+h2{font:700 clamp(18px,2.4vw,22px)/1.25 var(--d);color:var(--ink);margin:48px 0 12px;scroll-margin-top:80px}
+h3{font:700 17px/1.3 var(--f);color:var(--ink);margin:24px 0 6px}
+ul{padding-left:20px}
+li{margin:4px 0}
+.tbl{overflow-x:auto;margin:12px 0;border-radius:var(--r);box-shadow:inset 0 0 0 1px var(--line)}
+table{width:100%;border-collapse:collapse;font-size:15px;min-width:560px}
+th,td{text-align:left;vertical-align:top;padding:10px 14px;border-bottom:1px solid var(--line)}
+th{color:var(--ink);font-weight:600;background:var(--bg-2)}
+tr:last-child td{border-bottom:0}
+code{font-size:.9em;color:var(--ink);background:var(--bg-3);padding:1px 6px;border-radius:6px}
+.note{padding:14px 18px;border-radius:var(--r);background:var(--bg-2);box-shadow:inset 3px 0 0 var(--lime)}
+footer{border-top:1px solid var(--line);padding:24px 16px;text-align:center;color:var(--text-2);font-size:14px}
+</style>
+</head>
+<body>
+<header class="top">
+  <a href="/"><span lang="ru">← На сайт</span><span lang="en">← Back to site</span></a>
+  <div class="lang" role="group" aria-label="Язык / Language"><button data-l="ru" aria-pressed="true">RU</button><button data-l="en" aria-pressed="false">EN</button></div>
+</header>
+
+<main>
+<!-- ===================== RU ===================== -->
+<article lang="ru">
+  <h1>Политика конфиденциальности и файлов куки</h1>
+  <p class="meta">Действует с 23 октября 2026 года · сайт zsklnskky.dpdns.org, его зеркало и Telegram-бот @zsklnskky_bot</p>
+  <p class="lead">Коротко: я собираю только то, что нужно, чтобы ответить на вашу заявку и понять, какие страницы сайта полезны. Рекламных трекеров нет, данные не продаю. Аналитика включается только с вашего согласия.</p>
+
+  <nav class="toc" aria-label="Содержание"><ol>
+    <li><a href="#ru-1">Кто обрабатывает данные</a></li><li><a href="#ru-2">Какие данные и зачем</a></li>
+    <li><a href="#ru-3">Куки и похожие технологии</a></li><li><a href="#ru-4">Сроки хранения</a></li>
+    <li><a href="#ru-5">Кому передаются данные</a></li><li><a href="#ru-6">Как защищены данные</a></li>
+    <li><a href="#ru-7">Ваши права</a></li><li><a href="#ru-8">Как удалить данные</a></li>
+    <li><a href="#ru-9">Изменения политики</a></li>
+  </ol></nav>
+
+  <h2 id="ru-1">1. Кто обрабатывает данные</h2>
+  <p>Оператор - Захар Соколинский, физическое лицо (далее - «я»). Связь по любым вопросам о данных: Telegram <a href="https://t.me/sklnsky">@sklnsky</a> или почта <a href="mailto:zsklnskky@gmail.com">zsklnskky@gmail.com</a>.</p>
+  <p>Обработка ведётся по Закону Республики Беларусь от 7 мая 2021 г. № 99-З «О защите персональных данных» и с учётом принципов GDPR: законность, минимум данных, ограничение целей и сроков, прозрачность, безопасность.</p>
+
+  <h2 id="ru-2">2. Какие данные и зачем</h2>
+  <h3>Заявка с сайта</h3>
+  <ul>
+    <li><b>Что:</b> имя, контакт (Telegram, телефон или почта), текст задачи, язык сайта, страница, с которой отправлена заявка.</li>
+    <li><b>Зачем:</b> ответить вам, провести бесплатный разбор, подготовить план и смету, вести переписку по проекту.</li>
+    <li><b>Основание:</b> ваше согласие, которое вы даёте, отправляя форму, и подготовка договора по вашему запросу.</li>
+  </ul>
+  <h3>Telegram-бот @zsklnskky_bot</h3>
+  <ul>
+    <li><b>Что:</b> сообщения, которые вы пишете боту; в анкете заявки - имя, контакт, номер телефона (только если вы нажали «Поделиться номером»), имя пользователя Telegram и текст задачи.</li>
+    <li><b>Зачем:</b> отвечать на вопросы и передать заявку мне. Бот отвечает по готовой базе знаний, без нейросетей. Обычные вопросы боту на сервере не сохраняются, сохраняется только отправленная анкета.</li>
+  </ul>
+  <h3>Помощник Джарвис на сайте</h3>
+  <ul>
+    <li><b>Что:</b> текст вашего вопроса и несколько последних реплик диалога.</li>
+    <li><b>Зачем:</b> чтобы ответить. Частые вопросы помощник закрывает сам по базе знаний. Если вопрос нестандартный, его текст отправляется в сервис OpenRouter, который передаёт его языковой модели и возвращает ответ.</li>
+    <li>На сервере сохраняется только текст вопроса без контактов (почты, телефоны, ссылки и @ники вырезаются автоматически) и его тема - чтобы видеть, о чём спрашивают, и пополнять базу ответов.</li>
+    <li class="note">Пожалуйста, не пишите Джарвису персональные данные. Для контактов есть форма заявки.</li>
+  </ul>
+  <h3>Аналитика (только с вашего согласия)</h3>
+  <ul>
+    <li><b>Что:</b> случайный идентификатор браузера и визита, какие страницы и проекты открывали, по каким ключевым кнопкам и ссылкам нажимали, время на странице и глубина прокрутки, откуда пришли (домен сайта-источника и UTM-метки), тип устройства, язык браузера, часовой пояс, отправлена ли заявка в этом визите.</li>
+    <li><b>Чего нет:</b> IP-адрес не сохраняется. Для защиты от накруток используется его хэш с солью, которая меняется каждые сутки, поэтому восстановить IP нельзя. Нет отпечатков браузера, рекламных пикселей и передачи этих данных третьим лицам.</li>
+    <li><b>Зачем:</b> понимать, какие страницы полезны, откуда приходят люди и где сайт можно улучшить.</li>
+    <li><b>Основание:</b> ваше согласие в окне «Куки и аналитика». Отозвать его можно в любой момент: ссылка «Куки» внизу сайта, затем «Только необходимые».</li>
+  </ul>
+  <h3>Без согласия</h3>
+  <ul>
+    <li>Обезличенный счётчик просмотров: только название страницы и дата, без идентификаторов и куки.</li>
+    <li>Сервер API не ведёт журнал IP-адресов посетителей.</li>
+  </ul>
+
+  <h2 id="ru-3">3. Куки и похожие технологии</h2>
+  <div class="tbl"><table>
+    <tr><th>Название</th><th>Тип</th><th>Зачем</th><th>Срок</th></tr>
+    <tr><td><code>zs_consent</code></td><td>Необходимая, кука</td><td>Помнит ваш выбор по куки</td><td>1 год</td></tr>
+    <tr><td><code>lang</code>, <code>motion</code></td><td>Необходимые, localStorage</td><td>Язык сайта и настройка анимации</td><td>Пока вы их не очистите</td></tr>
+    <tr><td><code>zs_vid</code></td><td>Аналитика, кука</td><td>Случайный ID браузера: новый визит или повторный</td><td>13 месяцев</td></tr>
+    <tr><td><code>zs_sid</code></td><td>Аналитика, sessionStorage</td><td>Случайный ID текущего визита</td><td>До закрытия вкладки</td></tr>
+  </table></div>
+  <p>Куки устанавливаются только этим сайтом, сторонних куки нет. При отказе от аналитики кука <code>zs_vid</code> удаляется. Куки можно удалить и в настройках браузера.</p>
+
+  <h2 id="ru-4">4. Сроки хранения</h2>
+  <ul>
+    <li>Заявки и переписка по ним - пока идёт общение и до 3 лет после последнего контакта, затем удаляются. Раньше - по вашему запросу.</li>
+    <li>Данные аналитики и вопросы Джарвису - 12 месяцев, затем удаляются автоматически.</li>
+    <li>Ход диалога с ботом и Джарвисом хранится только в памяти и пропадает после перезапуска сервера или закрытия страницы.</li>
+  </ul>
+
+  <h2 id="ru-5">5. Кому передаются данные</h2>
+  <p>Я не продаю и не передаю данные для рекламы. Сайт работает на сервисах, которые технически обрабатывают часть данных:</p>
+  <div class="tbl"><table>
+    <tr><th>Сервис</th><th>Что делает</th><th>Какие данные</th></tr>
+    <tr><td>GitHub Pages (GitHub Inc., США)</td><td>Хостинг страниц сайта</td><td>IP-адрес и данные браузера при загрузке страниц</td></tr>
+    <tr><td>Cloudflare (Cloudflare Inc., США)</td><td>DNS домена</td><td>DNS-запросы</td></tr>
+    <tr><td>Google Fonts (Google LLC, США)</td><td>Шрифты сайта</td><td>IP-адрес и данные браузера при загрузке шрифтов</td></tr>
+    <tr><td>CloudVPS (cloudvps.by)</td><td>Сервер API, база заявок и аналитики</td><td>Всё, что описано в разделе 2</td></tr>
+    <tr><td>OpenRouter (OpenRouter Inc., США) и провайдеры моделей</td><td>Ответы Джарвиса на нестандартные вопросы</td><td>Текст вопроса и последние реплики диалога</td></tr>
+    <tr><td>Telegram</td><td>Бот и доставка заявок мне</td><td>Заявки и сообщения в боте</td></tr>
+  </table></div>
+  <p>Часть сервисов находится за пределами Республики Беларусь, в том числе в странах, где может не обеспечиваться надлежащий уровень защиты персональных данных. Передача туда происходит на основании вашего согласия: отправляя заявку, сообщение боту или вопрос Джарвису, вы с этим соглашаетесь. Риск в том, что на такие данные распространяется законодательство страны сервиса.</p>
+
+  <h2 id="ru-6">6. Как защищены данные</h2>
+  <ul>
+    <li>Соединение с сайтом и сервером только по HTTPS.</li>
+    <li>Сервер принимает запросы только с сайтов портфолио, ограничивает частоту запросов и размер данных.</li>
+    <li>Доступ к заявкам и статистике есть только у меня: через бота по белому списку чатов. Ключи и пароли хранятся только на сервере.</li>
+    <li>Сервис работает в изолированном окружении с минимальными правами.</li>
+  </ul>
+
+  <h2 id="ru-7">7. Ваши права</h2>
+  <p>По Закону № 99-З вы вправе:</p>
+  <ul>
+    <li>в любой момент отозвать согласие на обработку (ст. 10);</li>
+    <li>получить информацию о том, какие ваши данные и как я обрабатываю (ст. 11);</li>
+    <li>потребовать исправить неточные или устаревшие данные (ст. 12);</li>
+    <li>узнать, передавались ли ваши данные третьим лицам (ст. 13);</li>
+    <li>потребовать прекратить обработку и удалить данные (ст. 14);</li>
+    <li>обжаловать мои действия в Национальный центр защиты персональных данных Республики Беларусь (ст. 15).</li>
+  </ul>
+  <p>Если вы находитесь в ЕС, у вас есть аналогичные права по GDPR, включая право на перенос данных и жалобу в надзорный орган своей страны.</p>
+
+  <h2 id="ru-8">8. Как удалить данные или задать вопрос</h2>
+  <p>Напишите в Telegram <a href="https://t.me/sklnsky">@sklnsky</a> или на <a href="mailto:zsklnskky@gmail.com">zsklnskky@gmail.com</a>: что нужно сделать и по какому контакту вас найти (например, контакт из заявки). Отвечу в сроки, установленные законом, как правило в течение 15 дней, обычно быстрее.</p>
+  <p>Чтобы прекратить аналитику, нажмите «Куки» внизу сайта и выберите «Только необходимые» - сбор прекратится сразу, кука с ID удалится.</p>
+
+  <h2 id="ru-9">9. Изменения политики</h2>
+  <p>Если состав данных или сервисов изменится, я обновлю эту страницу и дату вверху. Существенные изменения в аналитике потребуют нового согласия.</p>
+</article>
+
+<!-- ===================== EN ===================== -->
+<article lang="en">
+  <h1>Privacy and cookie policy</h1>
+  <p class="meta">Effective 23 October 2026 · the site zsklnskky.dpdns.org, its mirror and the Telegram bot @zsklnskky_bot</p>
+  <p class="lead">In short: I collect only what I need to answer your request and to understand which pages of the site are useful. There are no ad trackers and I don't sell data. Analytics only runs with your consent.</p>
+
+  <nav class="toc" aria-label="Contents"><ol>
+    <li><a href="#en-1">Who processes the data</a></li><li><a href="#en-2">What data and why</a></li>
+    <li><a href="#en-3">Cookies and similar technologies</a></li><li><a href="#en-4">Retention</a></li>
+    <li><a href="#en-5">Who receives the data</a></li><li><a href="#en-6">How the data is protected</a></li>
+    <li><a href="#en-7">Your rights</a></li><li><a href="#en-8">How to delete your data</a></li>
+    <li><a href="#en-9">Changes</a></li>
+  </ol></nav>
+
+  <h2 id="en-1">1. Who processes the data</h2>
+  <p>The controller is Zakhar Sokolinsky, a private individual ("I"). For any question about your data: Telegram <a href="https://t.me/sklnsky">@sklnsky</a> or email <a href="mailto:zsklnskky@gmail.com">zsklnskky@gmail.com</a>.</p>
+  <p>Processing follows the Law of the Republic of Belarus No. 99-Z of 7 May 2021 "On Personal Data Protection" and the GDPR principles: lawfulness, data minimisation, purpose and storage limitation, transparency and security.</p>
+
+  <h2 id="en-2">2. What data and why</h2>
+  <h3>Site request form</h3>
+  <ul>
+    <li><b>What:</b> name, contact (Telegram, phone or email), the task description, site language and the page the request was sent from.</li>
+    <li><b>Why:</b> to reply, run the free review, prepare a plan and estimate and keep in touch about the project.</li>
+    <li><b>Legal basis:</b> your consent given by sending the form, and preparing a contract at your request.</li>
+  </ul>
+  <h3>Telegram bot @zsklnskky_bot</h3>
+  <ul>
+    <li><b>What:</b> messages you send to the bot; in the request form - name, contact, phone number (only if you tap "Share my number"), Telegram username and the task text.</li>
+    <li><b>Why:</b> to answer questions and pass your request to me. The bot answers from a fixed knowledge base, no AI. Ordinary questions to the bot are not stored on the server, only a submitted request is.</li>
+  </ul>
+  <h3>Jarvis assistant on the site</h3>
+  <ul>
+    <li><b>What:</b> the text of your question and the last few lines of the conversation.</li>
+    <li><b>Why:</b> to answer. Common questions are answered from the knowledge base. If a question is unusual, its text is sent to OpenRouter, which passes it to a language model and returns the answer.</li>
+    <li>The server keeps only the question text with contacts removed (emails, phone numbers, links and @handles are stripped automatically) and its topic, to see what people ask and improve the answers.</li>
+    <li class="note">Please don't share personal data with Jarvis. Use the request form for contacts.</li>
+  </ul>
+  <h3>Analytics (only with your consent)</h3>
+  <ul>
+    <li><b>What:</b> a random browser and visit ID, which pages and projects you opened, which key buttons and links you clicked, time on page and scroll depth, where you came from (referring domain and UTM tags), device type, browser language, time zone, and whether a request was sent during the visit.</li>
+    <li><b>What not:</b> your IP address is not stored. A salted hash of it is used against abuse, and the salt changes every day, so the IP can't be recovered. No browser fingerprinting, no ad pixels, no sharing of this data with third parties.</li>
+    <li><b>Why:</b> to understand which pages are useful, where visitors come from and what to improve.</li>
+    <li><b>Legal basis:</b> your consent in the "Cookies and analytics" window. You can withdraw it at any time: the "Cookies" link at the bottom of the site, then "Necessary only".</li>
+  </ul>
+  <h3>Without consent</h3>
+  <ul>
+    <li>An anonymous page view counter: only the page name and date, no IDs and no cookies.</li>
+    <li>The API server keeps no log of visitor IP addresses.</li>
+  </ul>
+
+  <h2 id="en-3">3. Cookies and similar technologies</h2>
+  <div class="tbl"><table>
+    <tr><th>Name</th><th>Type</th><th>Purpose</th><th>Duration</th></tr>
+    <tr><td><code>zs_consent</code></td><td>Necessary, cookie</td><td>Remembers your cookie choice</td><td>1 year</td></tr>
+    <tr><td><code>lang</code>, <code>motion</code></td><td>Necessary, localStorage</td><td>Site language and motion setting</td><td>Until you clear them</td></tr>
+    <tr><td><code>zs_vid</code></td><td>Analytics, cookie</td><td>Random browser ID: new or returning visit</td><td>13 months</td></tr>
+    <tr><td><code>zs_sid</code></td><td>Analytics, sessionStorage</td><td>Random ID of the current visit</td><td>Until the tab is closed</td></tr>
+  </table></div>
+  <p>Cookies are set by this site only, there are no third-party cookies. If you decline analytics, the <code>zs_vid</code> cookie is deleted. You can also delete cookies in your browser settings.</p>
+
+  <h2 id="en-4">4. Retention</h2>
+  <ul>
+    <li>Requests and related correspondence - while we are in touch and up to 3 years after the last contact, then deleted. Earlier on request.</li>
+    <li>Analytics data and Jarvis questions - 12 months, then deleted automatically.</li>
+    <li>The flow of a conversation with the bot or Jarvis is kept in memory only and is gone after a server restart or when you close the page.</li>
+  </ul>
+
+  <h2 id="en-5">5. Who receives the data</h2>
+  <p>I don't sell data or share it for advertising. The site runs on services that technically process part of the data:</p>
+  <div class="tbl"><table>
+    <tr><th>Service</th><th>Role</th><th>Data</th></tr>
+    <tr><td>GitHub Pages (GitHub Inc., USA)</td><td>Hosting the site pages</td><td>IP address and browser data when pages load</td></tr>
+    <tr><td>Cloudflare (Cloudflare Inc., USA)</td><td>Domain DNS</td><td>DNS queries</td></tr>
+    <tr><td>Google Fonts (Google LLC, USA)</td><td>Site fonts</td><td>IP address and browser data when fonts load</td></tr>
+    <tr><td>CloudVPS (cloudvps.by)</td><td>API server, request and analytics database</td><td>Everything described in section 2</td></tr>
+    <tr><td>OpenRouter (OpenRouter Inc., USA) and model providers</td><td>Jarvis answers to unusual questions</td><td>Question text and the last lines of the conversation</td></tr>
+    <tr><td>Telegram</td><td>The bot and delivering requests to me</td><td>Requests and messages in the bot</td></tr>
+  </table></div>
+  <p>Some services are located outside the Republic of Belarus, including in countries that may not ensure an adequate level of personal data protection. Data goes there on the basis of your consent: by sending a request, a message to the bot or a question to Jarvis you agree to this. The risk is that such data is subject to the laws of the service's country.</p>
+
+  <h2 id="en-6">6. How the data is protected</h2>
+  <ul>
+    <li>Connections to the site and server use HTTPS only.</li>
+    <li>The server accepts requests only from the portfolio sites and limits request rate and size.</li>
+    <li>Only I can access requests and statistics, through the bot with a chat allowlist. Keys and passwords are stored on the server only.</li>
+    <li>The service runs in an isolated environment with minimal permissions.</li>
+  </ul>
+
+  <h2 id="en-7">7. Your rights</h2>
+  <p>Under Law No. 99-Z you may:</p>
+  <ul>
+    <li>withdraw your consent at any time (Art. 10);</li>
+    <li>get information about which of your data I process and how (Art. 11);</li>
+    <li>ask me to correct inaccurate or outdated data (Art. 12);</li>
+    <li>find out whether your data was shared with third parties (Art. 13);</li>
+    <li>ask me to stop processing and delete your data (Art. 14);</li>
+    <li>appeal to the National Personal Data Protection Center of the Republic of Belarus (Art. 15).</li>
+  </ul>
+  <p>If you are in the EU, you have similar rights under the GDPR, including data portability and the right to complain to your local supervisory authority.</p>
+
+  <h2 id="en-8">8. How to delete your data or ask a question</h2>
+  <p>Write to Telegram <a href="https://t.me/sklnsky">@sklnsky</a> or <a href="mailto:zsklnskky@gmail.com">zsklnskky@gmail.com</a>: what you want done and how to find your data (for example, the contact from your request). I will reply within the legal deadline, as a rule within 15 days, usually sooner.</p>
+  <p>To stop analytics, tap "Cookies" at the bottom of the site and choose "Necessary only": collection stops at once and the ID cookie is deleted.</p>
+
+  <h2 id="en-9">9. Changes</h2>
+  <p>If the data or services change, I will update this page and the date at the top. Material changes to analytics will ask for your consent again.</p>
+</article>
+</main>
+<footer><span lang="ru">© 2026 Захар Соколинский</span><span lang="en">© 2026 Zakhar Sokolinsky</span></footer>
+<script>
+(() => {
+  const root = document.documentElement;
+  let saved = null; try { saved = localStorage.getItem('lang') } catch {}
+  const set = l => {
+    root.dataset.lang = l; root.lang = l;
+    document.title = l === 'en' ? 'Privacy policy - Zakhar Sokolinsky' : 'Политика конфиденциальности - Захар Соколинский';
+    document.querySelectorAll('[data-l]').forEach(b => b.setAttribute('aria-pressed', b.dataset.l === l));
+  };
+  set(new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : saved === 'en' ? 'en' : 'ru');
+  document.querySelectorAll('[data-l]').forEach(b => b.onclick = () => { set(b.dataset.l); try { localStorage.setItem('lang', b.dataset.l) } catch {} });
+})();
+</script>
+</body>
+</html>

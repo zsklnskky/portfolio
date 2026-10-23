@@ -1756,24 +1756,26 @@ function heroIn() {
     [/привет|hello|hi\b|здрав/i, () => reply(R('Привет! Могу показать ботов, сайты, игры или открыть JARVIS.', 'Hi! I can show bots, websites, games or open JARVIS.'))],
     [/спасиб|thank/i, () => reply(R('Всегда пожалуйста!', 'Any time!'))]
   ];
-  async function askAPI(t) {
+  async function askAPI(t, key) {
     const ty = say('', 'typing'); ty.innerHTML = '<i></i><i></i><i></i>';
     try {
-      const r = await fetch(API + '/api/jarvis', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: t, lang, history: history.slice(-8) }) });
+      const r = await fetch(API + '/api/jarvis', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: t, key, lang, history: history.slice(-11, -1) }) });
       const j = await r.json(); ty.remove();
       if (!j.reply) throw 0;
       say(j.reply); voiceOut(j.reply); history.push({ role: 'jarvis', text: j.reply });
+      if (j.image && /^img\/[\w/-]+\.webp$/.test(j.image.src) && /^#\/work\/[\w-]+$/.test(j.image.hash)) { const a = document.createElement('a'); a.className = 'm shot'; a.href = j.image.hash; a.innerHTML = `<img src="${j.image.src}" alt="" loading="lazy" style="display:block;width:100%;border-radius:10px">`; log.append(a); log.scrollTop = log.scrollHeight }
+      if (Array.isArray(j.suggest) && j.suggest.length) $('#jvSug').innerHTML = j.suggest.map(s => `<button type="button" data-k="${esc(s.key)}">${esc(s.label)}</button>`).join('');
       const a = j.action;
       if (a?.type === 'route' && /^#\//.test(a.hash)) goTo(a.hash);
       if (a?.type === 'open' && proj(a.slug)) openDemo(a.slug);
       return true;
     } catch { ty.remove(); return false }
   }
-  async function ask(t) {
+  async function ask(t, k) {
     t = t.trim(); if (!t) return; say(t, 'u'); inp.value = ''; history.push({ role: 'user', text: t });
+    if (API && await askAPI(t, k)) return;  // база знаний + модель на сервере; регэкспы ниже - только без сети
     const hit = INTENTS.find(([re]) => re.test(t));
     if (hit) return hit[1]();
-    if (API && await askAPI(t)) return;
     reply(R('Я пока учусь. Попробуйте: «покажи ботов» или «открой игру».', 'I\'m still learning. Try: "show me bots" or "open a game".'));
   }
   function sug() { $('#jvSug').innerHTML = SUG[lang].map(s => `<button type="button">${s}</button>`).join('') }
@@ -1783,7 +1785,7 @@ function heroIn() {
     if (o && innerWidth > 700) setTimeout(() => inp.focus(), 300);
   }
   orb.onclick = () => toggle();
-  $('#jvSug').onclick = e => { const b = e.target.closest('button'); if (b) ask(b.textContent) };
+  $('#jvSug').onclick = e => { const b = e.target.closest('button'); if (b) ask(b.textContent, b.dataset.k) };
   $('#jvForm').onsubmit = e => { e.preventDefault(); ask(inp.value) };
   vBtn.onclick = () => { speak = !speak; vBtn.setAttribute('aria-pressed', speak); if (!speak) window.speechSynthesis?.cancel(); else voiceOut(R('Голос включён.', 'Voice on.')) };
   mic.onclick = async () => {
@@ -1809,6 +1811,206 @@ renderAll();
 const first = parse();
 show(first.page, first.slug);
 if (motion && first.page === 'home') heroIn(); else { face.start(); logo.assemble() }
+</script>
+<style>/* Cookie card: bottom-left corner card (60fps.design pattern), one filled button + one outline + a text link.
+   Open 320ms ease, close 200ms (shorter than open), reduce-motion = opacity only. Stays clear of the Jarvis orb (right). */
+.ck{position:fixed;left:22px;bottom:22px;z-index:65;width:min(420px,calc(100vw - 120px));padding:20px 20px 16px;border-radius:var(--r,16px);
+  background:var(--bg-2,#121316);box-shadow:inset 0 0 0 1px var(--line-2,rgba(255,255,255,.16)),0 24px 60px -20px rgba(0,0,0,.9);
+  color:var(--text,#B9BCC3);font:15px/1.5 var(--f,system-ui,sans-serif);
+  transform:translateY(12px);opacity:0;transition:transform 200ms var(--ease-in,ease-in),opacity 200ms var(--ease-in,ease-in);pointer-events:none}
+.ck.on{transform:none;opacity:1;pointer-events:auto;transition-duration:320ms;transition-timing-function:var(--ease,cubic-bezier(.16,1,.3,1))}
+.ck h2{margin:0 0 6px;font:700 15px/1.3 var(--d,system-ui,sans-serif);color:var(--ink,#ECEDEF);letter-spacing:.01em}
+.ck p{margin:0}
+.ck a{color:var(--ink,#ECEDEF);text-decoration:underline;text-underline-offset:3px}
+.ck .ck-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px}
+.ck .ck-link{background:none;border:0;padding:8px 4px;color:var(--text-2,#8A8E96);font:inherit;font-size:14px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.ck .ck-link:hover{color:var(--ink,#ECEDEF)}
+.ck fieldset{border:0;margin:12px 0 0;padding:0;display:grid;gap:8px}
+.ck label{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:start;padding:10px 12px;border-radius:var(--r-sm,10px);background:var(--bg-3,#191B1F);cursor:pointer}
+.ck label input{grid-row:span 2;margin-top:4px;width:18px;height:18px;accent-color:var(--lime,#DFFF3A)}
+.ck label b{color:var(--ink,#ECEDEF);font-weight:600}
+.ck label small{color:var(--text-2,#8A8E96);font-size:13px;line-height:1.4}
+.ck .ck-set{display:none}
+.ck.set .ck-set{display:block}
+.ck.set .ck-main-btns{display:none}
+html.ck-typing .ck{opacity:0;pointer-events:none}
+html:has(#jvOrb[aria-expanded="true"]) .ck{opacity:0;pointer-events:none}
+@media (max-width:640px){
+  .ck{left:10px;right:64px;width:auto;bottom:calc(10px + env(safe-area-inset-bottom));padding:16px 16px 12px;font-size:14px}
+  html[data-view="contact"] .ck{right:10px}
+  .ck .btn{flex:1 1 auto;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){.ck,.ck.on{transform:none;transition:opacity 140ms linear}}
+.foot [data-ck]{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer}
+</style><script>/* Согласие на куки. Кука zs_consent = all | necessary, 1 год. Пока выбора нет - аналитика выключена.
+   window.zsConsent() отдаёт текущий выбор, событие 'zsconsent' сообщает об изменении (его слушает track.js).
+   В футер добавляются ссылки «Политика» и «Куки» (повторно открыть настройки). */
+(() => {
+  const NAME = 'zs_consent', YEAR = 365 * 86400;
+  const sec = location.protocol === 'https:' ? '; Secure' : '';
+  const get = () => { const v = (document.cookie.match('(?:^|; )' + NAME + '=([^;]*)') || [])[1]; return v === 'all' || v === 'necessary' ? v : null };
+  window.zsConsent = get;
+  const T = (ru, en) => `<span lang="ru">${ru}</span><span lang="en">${en}</span>`;
+  const box = document.createElement('section');
+  box.className = 'ck';
+  box.setAttribute('aria-label', 'Cookies');
+  box.innerHTML = `
+    <h2>${T('Куки и аналитика', 'Cookies and analytics')}</h2>
+    <p>${T('Нужные куки держат сайт в порядке. С вашего согласия я ещё считаю, какие страницы смотрят и откуда приходят, на своём сервере, без рекламных трекеров.',
+           'Necessary cookies keep the site working. With your consent I also count which pages get viewed and where visitors come from, on my own server, no ad trackers.')}
+      <a href="privacy.html" data-pp>${T('Политика конфиденциальности', 'Privacy policy')}</a></p>
+    <div class="ck-set">
+      <fieldset>
+        <label><input type="checkbox" checked disabled><b>${T('Необходимые', 'Necessary')}</b><small>${T('Язык, настройки анимации и этот выбор. Всегда включены.', 'Language, motion settings and this choice. Always on.')}</small></label>
+        <label><input type="checkbox" id="ckA"><b>${T('Аналитика', 'Analytics')}</b><small>${T('Визиты, страницы, клики и источник перехода. IP не храню, данные удаляются через 12 месяцев.', 'Visits, pages, clicks and referral source. No IP stored, data deleted after 12 months.')}</small></label>
+      </fieldset>
+      <div class="ck-row"><button type="button" class="btn pri sm" data-c="save">${T('Сохранить выбор', 'Save my choice')}</button></div>
+    </div>
+    <div class="ck-row ck-main-btns">
+      <button type="button" class="btn pri sm" data-c="all">${T('Принять все', 'Accept all')}</button>
+      <button type="button" class="btn alt sm" data-c="necessary">${T('Только необходимые', 'Necessary only')}</button>
+      <button type="button" class="ck-link" data-c="cfg">${T('Настроить', 'Settings')}</button>
+    </div>`;
+  const pp = () => { box.querySelector('[data-pp]').href = 'privacy.html' + (document.documentElement.dataset.lang === 'en' ? '?lang=en' : '') };
+  const pad = () => { document.body.style.paddingBottom = box.classList.contains('on') && innerWidth <= 640 ? box.offsetHeight + 20 + 'px' : '' };
+  function open(settings) {
+    pp();
+    box.classList.toggle('set', !!settings);
+    box.querySelector('#ckA').checked = get() === 'all';
+    box.classList.add('on');
+    pad();
+  }
+  function choose(v) {
+    document.cookie = `${NAME}=${v}; Max-Age=${YEAR}; Path=/; SameSite=Lax${sec}`;
+    box.classList.remove('on');
+    pad();
+    dispatchEvent(new CustomEvent('zsconsent', { detail: v }));
+  }
+  box.addEventListener('click', e => {
+    const c = e.target.closest('[data-c]')?.dataset.c;
+    if (c === 'cfg') open(true);
+    else if (c === 'save') choose(box.querySelector('#ckA').checked ? 'all' : 'necessary');
+    else if (c) choose(c);
+  });
+  // на телефоне карточка прячется, пока человек печатает в форме или Джарвису
+  addEventListener('focusin', e => { if (e.target.matches?.('input:not([type=checkbox]),textarea')) document.documentElement.classList.add('ck-typing') });
+  addEventListener('focusout', () => document.documentElement.classList.remove('ck-typing'));
+  addEventListener('resize', pad);
+  document.body.append(box);
+  const nav = document.querySelector('.foot nav');
+  if (nav) {
+    nav.insertAdjacentHTML('beforeend', `<a href="privacy.html" data-pp2>${T('Политика', 'Privacy')}</a><button type="button" data-ck>${T('Куки', 'Cookies')}</button>`);
+    nav.querySelector('[data-ck]').onclick = () => open(true);
+    nav.querySelector('[data-pp2]').onclick = e => { e.currentTarget.href = 'privacy.html' + (document.documentElement.dataset.lang === 'en' ? '?lang=en' : '') };
+  }
+  if (!get()) setTimeout(() => open(false), 1200);
+})();
+
+/* Аналитика на своём бэкенде (backend/analytics.py). Работает ТОЛЬКО после согласия на аналитику (consent.js).
+   Что шлём батчами через sendBeacon раз в 15 с и при уходе со страницы:
+   pv - открытая страница (#/work/eqt), click - ключевые клики, time/scroll - время и глубина прокрутки, form - начал заполнять заявку.
+   Куки zs_vid - случайный ID браузера (новый/повторный визит), sessionStorage zs_sid - ID визита. IP на сервере не хранится. */
+(() => {
+  const API = 'https://130-49-141-147.sslip.io';
+  const DAY = 86400;
+  let on = false, q = [], sid, vid, ret = 0, meta = null, route = null, t0 = 0, active = 0, depth = 0, formed = false, timer = 0;
+  const ck = n => (document.cookie.match('(?:^|; )' + n + '=([^;]*)') || [])[1];
+  const sec = location.protocol === 'https:' ? '; Secure' : '';
+  const rnd = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 12));
+  const cur = () => '#/' + location.hash.replace(/^#\/?/, '').split(/[?&]/)[0].replace(/[^\w/.-]/g, '').slice(0, 70);
+  const push = (t, n, v = 0) => { if (on && n) q.push([t, String(n).slice(0, 80), Math.round(v)]) };
+
+  function flush() {
+    if (!q.length) return;
+    const body = { sid, vid, ret, ev: q.splice(0, 60) };
+    if (meta) { body.meta = meta; meta = null }
+    const data = JSON.stringify(body);
+    // text/plain не требует preflight; сервер принимает его только на /api/t
+    if (!(navigator.sendBeacon && navigator.sendBeacon(API + '/api/t', new Blob([data], { type: 'text/plain' }))))
+      fetch(API + '/api/t', { method: 'POST', body: data, keepalive: true, headers: { 'Content-Type': 'text/plain' } }).catch(() => {});
+  }
+  function spent() { const s = active + (t0 ? performance.now() - t0 : 0); active = 0; t0 = t0 && performance.now(); return Math.min(1800, s / 1000) }
+  function leave() {
+    if (!route) return;
+    const s = spent();
+    if (s >= 1) push('time', route, s);
+    if (depth) push('scroll', route, depth);
+  }
+  function enter() { route = cur(); depth = 0; active = 0; t0 = document.hidden ? 0 : performance.now(); push('pv', route); measure() }
+  function measure() {
+    const h = document.documentElement.scrollHeight - innerHeight;
+    const p = h <= 0 ? 100 : Math.min(100, (scrollY / h) * 100);
+    depth = Math.max(depth, Math.floor(p / 25) * 25);
+  }
+  function label(el) {
+    const href = el.getAttribute('href') || '';
+    const slug = (location.hash.match(/^#\/work\/([\w-]+)/) || [])[1];
+    if (el.id === 'jvOrb') return 'jarvis';
+    if (el.dataset.setLang) return 'lang:' + el.dataset.setLang;
+    if (el.hasAttribute('data-brandbook')) return 'brandbook';
+    if (el.dataset.open === 'demo' || el.dataset.open === 'play') return 'demo:' + (slug || el.closest('[data-slug]')?.dataset.slug || 'home');
+    if (el.dataset.f) return 'filter:' + el.dataset.f;
+    if (/t\.me\//.test(href)) return 'tg';
+    if (href.startsWith('mailto:')) return 'email';
+    if (/github\.com/.test(href)) return 'github';
+    if (href.startsWith('#/contact')) return el.classList.contains('btn') ? 'cta:' + (document.documentElement.dataset.view || 'page') : 'nav:contact';
+    if (href.startsWith('#/work/')) return 'proj:' + href.slice(7).split(/[?#]/)[0];
+    if (href.startsWith('#/')) return 'nav:' + (href.slice(2).split('/')[0] || 'home');
+    if (/^https?:/.test(href)) { try { return 'ext:' + new URL(href).host } catch { return '' } }
+    return '';
+  }
+  const onClick = e => { const el = e.target.closest?.('a,button,[data-open]'); if (el) push('click', label(el)) };
+  const onFocus = e => { if (!formed && e.target.closest?.('#lead')) { formed = true; push('form', 'start') } };
+  const onHash = () => { leave(); enter() };
+  const onVis = () => {
+    if (document.hidden) { leave(); t0 = 0; flush() } else t0 = performance.now();
+  };
+  let raf = 0;
+  const onScroll = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; measure() }) };
+
+  function start() {
+    if (on) return;
+    on = true;
+    vid = ck('zs_vid'); ret = vid ? 1 : 0; vid = vid || rnd();
+    document.cookie = `zs_vid=${vid}; Max-Age=${395 * DAY}; Path=/; SameSite=Lax${sec}`;
+    try { sid = sessionStorage.getItem('zs_sid') } catch { sid = null }
+    if (!sid) {
+      sid = rnd();
+      try { sessionStorage.setItem('zs_sid', sid) } catch {}
+      const u = new URLSearchParams(location.search), w = innerWidth;
+      meta = {
+        ref: document.referrer, land: cur(), lang: (navigator.language || '').slice(0, 2),
+        utm: { source: u.get('utm_source'), medium: u.get('utm_medium'), campaign: u.get('utm_campaign') },
+        dev: w < 768 ? 'mobile' : w < 1180 && matchMedia('(pointer: coarse)').matches ? 'tablet' : 'desktop',
+        tz: (Intl.DateTimeFormat().resolvedOptions().timeZone || '').slice(0, 40)
+      };
+    }
+    // ID визита уходит вместе с заявкой: так воронка «визит -> заявка» замыкается
+    const f = document.getElementById('lead');
+    if (f && !f.elements.sid) { const i = document.createElement('input'); i.type = 'hidden'; i.name = 'sid'; f.append(i) }
+    if (f) f.elements.sid.value = sid;
+    enter();
+    addEventListener('click', onClick, true);
+    addEventListener('focusin', onFocus);
+    addEventListener('hashchange', onHash);
+    addEventListener('scroll', onScroll, { passive: true });
+    document.addEventListener('visibilitychange', onVis);
+    addEventListener('pagehide', onVis);
+    timer = setInterval(flush, 15000);
+    setTimeout(flush, 2000);
+  }
+  function stop() {
+    if (!on) return;
+    on = false; q = []; clearInterval(timer);
+    removeEventListener('click', onClick, true); removeEventListener('focusin', onFocus); removeEventListener('hashchange', onHash);
+    removeEventListener('scroll', onScroll); document.removeEventListener('visibilitychange', onVis); removeEventListener('pagehide', onVis);
+    document.cookie = 'zs_vid=; Max-Age=0; Path=/';
+    try { sessionStorage.removeItem('zs_sid') } catch {}
+    const f = document.getElementById('lead'); if (f?.elements.sid) f.elements.sid.value = '';
+  }
+  addEventListener('zsconsent', e => (e.detail === 'all' ? start() : stop()));
+  if (window.zsConsent?.() === 'all') start();
+})();
 </script>
 </body>
 </html>
