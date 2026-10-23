@@ -97,12 +97,15 @@ Google и Meta на трёх языках, а каждое утро готовы
 - Настроил учёт заявок по каналам: звонок, WhatsApp и онлайн-запись
 - Отчёт собирается сам из рекламных кабинетов и записей и приходит готовым PDF
 - В отчёте видно, где расход выше плана и прошла ли оплата рекламы
+- Кампании, объявления, ключи и расширения создаю скриптами через API Google Ads и Meta, а не руками в кабинете
+- Аналитику GTM, GA4 и Search Console тоже настроил кодом: бронь заведена как конверсия
+- Сделал креативы под форматы Google и Meta и превью постов на трёх языках до запуска
 
 Что это дало: Реклама работает в Google и Meta с 21 августа 2026, каждый канал считается отдельно.
 
 3 языка рекламы, 2 площадки, Google и Meta, 3 вида заявок считаются.
 
-Инструменты: Google Ads, Meta Ads, Google Tag Manager, GA4
+Инструменты: Google Ads, Meta Ads, Google Tag Manager, GA4, Google Ads API, Meta Marketing API, Python
 
 ### Соцсети: Instagram и Telegram (SYNC AGENCY, EQT, Вячэра, Clariva)
 
@@ -277,7 +280,7 @@ URL: https://zsklnskky.dpdns.org/case/portfolio/
 
 Что это дало: Все работы в одном месте, а заявка уходит мне в Telegram.
 
-16 кейсов на сайте, 2 языка.
+20 кейсов на сайте, 2 языка.
 
 Инструменты: HTML, GSAP, Canvas, Python
 
@@ -294,12 +297,15 @@ URL: https://zsklnskky.dpdns.org/case/jarvis/
 - Ведёт задачи и проекты, собирает отчёты с графиками
 - Через камеру рассказывает, что видит
 - Присылает отчёты в Telegram
+- Версия для Mac работает целиком на компьютере: мозг - Claude Code по подписке, голос - офлайн-синтез Piper
+- Открывает приложения и выполняет действия через AppleScript и shell, сам запускается при входе
+- Написал инструкции по установке на русском и английском
 
 Что это дало: Демо работает прямо здесь: задачи и голос в браузере, без установки.
 
 4 режима: голос, камера, задачи, отчёты.
 
-Инструменты: Python, Claude, Web Speech, Telegram
+Инструменты: Python, Claude, Web Speech, Telegram, Piper TTS, AppleScript
 
 ### Рилсы монтируются сами (Telegram-бот и CapCut)
 
@@ -359,6 +365,82 @@ URL: https://zsklnskky.dpdns.org/case/focus/
 4 приложения в наборе.
 
 Инструменты: JavaScript, Google API
+
+### 34 креатива на одной доске (Магазин цифровых товаров, концепт)
+
+URL: https://zsklnskky.dpdns.org/case/digimart/
+
+Матрица рекламных направлений для магазина eSIM, игр и подарочных карт.
+
+Было: Перед запуском рекламы нужно было сравнить много визуальных направлений, а не гадать, какой стиль сработает.
+
+Что сделано:
+- Собрал доску из 34 макетов в 4 форматах по категориям: eSIM, PlayStation, Xbox и подарочные карты
+- Каждый креатив - свой цветовой мир: палитра, вёрстка и текст, чтобы честно сравнить направления
+- Сверстал живым HTML: заголовки и цены - настоящий текст, по наведению макет открывается крупно
+- Лого и цены - заглушки, доска помечена как черновик, чтобы её не приняли за финал
+
+Что это дало: 34 креатива в 4 форматах на одном экране - направление выбирается за один просмотр. Это этап планирования, рекламу на нём ещё не крутили, поэтому цифр по показам нет.
+
+34 креатива на доске, 4 формата, 4 категории товаров.
+
+Инструменты: HTML, CSS, Claude Code
+
+### Шторка, панель для Mac (Свой проект)
+
+URL: https://zsklnskky.dpdns.org/case/shtorka/
+
+Claude, буфер, заметки, приложения и музыка в одной панели по горячей клавише.
+
+Было: Каждый день прыгал между терминалом, заметками, буфером обмена и запуском приложений, а Claude не был под рукой.
+
+Что сделано:
+- Собрал нативное приложение: живёт в строке меню и открывается одной горячей клавишей поверх всех окон
+- Пять вкладок в одном окне: Claude, история буфера, заметки, запуск приложений и музыка
+- Claude работает через подписку Claude Code - без API-ключей и оплаты за запросы
+- Распознаёт текст со скриншотов и принимает голосовой ввод, сам запускается при входе
+
+Что это дало: Приложение собрано и используется каждый день. Это личный инструмент, в магазине не публиковался, цифр по аудитории нет.
+
+5 вкладок в одной панели.
+
+Инструменты: Swift, SwiftUI, AppKit, Vision OCR, Speech, Claude Code
+
+### Дела, трекер с таймерами (Свой проект)
+
+URL: https://zsklnskky.dpdns.org/case/dela/
+
+У каждого дела свой таймер, а графики сразу показывают, куда ушло время.
+
+Было: Задачи жили в разных местах, а сколько времени реально уходит на каждое дело, было не видно.
+
+Что сделано:
+- Сделал приложение для Mac: таблица дел, у каждого свой таймер реального времени
+- Добавил живые графики: статусы и время по делам видны сразу
+- Прогресс сохраняется сам в локальный файл и никуда не уходит с компьютера
+- Интерфейс на HTML внутри нативной обёртки - вид меняется быстро, а это обычная программа
+
+Что это дало: Приложение собрано и работает с автосохранением. Это личный инструмент, метрик по пользователям нет.
+
+Инструменты: Swift, AppKit, WKWebView, HTML/CSS/JS, Claude Code
+
+### Citrus, офлайн-конвертер файлов (Свой проект на базе open-source)
+
+URL: https://zsklnskky.dpdns.org/case/citrus/
+
+Своя сборка открытого конвертера Peel со встроенным ffmpeg: работает без интернета.
+
+Было: Онлайн-конвертеры просят загрузить файлы на чужой сервер, показывают рекламу и не работают без интернета.
+
+Что сделано:
+- Взял за основу открытый конвертер Peel (MIT), собрал и упаковал под именем Citrus
+- Вшил статический ffmpeg: видео и аудио конвертируются сразу, без Homebrew и интернета
+- Проверил все способы запуска: колесо по Shift, панель в строке меню, правый клик в Finder и терминал
+- Картинки, PDF, видео, аудио, субтитры и архивы - исходники не перезаписываются
+
+Что это дало: Рабочее приложение Citrus 0.3.2 конвертирует файлы офлайн. Основная логика конвертации - из Peel, моя часть - сборка и доработка. Публичных метрик нет.
+
+Инструменты: Swift, SwiftUI, ffmpeg, CLI, Peel (MIT)
 
 ## Zakhar Sokolinsky - about (EN)
 
@@ -454,12 +536,15 @@ What was done:
 - Set up lead tracking per channel: calls, WhatsApp and online booking
 - The report builds itself from the ad accounts and bookings and arrives as a ready PDF
 - The report shows where spend is over plan and whether the ad payment went through
+- Campaigns, ads, keywords and extensions are created by scripts through the Google Ads and Meta APIs, not by hand
+- GTM, GA4 and Search Console were set up in code too: a booking is tracked as a conversion
+- Made creatives for Google and Meta formats and post previews in three languages before launch
 
 Result: Ads run on Google and Meta since 21 August 2026, every channel is measured separately.
 
 3 ad languages, 2 platforms, Google and Meta, 3 lead types tracked.
 
-Tools: Google Ads, Meta Ads, Google Tag Manager, GA4
+Tools: Google Ads, Meta Ads, Google Tag Manager, GA4, Google Ads API, Meta Marketing API, Python
 
 ### Social: Instagram and Telegram (SYNC AGENCY, EQT, Viachera, Clariva)
 
@@ -634,7 +719,7 @@ What was done:
 
 Result: All the work in one place, and requests reach me in Telegram.
 
-16 cases on the site, 2 languages.
+20 cases on the site, 2 languages.
 
 Tools: HTML, GSAP, Canvas, Python
 
@@ -651,12 +736,15 @@ What was done:
 - Tracks tasks and projects, builds reports with charts
 - Describes what it sees through the camera
 - Sends reports to Telegram
+- The Mac version runs fully on the computer: the brain is Claude Code on a subscription, the voice is offline Piper
+- Opens apps and runs actions via AppleScript and shell, starts itself at login
+- Wrote install guides in Russian and English
 
 Result: The demo runs right here: tasks and voice in the browser, no install.
 
 4 modes: voice, camera, tasks, reports.
 
-Tools: Python, Claude, Web Speech, Telegram
+Tools: Python, Claude, Web Speech, Telegram, Piper TTS, AppleScript
 
 ### Reels edit themselves (Telegram bot and CapCut)
 
@@ -716,3 +804,79 @@ Result: I use it every day.
 4 apps in the set.
 
 Tools: JavaScript, Google API
+
+### 34 ad creatives on one board (Digital goods store, concept)
+
+URL: https://zsklnskky.dpdns.org/en/case/digimart/
+
+A matrix of ad directions for a store of eSIMs, games and gift cards.
+
+Before: Before launching ads the store needed to compare many visual directions instead of guessing which style would work.
+
+What was done:
+- Built a board of 34 mockups in 4 formats by category: eSIM, PlayStation, Xbox and gift cards
+- Each creative is its own colour world: palette, layout and copy, for a fair comparison
+- Built it in live HTML: headlines and prices are real text, hover opens a mockup full size
+- Logo and prices are placeholders, the board is marked as a draft so nobody takes it for final
+
+Result: 34 creatives in 4 formats on one screen - a direction is picked in one look. This is the planning stage, no ads ran on it yet, so there are no performance numbers.
+
+34 creatives on the board, 4 formats, 4 product categories.
+
+Tools: HTML, CSS, Claude Code
+
+### Shtorka, a Mac menu bar panel (My own project)
+
+URL: https://zsklnskky.dpdns.org/en/case/shtorka/
+
+Claude, clipboard, notes, apps and music in one panel on a hotkey.
+
+Before: Every day I jumped between the terminal, notes, the clipboard and app launching, and Claude was never at hand.
+
+What was done:
+- Built a native app: it lives in the menu bar and opens over every window on one hotkey
+- Five tabs in one window: Claude, clipboard history, notes, app launcher and music
+- Claude runs on the Claude Code subscription - no API keys, no per-request cost
+- Reads text from screenshots, takes voice input and starts at login
+
+Result: The app is built and used every day. It is a personal tool, not published in a store, so there are no audience numbers.
+
+5 tabs in one panel.
+
+Tools: Swift, SwiftUI, AppKit, Vision OCR, Speech, Claude Code
+
+### Dela, a task tracker with timers (My own project)
+
+URL: https://zsklnskky.dpdns.org/en/case/dela/
+
+Every task has its own timer, and live charts show where the time went.
+
+Before: Tasks lived in different places, and how much time each one really took was invisible.
+
+What was done:
+- Built a Mac app: a task table where every task has its own real-time timer
+- Added live charts: statuses and time per task are visible at once
+- Progress saves itself to a local file and never leaves the computer
+- The interface is HTML inside a native shell - fast to restyle, still a normal app
+
+Result: The app is built and runs with autosave. It is a personal tool, so there are no user metrics.
+
+Tools: Swift, AppKit, WKWebView, HTML/CSS/JS, Claude Code
+
+### Citrus, an offline file converter (My own build of open source)
+
+URL: https://zsklnskky.dpdns.org/en/case/citrus/
+
+My build of the open-source Peel converter with ffmpeg inside: works offline.
+
+Before: Online converters want your files on their server, show ads and don't work offline.
+
+What was done:
+- Took the open-source Peel converter (MIT) as the base, built and packaged it as Citrus
+- Bundled a static ffmpeg: video and audio convert right away, no Homebrew, no internet
+- Checked every entry point: Shift wheel, menu bar panel, Finder right-click and the terminal
+- Images, PDFs, video, audio, subtitles and archives - originals are never overwritten
+
+Result: The working Citrus 0.3.2 app converts files offline. The core conversion logic comes from Peel, my part is the build and changes. No public metrics.
+
+Tools: Swift, SwiftUI, ffmpeg, CLI, Peel (MIT)
