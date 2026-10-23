@@ -412,10 +412,7 @@ html.refract .nav .wrap::before{backdrop-filter:url(#lg) blur(14px) saturate(170
 .chip{background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.015));box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 0 0 1px rgba(255,255,255,.08);transition:transform var(--t-micro) var(--ease),box-shadow var(--t-micro),color var(--t-micro)}
 .chip:hover{transform:translateY(-1px);color:var(--ink);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 0 0 1px rgba(223,255,58,.4)}
 .cover .tag{background:var(--glass-bg);-webkit-backdrop-filter:blur(10px) saturate(160%);backdrop-filter:blur(10px) saturate(160%);box-shadow:var(--glass-hl)}
-.status{position:relative;display:inline-flex;align-items:center;gap:10px;min-height:36px;margin-bottom:22px;padding:0 16px 0 13px;border-radius:999px;font-size:14px;font-weight:600;color:var(--ink);
   background:var(--glass-bg);-webkit-backdrop-filter:blur(12px) saturate(170%);backdrop-filter:blur(12px) saturate(170%);box-shadow:var(--glass-hl),0 10px 24px -12px rgba(0,0,0,.7)}
-html.refract .status{backdrop-filter:url(#lg) blur(10px) saturate(170%)}
-.status i{width:8px;height:8px;border-radius:50%;background:var(--lime);animation:pulse 2s var(--ease-std) infinite}
 /* direction cards: a soft glare follows the pointer (--mx/--my set from JS) */
 .spec a,.svc article{position:relative;isolation:isolate}
 .spec a::before,.svc article::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s var(--ease-std);
@@ -423,7 +420,7 @@ html.refract .status{backdrop-filter:url(#lg) blur(10px) saturate(170%)}
 .spec a:hover::before,.svc article:hover::before{opacity:1}
 .svc article{background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,0) 40%),var(--bg-2);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 0 0 1px var(--line)}
 .svc article.main{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,0) 45%),var(--bg-3);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 0 0 1px var(--line-2)}
-@media (prefers-reduced-motion:reduce){.nav .wrap{transition:opacity .12s}.rim::after,.nav .wrap::after,.status i{animation:none}}
+@media (prefers-reduced-motion:reduce){.nav .wrap{transition:opacity .12s}.rim::after,.nav .wrap::after{animation:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:120ms!important;transition-delay:0s!important}}
 
 @media (max-width:1080px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.svc article,.svc article.main,.svc article:not(.main){grid-column:span 6}}
@@ -494,7 +491,6 @@ html.refract .status{backdrop-filter:url(#lg) blur(10px) saturate(170%)}
   <section class="hero" aria-labelledby="h-hero">
     <canvas id="face" aria-label="Портрет Захара из частиц" role="img"></canvas>
     <div class="wrap"><div class="hero-in">
-      <span class="status rim"><i aria-hidden="true"></i><span lang="ru">Открыт для проектов</span><span lang="en">Open for projects</span></span>
       <h1 id="h-hero"><span class="ln"><span lang="ru">Захар</span><span lang="en">Zakhar</span></span><span class="ln"><span class="lime" lang="ru">Соколинский</span><span class="lime" lang="en">Sokolinsky</span></span></h1>
       <p class="slogan" lang="ru">Рутину - машинам. <b>Клиентов - вам.</b></p>
       <p class="slogan" lang="en">Routine to machines. <b>Clients to you.</b></p>
@@ -1435,7 +1431,7 @@ document.addEventListener('click', e => { const a = e.target.closest('a[href^="#
 
 function heroIn() {
   gsap.from('.hero h1 .ln>span', { yPercent: 100, opacity: 0, filter: 'blur(10px)', duration: 1, stagger: .16, ease: 'expo.out', delay: .3, clearProps: 'filter' });
-  gsap.from('.hero-in .status, .hero-in p, .hero-in .btns', { y: 18, opacity: 0, duration: .7, delay: .7, stagger: .08, ease: 'expo.out', clearProps: 'transform' });
+  gsap.from('.hero-in p, .hero-in .btns', { y: 18, opacity: 0, duration: .7, delay: .7, stagger: .08, ease: 'expo.out', clearProps: 'transform' });
   face.start(); logo.assemble(.2);
 }
 
