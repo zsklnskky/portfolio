@@ -724,6 +724,33 @@ html.refract .nav .wrap::before{backdrop-filter:url(#lg) blur(14px) saturate(170
 .lz-s{position:absolute;left:0;top:0;transform-origin:0 0}
 .lz-s h1{margin:0}.lz-s img{display:block;width:100%;height:100%;object-fit:cover;object-position:top;transform:none}
 .lz-b::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(46% 30% at 36% 18%,rgba(255,255,255,.3),rgba(255,255,255,0) 72%),radial-gradient(closest-side,transparent 80%,rgba(223,255,58,.06) 92%,rgba(255,255,255,.2));box-shadow:inset 0 2px 1px rgba(255,255,255,.4),inset 0 -12px 24px rgba(0,0,0,.28)}
+/* ===== ui-effects (база ~/.claude/skills/ui-effects-refs, рилсы code_x_sg), 23.10.2026 =====
+   1 jelly press (04 jelly-button): нажатие сплющивает пилюлю 90ms, отпускание - пружина с перелётом 420ms
+   2 liquid pill (26 gooey-lime-nav, 30 notch-tab-bar): лаймовая пилюля фильтров перетекает к выбранному
+   3 liquid underline (25 liquid-tab-nav): одна полоска под разделом шапки тянется и догоняет
+   4 glass streak (22 glass-login-slab): блик один раз проходит по обложке карточки при наведении
+   5 error shake (15 scan-pass-to-enter): пустое поле вздрагивает 360ms
+   6 sent (55 send-birds-button): стрелка улетает и возвращается после отправки заявки */
+.btn{transition:background-color var(--t-micro),color var(--t-micro),transform 420ms cubic-bezier(.34,1.7,.5,1),box-shadow var(--t-state)}
+.btn:active{transform:scale(1.035,.92);transition-duration:var(--t-micro),var(--t-micro),90ms,var(--t-state);transition-timing-function:var(--ease-std)}
+.filters.fx{position:relative}
+.filters.fx button{position:relative;z-index:1;background:transparent;transition:color 140ms 90ms,background-color var(--t-micro)}
+.filters.fx button:hover{background:rgba(255,255,255,.05)}
+.filters.fx button[aria-pressed="true"]{background:transparent}
+.fx-pill,.fx-bar{position:absolute;left:0;top:0;z-index:0;pointer-events:none;opacity:0;transition:transform 240ms var(--ease),width 240ms var(--ease),opacity 160ms}
+.fx-pill{border-radius:999px;background:var(--lime)}
+.links.fx{position:relative}
+.links.fx a.on::after{opacity:0}
+.fx-bar{height:2px;border-radius:2px;background:var(--lime);z-index:2}
+@media (hover:hover){
+  .cover::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.13) 50%,transparent 62%);transform:translateX(-130%)}
+  .card:hover .cover::after{transform:translateX(130%);transition:transform 1s var(--ease)}
+}
+.fx-shake{animation:fx-shake 360ms var(--ease-std)}
+@keyframes fx-shake{20%{transform:translateX(-6px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
+.fx-sent .ar{animation:fx-sent 900ms var(--ease) both}
+@keyframes fx-sent{0%{transform:none}40%{transform:translate(26px,-26px) rotate(10deg);opacity:0;animation-timing-function:steps(1)}41%{transform:translate(-18px,18px);opacity:0}100%{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.fx-shake,.fx-sent .ar{animation:none}.card:hover .cover::after{transition:none;transform:translateX(-130%)}}
 </style>
 </head>
 <body>
@@ -1873,6 +1900,41 @@ renderAll();
 const first = parse();
 show(first.page, first.slug);
 if (motion && first.page === 'home') heroIn(); else { face.start(); logo.assemble() }
+/* ================= ui-effects: liquid pill / underline, shake, sent (см. CSS-блок ui-effects) ================= */
+(() => {
+  // одна подложка на группу: при смене выбора сначала растягивается от старого пункта до нового (150ms), потом сжимается на новом
+  function fxSlider(box, cls, pick, rect) {
+    const bar = document.createElement('span'); bar.className = cls; bar.setAttribute('aria-hidden', 'true');
+    let last = null, t = 0;
+    const go = r => { bar.style.transform = `translate(${r.x}px,${r.y}px)`; bar.style.width = r.w + 'px'; if (r.h) bar.style.height = r.h + 'px' };
+    const place = anim => {
+      if (!bar.isConnected) box.prepend(bar);
+      if (!box.classList.contains('fx')) box.classList.add('fx');
+      const a = pick(); clearTimeout(t);
+      if (!a || !a.offsetWidth) { bar.style.opacity = 0; last = null; return }
+      const r = rect(a);
+      if (anim && motion && last && last.y === r.y && last.x !== r.x) {
+        const x = Math.min(last.x, r.x); go({ ...r, x, w: Math.max(last.x + last.w, r.x + r.w) - x });
+        t = setTimeout(() => go(r), 150);
+      } else { bar.style.transition = 'none'; go(r); bar.offsetWidth; bar.style.transition = '' }
+      bar.style.opacity = 1; last = r;
+    };
+    new MutationObserver(ms => place(ms.some(m => m.type === 'attributes'))).observe(box, { childList: true, subtree: true, attributes: true, attributeFilter: ['aria-pressed', 'class'] });
+    new ResizeObserver(() => place(false)).observe(box);
+    place(false);
+  }
+  const filters = $('#filters'), links = $('.links');
+  if (filters) fxSlider(filters, 'fx-pill', () => $('[aria-pressed="true"]', filters), a => ({ x: a.offsetLeft, y: a.offsetTop, w: a.offsetWidth, h: a.offsetHeight }));
+  if (links) fxSlider(links, 'fx-bar', () => $('a.on', links), a => ({ x: a.offsetLeft + 14, y: a.offsetTop + a.offsetHeight - 5, w: a.offsetWidth - 28 }));
+  const lead = $('#lead');
+  if (!lead || !motion) return;
+  lead.addEventListener('submit', () => $$('[aria-invalid="true"]', lead).forEach(i => {
+    i.classList.remove('fx-shake'); i.offsetWidth; i.classList.add('fx-shake');
+    i.addEventListener('animationend', () => i.classList.remove('fx-shake'), { once: true });
+  }));
+  // f.reset() вызывается только после успешной отправки
+  lead.addEventListener('reset', () => { const b = $('button[type="submit"]', lead); b.classList.remove('fx-sent'); b.offsetWidth; b.classList.add('fx-sent') });
+})();
 </script>
 <style>/* Cookie card: bottom-left corner card (60fps.design pattern), one filled button + one outline + a text link.
    Open 320ms ease, close 200ms (shorter than open), reduce-motion = opacity only. Stays clear of the Jarvis orb (right). */
