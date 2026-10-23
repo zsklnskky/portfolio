@@ -104,25 +104,6 @@ Google и Meta на трёх языках, а каждое утро готовы
 
 Инструменты: Google Ads, Meta Ads, Google Tag Manager, GA4
 
-### Контент для Instagram (Clariva Spa, Кипр)
-
-URL: https://zsklnskky.dpdns.org/case/clariva-smm/
-
-Контент-план на 16 постов и описания, которые ведут в запись.
-
-Было: Instagram вёлся без плана, посты не приводили к записи.
-
-Что сделано:
-- Составил контент-план на сентябрь и ноябрь: 8 рилсов, 7 каруселей, 1 статика
-- Написал описания по одной формуле: зацепка, приглашение, запись в директ
-- Сделал план на русском и английском, в PDF для команды
-
-Что это дало: У команды готовый план до ноября: что, когда и с каким текстом выходит.
-
-16 постов в плане, 8 рилсов, 2 языка.
-
-Инструменты: Instagram, Canva, CapCut
-
 ### Соцсети: Instagram и Telegram (SYNC AGENCY, EQT, Вячэра, Clariva)
 
 URL: https://zsklnskky.dpdns.org/case/social/
@@ -296,7 +277,7 @@ URL: https://zsklnskky.dpdns.org/case/portfolio/
 
 Что это дало: Все работы в одном месте, а заявка уходит мне в Telegram.
 
-17 кейсов на сайте, 2 языка.
+16 кейсов на сайте, 2 языка.
 
 Инструменты: HTML, GSAP, Canvas, Python
 
@@ -480,25 +461,6 @@ Result: Ads run on Google and Meta since 21 August 2026, every channel is measur
 
 Tools: Google Ads, Meta Ads, Google Tag Manager, GA4
 
-### Instagram content (Clariva Spa, Cyprus)
-
-URL: https://zsklnskky.dpdns.org/en/case/clariva-smm/
-
-A 16-post content plan and captions that lead to a booking.
-
-Before: Instagram had no plan and posts did not lead to bookings.
-
-What was done:
-- Made a September to November plan: 8 reels, 7 carousels, 1 static post
-- Wrote captions to one formula: hook, invitation, book in DM
-- Made the plan in Russian and English, as a PDF for the team
-
-Result: The team has a ready plan until November: what goes out, when and with what text.
-
-16 posts in the plan, 8 reels, 2 languages.
-
-Tools: Instagram, Canva, CapCut
-
 ### Social: Instagram and Telegram (SYNC AGENCY, EQT, Viachera, Clariva)
 
 URL: https://zsklnskky.dpdns.org/en/case/social/
@@ -672,7 +634,7 @@ What was done:
 
 Result: All the work in one place, and requests reach me in Telegram.
 
-17 cases on the site, 2 languages.
+16 cases on the site, 2 languages.
 
 Tools: HTML, GSAP, Canvas, Python
 
