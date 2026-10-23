@@ -1,0 +1,45 @@
+# Захар Соколинский (Zakhar Sokolinsky)
+
+> Захар Соколинский (Zakhar Sokolinsky) - маркетолог-автоматизатор из Минска. Убирает ручную работу из бизнеса: заявки, напоминания, объявления и отчёты идут сами, а реклама и сайты приводят клиентов.
+>
+> Zakhar Sokolinsky (Захар Соколинский) is a marketing automation specialist from Minsk, Belarus. He takes manual work out of a business: leads, reminders, listings and reports run by themselves, while ads and websites bring in clients.
+
+Сайт: https://zsklnskky.dpdns.org/ · Обо мне: https://zsklnskky.dpdns.org/about/ · About (EN): https://zsklnskky.dpdns.org/en/about/ · Telegram: https://t.me/sklnsky · Email: zsklnskky@gmail.com · GitHub: https://github.com/zsklnskky
+
+## Чем занимается
+
+- AI-автоматизация бизнеса (n8n, Albato, WhatsApp Business API, Telegram-боты)
+- Performance-маркетинг: Google Ads и Meta Ads
+- Промпт-инженерия и ИИ-контент
+- SMM и копирайтинг
+- Веб-разработка с ИИ: сайты, лендинги, веб-приложения
+- Моушн-дизайн и монтаж
+- Маркетинг и экономика (диплом БГЭУ)
+
+## Кейсы для клиентов
+
+- [Недвижимость Дубая на автопилоте](https://zsklnskky.dpdns.org/case/eqt/): EQT Real Estate, Дубай. Объекты из CRM сами выходят на портал, плюс презентации, сторис и ретушь. 55 объявлений на автопилоте, 2 минуты от правки до портала, 73 фото в одной презентации.
+- [WhatsApp на автопилоте](https://zsklnskky.dpdns.org/case/clariva/): Clariva Spa, Кипр. Гость записывается на сайте, а WhatsApp сам подтверждает, напоминает и просит отзыв. 190 сообщений в сутки сами, 15 шаблонов сообщений, 3 языка.
+- [Реклама и отчёт, который собирается сам](https://zsklnskky.dpdns.org/case/clariva-ads/): Clariva Spa, Кипр. Google и Meta на трёх языках, а каждое утро готовый отчёт: сколько потратили и сколько записей. 3 языка рекламы, 2 площадки, Google и Meta, 3 вида заявок считаются.
+- [Контент для Instagram](https://zsklnskky.dpdns.org/case/clariva-smm/): Clariva Spa, Кипр. Контент-план на 16 постов и описания, которые ведут в запись. 16 постов в плане, 8 рилсов, 2 языка.
+- [Соцсети: Instagram и Telegram](https://zsklnskky.dpdns.org/case/social/): SYNC AGENCY, EQT, Вячэра, Clariva. Сетки Instagram, оформление профиля и ведение Telegram-каналов. 2 Telegram-канала, 9 каруселей Вячэры.
+- [Реклама, в которую играют](https://zsklnskky.dpdns.org/case/playables/): SYNC AGENCY и Oakever Games. Мини-игры вместо баннеров: человек играет 20 секунд и жмёт «Установить». 2 игры можно сыграть здесь, 8 музыкальных петель.
+- [Сайт и бот для тату-студии](https://zsklnskky.dpdns.org/case/inkside/): Тату-студия INKSIDE, Минск. Заявка с сайта сразу приходит мастерам в Telegram с расчётом цены, а бот меняет сайт по сообщению. 100 баллов SEO в Lighthouse, 19 страниц в поиске.
+- [Брендбуки и айдентика](https://zsklnskky.dpdns.org/case/brandbooks/): INKSIDE и это портфолио. Логотип, цвета, шрифты и правила в одном документе на русском и английском. 2 брендбука, 2 языка.
+
+## Свои проекты
+
+- [Страшный мир Марка](https://zsklnskky.dpdns.org/case/game/): Свой проект. Браузерная 3D-игра на пять глав с мультиплеером. 5 глав, 5 концовок.
+- [Вячэра, ужин решён](https://zsklnskky.dpdns.org/case/viachera/): Свой продукт. Считает меню на неделю под людей, бюджет и «не едим», сравнивает цены пяти сетей и собирает список покупок. 524 блюда в базе, 69 кухонь мира, 5 сетей с ценами.
+- [КИНОТЕКА](https://zsklnskky.dpdns.org/case/kinoteka/): Свой проект. Личная фильмотека с постерами и фильтрами, сделанная за один день. 26 фильмов в коллекции, 1 день на всё.
+- [Моя Corolla E150](https://zsklnskky.dpdns.org/case/corolla/): Свой проект. 3D-разбор своей машины: наводишь на деталь и видишь цену и где купить.
+- [Это портфолио](https://zsklnskky.dpdns.org/case/portfolio/): Свой проект. Сайт с живыми демо, помощником Джарвисом и портретом из частиц. 17 кейсов на сайте, 2 языка.
+- [JARVIS, голосовой помощник](https://zsklnskky.dpdns.org/case/jarvis/): Свой проект. Помощник, который слышит, видит через камеру и ведёт задачи. 4 режима: голос, камера, задачи, отчёты.
+- [Рилсы монтируются сами](https://zsklnskky.dpdns.org/case/reels/): Telegram-бот и CapCut. Отправляете видео боту и получаете готовый проект в CapCut. 5 шагов без участия человека.
+- [Моушн-графика кодом](https://zsklnskky.dpdns.org/case/motion/): Свой проект. Рекламные ролики 1080x1920 без платных сервисов: голос, анимация, монтаж. 0 рублей на сервисы, 60 кадров в секунду.
+- [FOCUS и дашборд](https://zsklnskky.dpdns.org/case/focus/): Свой проект. Задачи, проекты и фокус-сессии в одном месте на всех устройствах. 4 приложения в наборе.
+
+## Optional
+
+- [Full text, RU + EN](https://zsklnskky.dpdns.org/llms-full.txt)
+- [English about page](https://zsklnskky.dpdns.org/en/about/)

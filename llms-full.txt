@@ -1,0 +1,756 @@
+# Захар Соколинский / Zakhar Sokolinsky
+
+Обновлено / Updated: 2026-10-23
+URL: https://zsklnskky.dpdns.org/
+
+## Захар Соколинский - обо мне (RU)
+
+Захар Соколинский (Zakhar Sokolinsky) - маркетолог-автоматизатор из Минска. Убирает ручную работу из бизнеса: заявки, напоминания, объявления и отчёты идут сами, а реклама и сайты приводят клиентов.
+
+### Чем занимается
+
+- AI-автоматизация бизнеса (n8n, Albato, WhatsApp Business API, Telegram-боты)
+- Performance-маркетинг: Google Ads и Meta Ads
+- Промпт-инженерия и ИИ-контент
+- SMM и копирайтинг
+- Веб-разработка с ИИ: сайты, лендинги, веб-приложения
+- Моушн-дизайн и монтаж
+- Маркетинг и экономика (диплом БГЭУ)
+
+### Коротко
+
+- Город: Минск, Беларусь
+- Образование: БГЭУ (Белорусский государственный экономический университет), 2026, маркетолог-экономист. Диплом: применение ИИ для повышения эффективности бизнеса.
+- Опыт: Работал в агентстве SYNC AGENCY, сейчас работает с бизнесом напрямую: спа Clariva на Кипре, агентство недвижимости EQT в Дубае, тату-студия INKSIDE в Минске.
+- Спорт: КМС по плаванию, 9 лет профессионального спорта; около года вольной борьбы и бокса.
+- Языки: Русский родной, английский базовый.
+
+### Частые вопросы
+
+**Кто такой Захар Соколинский?**
+Захар Соколинский (Zakhar Sokolinsky) - маркетолог-автоматизатор из Минска. Убирает ручную работу из бизнеса: заявки, напоминания, объявления и отчёты идут сами, а реклама и сайты приводят клиентов.
+
+**Чем Захар Соколинский может помочь бизнесу?**
+Автоматизирует рутину (записи и напоминания в WhatsApp, выгрузку объектов из CRM на порталы, ежедневные отчёты), настраивает рекламу в Google и Meta, делает сайты, ботов и контент для соцсетей. Первый разбор задачи бесплатный, ответ с планом за 2 часа.
+
+**Как связаться с Захаром Соколинским?**
+Telegram @sklnsky, почта zsklnskky@gmail.com, форма на сайте zsklnskky.dpdns.org. Отвечает с 7:00 до 00:00.
+
+### Контакты
+
+- Telegram: https://t.me/sklnsky
+- Email: zsklnskky@gmail.com
+- GitHub: https://github.com/zsklnskky
+- Сайт-портфолио: https://zsklnskky.dpdns.org/
+
+### Недвижимость Дубая на автопилоте (EQT Real Estate, Дубай)
+
+URL: https://zsklnskky.dpdns.org/case/eqt/
+
+Объекты из CRM сами выходят на портал, плюс презентации, сторис и ретушь.
+
+Было: Агенты вручную переносили каждый объект из CRM на Property Finder и сами готовили фото и материалы.
+
+Что сделано:
+- Объекты из Bitrix24 сами публикуются на Property Finder и обновляются после правок
+- Listing Studio: из контракта и фото за минуту собирается готовое объявление
+- Сделал презентации вилл на Palm Jumeirah на двух языках, для телефона и компьютера
+- Сделал шаблон сторис в стиле премиальных агентств: Just Listed и Sold
+- Подготовил фото с ИИ-ретушью: 29 кадров апартаментов и 12 кадров виллы
+
+Что это дало: 55 объявлений публикуются без ручной работы, шесть агентов работают в одном процессе.
+
+55 объявлений на автопилоте, 2 минуты от правки до портала, 73 фото в одной презентации.
+
+Инструменты: Bitrix24, Property Finder API, Albato, Node.js, ChatGPT, OpenCV
+
+### WhatsApp на автопилоте (Clariva Spa, Кипр)
+
+URL: https://zsklnskky.dpdns.org/case/clariva/
+
+Гость записывается на сайте, а WhatsApp сам подтверждает, напоминает и просит отзыв.
+
+Было: Администраторы вручную писали каждому гостю: подтвердить запись, напомнить о визите.
+
+Что сделано:
+- Связал онлайн-запись на сайте с WhatsApp: гость сразу получает «Вы записаны»
+- Напоминание приходит за сутки и за два часа, перенести можно прямо в чате
+- После визита гостю приходит просьба оставить отзыв
+- Все сообщения по готовым шаблонам на русском, английском и греческом
+
+Что это дало: Около 190 сообщений в сутки уходят сами, администраторы больше не пишут вручную.
+
+190 сообщений в сутки сами, 15 шаблонов сообщений, 3 языка.
+
+Инструменты: n8n, Altegio, WhatsApp Business API, 360dialog
+
+### Реклама и отчёт, который собирается сам (Clariva Spa, Кипр)
+
+URL: https://zsklnskky.dpdns.org/case/clariva-ads/
+
+Google и Meta на трёх языках, а каждое утро готовый отчёт: сколько потратили и сколько записей.
+
+Было: Спа нужны были записи от туристов и местных, а рекламы и понятной статистики не было.
+
+Что сделано:
+- Запустил поиск Google и рекламу в Meta с кампаниями под каждый язык
+- Настроил учёт заявок по каналам: звонок, WhatsApp и онлайн-запись
+- Отчёт собирается сам из рекламных кабинетов и записей и приходит готовым PDF
+- В отчёте видно, где расход выше плана и прошла ли оплата рекламы
+
+Что это дало: Реклама работает в Google и Meta с 21 августа 2026, каждый канал считается отдельно.
+
+3 языка рекламы, 2 площадки, Google и Meta, 3 вида заявок считаются.
+
+Инструменты: Google Ads, Meta Ads, Google Tag Manager, GA4
+
+### Контент для Instagram (Clariva Spa, Кипр)
+
+URL: https://zsklnskky.dpdns.org/case/clariva-smm/
+
+Контент-план на 16 постов и описания, которые ведут в запись.
+
+Было: Instagram вёлся без плана, посты не приводили к записи.
+
+Что сделано:
+- Составил контент-план на сентябрь и ноябрь: 8 рилсов, 7 каруселей, 1 статика
+- Написал описания по одной формуле: зацепка, приглашение, запись в директ
+- Сделал план на русском и английском, в PDF для команды
+
+Что это дало: У команды готовый план до ноября: что, когда и с каким текстом выходит.
+
+16 постов в плане, 8 рилсов, 2 языка.
+
+Инструменты: Instagram, Canva, CapCut
+
+### Соцсети: Instagram и Telegram (SYNC AGENCY, EQT, Вячэра, Clariva)
+
+URL: https://zsklnskky.dpdns.org/case/social/
+
+Сетки Instagram, оформление профиля и ведение Telegram-каналов.
+
+Было: Каналам и профилям нужен был единый стиль и регулярные посты, которые читают.
+
+Что сделано:
+- Вёл Telegram-канал агентства SYNC AGENCY: разборы брендов каруселями
+- Вёл канал EQT о недвижимости Дубая на русском
+- Собрал сетку Instagram для Вячэры: 9 каруселей и рилсы, профиль и обложки
+- Сделал контент-план и описания для Instagram спа Clariva
+
+Что это дало: Каналы и профили работают в одном стиле, посты выходят по плану.
+
+2 Telegram-канала, 9 каруселей Вячэры.
+
+Инструменты: Telegram, Instagram, Canva, Python
+
+### Реклама, в которую играют (SYNC AGENCY и Oakever Games)
+
+URL: https://zsklnskky.dpdns.org/case/playables/
+
+Мини-игры вместо баннеров: человек играет 20 секунд и жмёт «Установить».
+
+Было: Обычные баннеры пролистывают, а рекламная игра должна весить мало и сразу цеплять.
+
+Что сделано:
+- Slingshot Siege: тянешь рогатку, сносишь ящики, набираешь очки
+- SYNC Survival: 3D-мир из блоков, копаешь и ищешь 5 кристаллов
+- Собрал звуки для плейбла MEOW DOKU из видео заказчика и 8 бесшовных музыкальных петель
+- Каждая игра в одном лёгком файле под требования рекламных сетей
+
+Что это дало: Игры открываются за секунду и работают на любом телефоне.
+
+2 игры можно сыграть здесь, 8 музыкальных петель.
+
+Инструменты: Phaser 3, Three.js, HTML5
+
+### Страшный мир Марка (Свой проект)
+
+URL: https://zsklnskky.dpdns.org/case/game/
+
+Браузерная 3D-игра на пять глав с мультиплеером.
+
+Было: Хотелось настоящую игру, которая запускается по ссылке, без установки.
+
+Что сделано:
+- Придумал сюжет на пять глав с пятью концовками
+- Сделал режим от первого лица «Побег из Леса Мемов»
+- Добавил арену, магазин, инвентарь и рейтинг
+- Сделал игру по сети с друзьями
+
+Что это дало: Пять глав, пять концовок и игра с друзьями по сети, запускается по ссылке.
+
+5 глав, 5 концовок.
+
+Инструменты: Three.js, React, Socket.IO, Vite
+
+### Вячэра, ужин решён (Свой продукт)
+
+URL: https://zsklnskky.dpdns.org/case/viachera/
+
+Считает меню на неделю под людей, бюджет и «не едим», сравнивает цены пяти сетей и собирает список покупок.
+
+Было: Каждый вечер один и тот же вопрос: что приготовить и сколько это стоит.
+
+Что сделано:
+- Анкета: сколько человек, сколько дней, бюджет, кухни и что вы не едите
+- Меню на неделю из 524 блюд с порциями под число людей и калориями
+- Стоимость корзины считается по ценам пяти сетей, у Евроопта цены живые
+- Показывает, где выгоднее купить, и собирает список покупок по отделам
+- Фото всех блюд сгенерированы нейросетью
+
+Что это дало: Продукт запущен 20 октября 2026.
+
+524 блюда в базе, 69 кухонь мира, 5 сетей с ценами.
+
+Инструменты: React, TypeScript, PocketBase, Bun, Wan2GP
+
+### Сайт и бот для тату-студии (Тату-студия INKSIDE, Минск)
+
+URL: https://zsklnskky.dpdns.org/case/inkside/
+
+Заявка с сайта сразу приходит мастерам в Telegram с расчётом цены, а бот меняет сайт по сообщению.
+
+Было: Запись шла только через Instagram, а любая правка сайта требовала разработчика.
+
+Что сделано:
+- Сделал сайт с калькулятором цены и записью в три шага: стиль, место, размер
+- Заявка с расчётом сразу приходит мастерам в Telegram-группу
+- Бот напоминает, если на заявку долго не ответили
+- Мастер пишет боту, и на сайте меняются цены, тексты или фото
+- Написал 19 страниц услуг и аудит с планом рекламы на 11 страниц
+
+Что это дало: SEO 100 в Lighthouse, сайт и бот работают с 14 октября 2026.
+
+100 баллов SEO в Lighthouse, 19 страниц в поиске.
+
+Инструменты: GSAP, Python, SQLite, Telegram Bot API, GitHub Pages
+
+### КИНОТЕКА (Свой проект)
+
+URL: https://zsklnskky.dpdns.org/case/kinoteka/
+
+Личная фильмотека с постерами и фильтрами, сделанная за один день.
+
+Было: Списки фильмов жили в заметках, и выбрать, что посмотреть, было неудобно.
+
+Что сделано:
+- Собрал коллекцию с постерами, оценками и фильтрами по жанрам и годам
+- Сайт ставится на телефон как приложение и работает без интернета
+- Уложил всё в один лёгкий файл
+
+Что это дало: 26 фильмов в коллекции и один день работы.
+
+26 фильмов в коллекции, 1 день на всё.
+
+Инструменты: HTML, PWA
+
+### Моя Corolla E150 (Свой проект)
+
+URL: https://zsklnskky.dpdns.org/case/corolla/
+
+3D-разбор своей машины: наводишь на деталь и видишь цену и где купить.
+
+Было: Я не разбираюсь в машинах и хотел понимать, что и сколько стоит в моей.
+
+Что сделано:
+- Собрал 3D-модель машины, которую можно крутить и приближать
+- Подписал детали и добавил цены и магазины в Беларуси
+- Расписал регламент обслуживания
+
+Что это дало: Удобно и мне, и механику.
+
+Инструменты: Three.js, JavaScript
+
+### Брендбуки и айдентика (INKSIDE и это портфолио)
+
+URL: https://zsklnskky.dpdns.org/case/brandbooks/
+
+Логотип, цвета, шрифты и правила в одном документе на русском и английском.
+
+Было: Без правил каждый новый макет и пост выглядел по-своему.
+
+Что сделано:
+- Брендбук INKSIDE: знак, цвета, шрифты, фото, носители
+- Брендбук этого портфолио: построение знака, палитра с контрастом, сетка, кнопки, анимация
+- Оба документа на русском и английском, в PDF
+
+Что это дало: Дизайнер, SMM-специалист и разработчик работают по одним правилам.
+
+2 брендбука, 2 языка.
+
+Инструменты: Figma, HTML, PDF
+
+### Это портфолио (Свой проект)
+
+URL: https://zsklnskky.dpdns.org/case/portfolio/
+
+Сайт с живыми демо, помощником Джарвисом и портретом из частиц.
+
+Было: Скриншоты в PDF плохо показывают, как работает автоматизация.
+
+Что сделано:
+- Собрал многостраничный сайт на русском и английском
+- Большинство работ открываются вживую прямо на сайте
+- Подключил помощника Джарвиса, который сам открывает нужный проект
+- Сделал портрет из частиц и переходы между страницами
+
+Что это дало: Все работы в одном месте, а заявка уходит мне в Telegram.
+
+17 кейсов на сайте, 2 языка.
+
+Инструменты: HTML, GSAP, Canvas, Python
+
+### JARVIS, голосовой помощник (Свой проект)
+
+URL: https://zsklnskky.dpdns.org/case/jarvis/
+
+Помощник, который слышит, видит через камеру и ведёт задачи.
+
+Было: Хотелось помощника, которому можно просто сказать, и он сделает.
+
+Что сделано:
+- Просыпается на слово «Джарвис» и отвечает голосом
+- Ведёт задачи и проекты, собирает отчёты с графиками
+- Через камеру рассказывает, что видит
+- Присылает отчёты в Telegram
+
+Что это дало: Демо работает прямо здесь: задачи и голос в браузере, без установки.
+
+4 режима: голос, камера, задачи, отчёты.
+
+Инструменты: Python, Claude, Web Speech, Telegram
+
+### Рилсы монтируются сами (Telegram-бот и CapCut)
+
+URL: https://zsklnskky.dpdns.org/case/reels/
+
+Отправляете видео боту и получаете готовый проект в CapCut.
+
+Было: Монтаж одного рилса занимал час: вырезать паузы, наложить субтитры.
+
+Что сделано:
+- Видео отправляется боту в Telegram или кладётся в папку
+- Бот сам расшифровывает речь и режет паузы
+- Добавляет субтитры в стиле выбранного ролика-примера
+- Готовый проект открывается в CapCut, превью приходит в чат
+
+Что это дало: Пять шагов монтажа проходят без участия человека.
+
+5 шагов без участия человека.
+
+Инструменты: Python, Whisper, ffmpeg, Telegram Bot API
+
+### Моушн-графика кодом (Свой проект)
+
+URL: https://zsklnskky.dpdns.org/case/motion/
+
+Рекламные ролики 1080x1920 без платных сервисов: голос, анимация, монтаж.
+
+Было: Моушн-ролики обычно требуют дорогих программ и дизайнера.
+
+Что сделано:
+- Пишу сценарий и озвучку, голос синтезируется
+- Каждый кадр рисуется кодом: шрифты, свечение, частицы
+- Ролик собирается в вертикальное видео 60 кадров в секунду
+- Сделал клипы про этот сайт в его же стиле
+
+Что это дало: Ролики выходят без платных программ и подписок.
+
+0 рублей на сервисы, 60 кадров в секунду.
+
+Инструменты: edge-tts, Chrome, ffmpeg, Python
+
+### FOCUS и дашборд (Свой проект)
+
+URL: https://zsklnskky.dpdns.org/case/focus/
+
+Задачи, проекты и фокус-сессии в одном месте на всех устройствах.
+
+Было: Задачи и заметки были разбросаны по разным приложениям.
+
+Что сделано:
+- Собрал четыре приложения в одном дашборде
+- Сделал вход и синхронизацию через Google
+- Добавил тёмную тему, русский и английский
+
+Что это дало: Пользуюсь каждый день.
+
+4 приложения в наборе.
+
+Инструменты: JavaScript, Google API
+
+## Zakhar Sokolinsky - about (EN)
+
+Zakhar Sokolinsky (Захар Соколинский) is a marketing automation specialist from Minsk, Belarus. He takes manual work out of a business: leads, reminders, listings and reports run by themselves, while ads and websites bring in clients.
+
+### What he does
+
+- AI business automation (n8n, Albato, WhatsApp Business API, Telegram bots)
+- Performance marketing: Google Ads and Meta Ads
+- Prompt engineering and AI content
+- SMM and copywriting
+- AI-assisted web development: websites, landing pages, web apps
+- Motion design and video editing
+- Marketing and economics (BSEU degree)
+
+### In short
+
+- City: Minsk, Belarus
+- Education: Belarus State Economic University (BSEU), 2026, Marketing & Economics. Thesis: using AI to raise business efficiency.
+- Experience: Worked at SYNC AGENCY, now works with businesses directly: Clariva Spa in Cyprus, EQT Real Estate in Dubai, INKSIDE tattoo studio in Minsk.
+- Sport: Candidate Master of Sports in swimming, 9 years of professional training; about a year of freestyle wrestling and boxing.
+- Languages: Russian native, English basic.
+
+### FAQ
+
+**Who is Zakhar Sokolinsky?**
+Zakhar Sokolinsky (Захар Соколинский) is a marketing automation specialist from Minsk, Belarus. He takes manual work out of a business: leads, reminders, listings and reports run by themselves, while ads and websites bring in clients.
+
+**How can Zakhar Sokolinsky help a business?**
+He automates routine work (WhatsApp bookings and reminders, CRM-to-portal listing sync, daily reports), runs Google and Meta ads, and builds websites, bots and social media content. The first review of a task is free, with a plan in 2 hours.
+
+**How to contact Zakhar Sokolinsky?**
+Telegram @sklnsky, email zsklnskky@gmail.com, or the form on zsklnskky.dpdns.org. Replies from 7:00 to 00:00 (Minsk time).
+
+### Contact
+
+- Telegram: https://t.me/sklnsky
+- Email: zsklnskky@gmail.com
+- GitHub: https://github.com/zsklnskky
+- Portfolio site: https://zsklnskky.dpdns.org/
+
+### Dubai real estate on autopilot (EQT Real Estate, Dubai)
+
+URL: https://zsklnskky.dpdns.org/en/case/eqt/
+
+Listings go from the CRM to the portal by themselves, plus decks, stories and retouching.
+
+Before: Agents copied every property from the CRM to Property Finder by hand and made photos and materials themselves.
+
+What was done:
+- Properties from Bitrix24 publish to Property Finder and update after every edit
+- Listing Studio: a contract and photos become a finished listing in a minute
+- Made bilingual villa decks for Palm Jumeirah that work on phone and desktop
+- Made a premium-agency story template: Just Listed and Sold
+- Prepared AI-retouched photos: 29 apartment shots and 12 villa shots
+
+Result: 55 listings publish with no manual work, six agents share one process.
+
+55 listings on autopilot, 2 minutes from edit to portal, 73 photos in one deck.
+
+Tools: Bitrix24, Property Finder API, Albato, Node.js, ChatGPT, OpenCV
+
+### WhatsApp on autopilot (Clariva Spa, Cyprus)
+
+URL: https://zsklnskky.dpdns.org/en/case/clariva/
+
+A guest books on the site, and WhatsApp confirms, reminds and asks for a review by itself.
+
+Before: Admins wrote to every guest by hand: confirm the booking, remind about the visit.
+
+What was done:
+- Linked the site's online booking to WhatsApp: the guest instantly gets "You're booked"
+- A reminder comes a day and two hours before, rescheduling right in the chat
+- After the visit the guest is asked for a review
+- All messages use ready templates in Russian, English and Greek
+
+Result: About 190 messages a day go out by themselves, admins no longer write by hand.
+
+190 messages a day on their own, 15 message templates, 3 languages.
+
+Tools: n8n, Altegio, WhatsApp Business API, 360dialog
+
+### Ads and a report that builds itself (Clariva Spa, Cyprus)
+
+URL: https://zsklnskky.dpdns.org/en/case/clariva-ads/
+
+Google and Meta in three languages, and every morning a ready report: spend and bookings.
+
+Before: The spa needed bookings from tourists and locals, but had no ads and no clear stats.
+
+What was done:
+- Launched Google search and Meta ads with a campaign per language
+- Set up lead tracking per channel: calls, WhatsApp and online booking
+- The report builds itself from the ad accounts and bookings and arrives as a ready PDF
+- The report shows where spend is over plan and whether the ad payment went through
+
+Result: Ads run on Google and Meta since 21 August 2026, every channel is measured separately.
+
+3 ad languages, 2 platforms, Google and Meta, 3 lead types tracked.
+
+Tools: Google Ads, Meta Ads, Google Tag Manager, GA4
+
+### Instagram content (Clariva Spa, Cyprus)
+
+URL: https://zsklnskky.dpdns.org/en/case/clariva-smm/
+
+A 16-post content plan and captions that lead to a booking.
+
+Before: Instagram had no plan and posts did not lead to bookings.
+
+What was done:
+- Made a September to November plan: 8 reels, 7 carousels, 1 static post
+- Wrote captions to one formula: hook, invitation, book in DM
+- Made the plan in Russian and English, as a PDF for the team
+
+Result: The team has a ready plan until November: what goes out, when and with what text.
+
+16 posts in the plan, 8 reels, 2 languages.
+
+Tools: Instagram, Canva, CapCut
+
+### Social: Instagram and Telegram (SYNC AGENCY, EQT, Viachera, Clariva)
+
+URL: https://zsklnskky.dpdns.org/en/case/social/
+
+Instagram grids, profile setup and running Telegram channels.
+
+Before: Channels and profiles needed one style and regular posts people actually read.
+
+What was done:
+- Ran the SYNC AGENCY Telegram channel: brand breakdowns as carousels
+- Ran EQT's Russian-language channel about Dubai real estate
+- Built the Viachera Instagram grid: 9 carousels and reels, profile and covers
+- Made the content plan and captions for Clariva spa's Instagram
+
+Result: Channels and profiles share one style and posts go out on schedule.
+
+2 Telegram channels, 9 Viachera carousels.
+
+Tools: Telegram, Instagram, Canva, Python
+
+### Ads you can play (SYNC AGENCY and Oakever Games)
+
+URL: https://zsklnskky.dpdns.org/en/case/playables/
+
+Mini games instead of banners: people play for 20 seconds and tap "Install".
+
+Before: People scroll past plain banners, and a playable ad must be light and hook at once.
+
+What was done:
+- Slingshot Siege: pull the slingshot, smash crates, score points
+- SYNC Survival: a 3D block world, dig and find 5 crystals
+- Built the MEOW DOKU sound kit from the client's video and 8 seamless music loops
+- Each game is one light file that fits ad network rules
+
+Result: The games open in a second and run on any phone.
+
+2 games to play here, 8 music loops.
+
+Tools: Phaser 3, Three.js, HTML5
+
+### The Last Crown (My own project)
+
+URL: https://zsklnskky.dpdns.org/en/case/game/
+
+A five-chapter 3D browser game with multiplayer.
+
+Before: I wanted a real game that runs from a link with nothing to install.
+
+What was done:
+- Wrote a five-chapter story with five endings
+- Made the first-person mode "Escape from Meme Forest"
+- Added an arena, shop, inventory and leaderboard
+- Added online play with friends
+
+Result: Five chapters, five endings and online play with friends, launched from a link.
+
+5 chapters, 5 endings.
+
+Tools: Three.js, React, Socket.IO, Vite
+
+### Viachera, dinner sorted (My own product)
+
+URL: https://zsklnskky.dpdns.org/en/case/viachera/
+
+Plans a week of dinners for your people, budget and "don't eat" list, compares five chains and builds the shopping list.
+
+Before: Every evening the same question: what to cook and how much it costs.
+
+What was done:
+- A short quiz: how many people, how many days, budget, cuisines and what you don't eat
+- A weekly menu from 524 dishes with portions for your headcount and calories
+- The basket is priced at five chains, Euroopt prices are live
+- Shows where it's cheaper and builds a shopping list by aisle
+- Photos of every dish are AI-generated
+
+Result: The product launched on 20 October 2026.
+
+524 dishes inside, 69 world cuisines, 5 chains with prices.
+
+Tools: React, TypeScript, PocketBase, Bun, Wan2GP
+
+### Site and bot for a tattoo studio (INKSIDE tattoo studio, Minsk)
+
+URL: https://zsklnskky.dpdns.org/en/case/inkside/
+
+A site request reaches the artists in Telegram with a price estimate, and a bot edits the site by message.
+
+Before: Bookings came only via Instagram, and every site edit needed a developer.
+
+What was done:
+- Built a site with a price calculator and three-step booking: style, placement, size
+- The request with the estimate goes straight to the artists' Telegram group
+- The bot reminds the team if a request waits too long
+- An artist messages the bot and prices, texts or photos change on the site
+- Wrote 19 service pages and an 11-page audit with an ad plan
+
+Result: SEO 100 in Lighthouse, the site and bot run since 14 October 2026.
+
+100 Lighthouse SEO score, 19 indexed pages.
+
+Tools: GSAP, Python, SQLite, Telegram Bot API, GitHub Pages
+
+### KINOTEKA (My own project)
+
+URL: https://zsklnskky.dpdns.org/en/case/kinoteka/
+
+A personal film library with posters and filters, built in one day.
+
+Before: Film lists lived in notes and picking one to watch was awkward.
+
+What was done:
+- Built a collection with posters, ratings and genre and year filters
+- It installs on a phone like an app and works offline
+- Fit it all into one light file
+
+Result: 26 films in the collection and one day of work.
+
+26 films in the collection, 1 day to build.
+
+Tools: HTML, PWA
+
+### My Corolla E150 (My own project)
+
+URL: https://zsklnskky.dpdns.org/en/case/corolla/
+
+A 3D breakdown of my car: point at a part and see its price and where to buy.
+
+Before: I don't know cars and wanted to understand what everything in mine costs.
+
+What was done:
+- Built a 3D model of the car you can rotate and zoom
+- Labelled the parts and added prices and shops in Belarus
+- Wrote up the service schedule
+
+Result: Handy for me and for the mechanic.
+
+Tools: Three.js, JavaScript
+
+### Brand books and identity (INKSIDE and this portfolio)
+
+URL: https://zsklnskky.dpdns.org/en/case/brandbooks/
+
+Logo, colours, type and rules in one document in Russian and English.
+
+Before: Without rules every new layout and post looked different.
+
+What was done:
+- INKSIDE brand book: mark, colours, type, photography, carriers
+- This portfolio's brand book: mark construction, palette with contrast, grid, buttons, motion
+- Both documents in Russian and English, as PDF
+
+Result: The designer, the SMM specialist and the developer follow the same rules.
+
+2 brand books, 2 languages.
+
+Tools: Figma, HTML, PDF
+
+### This portfolio (My own project)
+
+URL: https://zsklnskky.dpdns.org/en/case/portfolio/
+
+A site with live demos, the Jarvis helper and a particle portrait.
+
+Before: Screenshots in a PDF don't show how automation works.
+
+What was done:
+- Built a multi-page site in Russian and English
+- Most of the work opens live right on the site
+- Added the Jarvis helper that opens the right project by itself
+- Made the particle portrait and page transitions
+
+Result: All the work in one place, and requests reach me in Telegram.
+
+17 cases on the site, 2 languages.
+
+Tools: HTML, GSAP, Canvas, Python
+
+### JARVIS, a voice assistant (My own project)
+
+URL: https://zsklnskky.dpdns.org/en/case/jarvis/
+
+An assistant that listens, sees through the camera and tracks tasks.
+
+Before: I wanted an assistant I could just talk to and it would do the job.
+
+What was done:
+- Wakes up on the word "Jarvis" and answers by voice
+- Tracks tasks and projects, builds reports with charts
+- Describes what it sees through the camera
+- Sends reports to Telegram
+
+Result: The demo runs right here: tasks and voice in the browser, no install.
+
+4 modes: voice, camera, tasks, reports.
+
+Tools: Python, Claude, Web Speech, Telegram
+
+### Reels edit themselves (Telegram bot and CapCut)
+
+URL: https://zsklnskky.dpdns.org/en/case/reels/
+
+Send a video to the bot and get a finished CapCut project.
+
+Before: Editing one reel took an hour: cutting pauses, adding subtitles.
+
+What was done:
+- Send the video to a Telegram bot or drop it in a folder
+- The bot transcribes speech and cuts the pauses
+- Adds subtitles in the style of a chosen example reel
+- The finished project opens in CapCut, a preview comes to the chat
+
+Result: Five editing steps run with no human involved.
+
+5 steps with no human needed.
+
+Tools: Python, Whisper, ffmpeg, Telegram Bot API
+
+### Motion graphics in code (My own project)
+
+URL: https://zsklnskky.dpdns.org/en/case/motion/
+
+Vertical promo videos with no paid tools: voice, animation, editing.
+
+Before: Motion videos usually need expensive software and a designer.
+
+What was done:
+- I write the script, the voice is synthesized
+- Every frame is drawn in code: type, glow, particles
+- The clip renders as a vertical 60 fps video
+- Made clips about this site in its own style
+
+Result: The clips come out with no paid software or subscriptions.
+
+0 roubles on tools, 60 frames per second.
+
+Tools: edge-tts, Chrome, ffmpeg, Python
+
+### FOCUS and dashboard (My own project)
+
+URL: https://zsklnskky.dpdns.org/en/case/focus/
+
+Tasks, projects and focus sessions in one place on every device.
+
+Before: Tasks and notes were scattered across apps.
+
+What was done:
+- Put four apps into one dashboard
+- Added Google sign-in and sync
+- Added a dark theme, Russian and English
+
+Result: I use it every day.
+
+4 apps in the set.
+
+Tools: JavaScript, Google API
