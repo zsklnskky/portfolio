@@ -1979,7 +1979,8 @@ html:has(#jvOrb[aria-expanded="true"]) .ck{opacity:0;pointer-events:none}
       try { sessionStorage.setItem('zs_sid', sid) } catch {}
       const u = new URLSearchParams(location.search), w = innerWidth;
       meta = {
-        ref: document.referrer, land: cur(), lang: (navigator.language || '').slice(0, 2),
+        // только домен источника: в полном referrer бывают поисковые запросы, токены и почты
+        ref: (() => { try { return new URL(document.referrer).host } catch { return '' } })(), land: cur(), lang: (navigator.language || '').slice(0, 2),
         utm: { source: u.get('utm_source'), medium: u.get('utm_medium'), campaign: u.get('utm_campaign') },
         dev: w < 768 ? 'mobile' : w < 1180 && matchMedia('(pointer: coarse)').matches ? 'tablet' : 'desktop',
         tz: (Intl.DateTimeFormat().resolvedOptions().timeZone || '').slice(0, 40)
